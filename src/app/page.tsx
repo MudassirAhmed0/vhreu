@@ -1,6 +1,7 @@
 import Link from "next/link";
 import VinSearchForm from "@/components/vin-search-form";
 import FaqAccordion from "@/components/faq-accordion";
+import PageHero from "@/components/page-hero";
 import {
   HERO,
   SAVE_MONEY,
@@ -84,7 +85,7 @@ const REASON_ICONS: Record<string, React.FC> = {
   lock: IconLock,
 };
 
-const STEP_ICONS: Record<string, JSX.Element> = {
+const STEP_ICONS: Record<string, React.ReactNode> = {
   search: (
     <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
@@ -112,7 +113,7 @@ const STEP_ICONS: Record<string, JSX.Element> = {
   ),
 };
 
-const WHY_CHOOSE_ICONS: Record<string, JSX.Element> = {
+const WHY_CHOOSE_ICONS: Record<string, React.ReactNode> = {
   zap: (
     <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
@@ -166,45 +167,16 @@ export default function Home() {
   return (
     <>
       {/* ═══ HERO ═══ */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-light to-primary">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5" />
-        <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8 lg:py-24">
-          <div>
-            <h1 className="text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
-              European VIN Check
-              <span className="mt-2 block text-accent">EU VIN Lookup</span>
-            </h1>
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-slate-300">
-              {HERO.subheading}
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              {HERO.trustBadges.map((badge) => (
-                <span
-                  key={badge}
-                  className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white backdrop-blur-sm"
-                >
-                  <svg className="h-3.5 w-3.5 text-accent" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
-                  </svg>
-                  {badge}
-                </span>
-              ))}
-            </div>
-            <Link
-              href="/sample-report"
-              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent underline underline-offset-4 hover:text-white"
-            >
-              View Sample Report
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-              </svg>
-            </Link>
-          </div>
-          <div className="flex justify-center lg:justify-end">
-            <VinSearchForm />
-          </div>
-        </div>
-      </section>
+      <PageHero
+        variant="split"
+        tag="Trusted by 50,000+ buyers"
+        title="European VIN Check"
+        highlight="EU VIN Lookup"
+        subtitle={HERO.subheading}
+        bullets={HERO.trustBadges}
+      >
+        <VinSearchForm />
+      </PageHero>
 
       {/* ═══ SAVE MONEY ═══ */}
       <section className="bg-white py-16 sm:py-24">
@@ -239,7 +211,7 @@ export default function Home() {
                 </Link>
                 <Link
                   href="#hero"
-                  className="rounded-lg bg-accent px-6 py-3 text-sm font-bold text-primary transition-colors hover:bg-accent-hover"
+                  className="rounded-lg bg-accent px-6 py-3 text-sm font-bold text-white shadow-[0_2px_12px_rgba(232,92,58,0.22)] transition-colors hover:bg-accent-hover"
                 >
                   Check Vehicle History!
                 </Link>
@@ -334,7 +306,7 @@ export default function Home() {
           <div className="mt-10 text-center">
             <Link
               href="#hero"
-              className="inline-flex rounded-lg bg-accent px-8 py-3.5 text-sm font-bold text-primary transition-colors hover:bg-accent-hover"
+              className="inline-flex rounded-lg bg-accent px-8 py-3.5 text-sm font-bold text-white shadow-[0_2px_12px_rgba(232,92,58,0.22)] transition-colors hover:bg-accent-hover"
             >
               Run a VIN check now!
             </Link>
@@ -444,7 +416,7 @@ export default function Home() {
             </Link>
             <Link
               href="#hero"
-              className="rounded-lg bg-accent px-6 py-3 text-sm font-bold text-primary transition-colors hover:bg-accent-hover"
+              className="rounded-lg bg-accent px-6 py-3 text-sm font-bold text-white shadow-[0_2px_12px_rgba(232,92,58,0.22)] transition-colors hover:bg-accent-hover"
             >
               Check VIN Now!
             </Link>
@@ -505,9 +477,9 @@ export default function Home() {
             {WHY_CHOOSE.features.map((feature) => (
               <div
                 key={feature.title}
-                className="group rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition-all hover:border-accent hover:shadow-md"
+                className="group rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition-all hover:border-primary/30 hover:shadow-md"
               >
-                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/5 text-primary transition-colors group-hover:bg-accent group-hover:text-primary">
+                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/5 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
                   {WHY_CHOOSE_ICONS[feature.icon]}
                 </div>
                 <h3 className="mt-4 text-lg font-bold text-primary">{feature.title}</h3>
@@ -555,7 +527,7 @@ export default function Home() {
               <Link
                 key={make}
                 href="#"
-                className="flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-5 text-sm font-semibold text-primary shadow-sm transition-all hover:border-accent hover:shadow-md"
+                className="flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-5 text-sm font-semibold text-primary shadow-sm transition-all hover:border-primary/30 hover:shadow-md"
               >
                 {make}
               </Link>

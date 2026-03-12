@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
+import { Figtree } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const figtree = Figtree({
+  variable: "--font-figtree",
   subsets: ["latin"],
 });
 
@@ -15,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "European VIN Check | EU VIN Lookup - Vehicle History Europe",
+  title: "VehicleHistory EU — European VIN Check & Vehicle Reports",
   description:
     "Get free VIN decoding and affordable European VIN check for reliable vehicle history - verify title and condition, accidents, auction records, actual mileage and more.",
 };
@@ -28,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
+        className={`${figtree.variable} ${geistMono.variable} font-sans antialiased`}
       >
         <Header />
         <main>{children}</main>

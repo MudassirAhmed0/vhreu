@@ -41,7 +41,7 @@ export default function Header() {
           </Link>
           <Link
             href="/members/login"
-            className="rounded-lg bg-accent px-5 py-2.5 text-sm font-bold text-primary transition-colors hover:bg-accent-hover"
+            className="rounded-lg bg-accent px-5 py-2.5 text-sm font-bold text-white shadow-[0_2px_12px_rgba(232,92,58,0.22)] transition-colors hover:bg-accent-hover"
           >
             Sign Up
           </Link>
