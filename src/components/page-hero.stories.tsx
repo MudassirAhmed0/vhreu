@@ -2,18 +2,70 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import PageHero from "./page-hero";
 import VinSearchForm from "./vin-search-form";
 
-const meta: Meta<typeof PageHero> = {
+/* ─── Extended args so non-technical users can toggle the form via controls ─── */
+type HeroStoryProps = React.ComponentProps<typeof PageHero> & {
+  showForm?: boolean;
+  formButtonText?: string;
+};
+
+const meta: Meta<HeroStoryProps> = {
   title: "Components/PageHero",
   component: PageHero,
   argTypes: {
-    variant: { control: "select", options: ["centered", "split", "stacked"] },
-    dark: { control: "boolean" },
+    variant: {
+      control: "select",
+      options: ["centered", "split", "stacked"],
+      table: { category: "Layout" },
+    },
+    dark: {
+      control: "boolean",
+      table: { category: "Layout" },
+    },
+    tag: { control: "text", table: { category: "Content" } },
+    title: { control: "text", table: { category: "Content" } },
+    highlight: { control: "text", table: { category: "Content" } },
+    subtitle: { control: "text", table: { category: "Content" } },
+    bullets: { control: "object", table: { category: "Content" } },
+    heroImage: {
+      control: "text",
+      description: "Image URL for split right side (580×660 @2x recommended)",
+      table: { category: "Media" },
+    },
+    heroImageAlt: { control: "text", table: { category: "Media" } },
+    backgroundImage: {
+      control: "text",
+      description: "Subtle watermark image (e.g. country flag SVG path)",
+      table: { category: "Media" },
+    },
+    showForm: {
+      control: "boolean",
+      description: "Toggle VIN search form on/off",
+      table: { category: "Form" },
+    },
+    formButtonText: {
+      control: "text",
+      description: "Button label on the VIN form",
+      table: { category: "Form" },
+      if: { arg: "showForm" },
+    },
+  },
+  args: {
+    dark: true,
+    showForm: false,
+    formButtonText: "Search VIN",
   },
   parameters: { layout: "fullscreen" },
+  render: ({ showForm, formButtonText, ...heroProps }) => (
+    <PageHero {...heroProps}>
+      {showForm && (
+        <VinSearchForm buttonText={formButtonText} dark={heroProps.dark} />
+      )}
+    </PageHero>
+  ),
 };
 
 export default meta;
-type Story = StoryObj<typeof PageHero>;
+type Story = StoryObj<HeroStoryProps>;
 
 /* ═══════════════════════════════════════════════════════════
    CENTERED
@@ -25,7 +77,7 @@ export const CenteredPricing: Story = {
   args: {
     variant: "centered",
     tag: "Flexible Plans",
-    title: "Detailed Report at",
+    title: "Detailed Reports,",
     highlight: "Affordable Pricing",
     subtitle:
       "Get comprehensive vehicle history reports with our flexible credit-based pricing. Choose the plan that fits your needs.",
@@ -79,18 +131,29 @@ export const SplitHomepage: Story = {
   name: "Split / Homepage",
   args: {
     variant: "split",
-    tag: "Trusted by 50,000+ buyers",
-    title: "European VIN Check",
-    highlight: "EU VIN Lookup",
+    tag: "Trusted by 50,000+ Buyers",
+    title: "Check Any European Vehicle's",
+    highlight: "Full History Report",
     subtitle:
       "Check any European vehicle's history instantly. Access accident records, mileage verification, theft status, and more from 40+ countries.",
     bullets: ["40+ EU Countries", "Instant Results", "Official Records"],
+    showForm: true,
   },
-  render: (args) => (
-    <PageHero {...args}>
-      <VinSearchForm />
-    </PageHero>
-  ),
+};
+
+export const SplitWithImage: Story = {
+  name: "Split / Hero Image",
+  args: {
+    variant: "split",
+    tag: "Trusted by 50,000+ Buyers",
+    title: "Check Any European Vehicle's",
+    highlight: "Full History Report",
+    subtitle:
+      "Check any European vehicle's history instantly. Access accident records, mileage verification, theft status, and more from 40+ countries.",
+    bullets: ["40+ EU Countries", "Instant Results", "Official Records"],
+    heroImage: "https://placehold.co/580x660/0B2230/E85C3A?text=Report+Preview%0A580%C3%97660",
+    heroImageAlt: "Sample vehicle history report showing specifications, auction records, and accident history",
+  },
 };
 
 export const SplitCountry: Story = {
@@ -104,12 +167,8 @@ export const SplitCountry: Story = {
       "Run a comprehensive history check on any car registered in Germany. Access TUV records, accident history, and ownership data.",
     bullets: ["TUV Records", "KBA Database", "Accident History"],
     backgroundImage: "/flags/de.svg",
+    showForm: true,
   },
-  render: (args) => (
-    <PageHero {...args}>
-      <VinSearchForm />
-    </PageHero>
-  ),
 };
 
 export const SplitCountryFrance: Story = {
@@ -118,16 +177,12 @@ export const SplitCountryFrance: Story = {
     variant: "split",
     tag: "Country Report",
     title: "France VIN Check",
-    highlight: "Historique du Vehicule",
+    highlight: "Historique du Véhicule",
     subtitle:
       "Access the full history of any vehicle registered in France. Import checks, accident records, and odometer verification from official databases.",
     bullets: ["SIV Database", "CT Records", "Import Checks"],
+    showForm: true,
   },
-  render: (args) => (
-    <PageHero {...args}>
-      <VinSearchForm />
-    </PageHero>
-  ),
 };
 
 /* ═══════════════════════════════════════════════════════════
@@ -144,12 +199,8 @@ export const StackedSampleReport: Story = {
     highlight: "Premium Reports",
     subtitle:
       "See exactly what information is included in our comprehensive vehicle history reports before you buy.",
+    showForm: true,
   },
-  render: (args) => (
-    <PageHero {...args}>
-      <VinSearchForm />
-    </PageHero>
-  ),
 };
 
 export const StackedBrandBMW: Story = {
@@ -162,11 +213,12 @@ export const StackedBrandBMW: Story = {
     subtitle:
       "Use our free BMW VIN decoder to instantly retrieve detailed vehicle specifications, history, and manufacturing data.",
     bullets: ["Free VIN Decode", "Full History Report", "Instant Results"],
+    showForm: true,
   },
-  render: (args) => (
-    <PageHero {...args}>
+  render: ({ showForm: _sf, formButtonText: _ft, ...heroProps }) => (
+    <PageHero {...heroProps}>
       <div className="space-y-8">
-        <VinSearchForm />
+        <VinSearchForm dark={heroProps.dark} />
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
             { n: "50M+", label: "VINs Decoded" },
@@ -192,22 +244,19 @@ export const StackedBrandBMW: Story = {
   ),
 };
 
-export const StackedWindowSticker: Story = {
-  name: "Stacked / Window Sticker",
+export const StackedVehicleSpecs: Story = {
+  name: "Stacked / Vehicle Specifications",
   args: {
     variant: "stacked",
-    tag: "Original Sticker Lookup",
-    title: "Look Up a Vehicle's Original",
-    highlight: "Window Sticker Online",
+    tag: "Original Spec Lookup",
+    title: "Look Up Original",
+    highlight: "Vehicle Specifications",
     subtitle:
-      "Access the original manufacturer window sticker for any vehicle. Get MSRP, standard equipment, optional packages, and more.",
-    bullets: ["MSRP Data", "Equipment Lists", "Safety Ratings"],
+      "Access the original manufacturer specifications for any vehicle. Get equipment details, optional packages, safety ratings, and more.",
+    bullets: ["Full Specs", "Equipment Lists", "Safety Ratings"],
+    showForm: true,
+    formButtonText: "Check Vehicle",
   },
-  render: (args) => (
-    <PageHero {...args}>
-      <VinSearchForm buttonText="Check Vehicle" />
-    </PageHero>
-  ),
 };
 
 export const StackedBrandAudi: Story = {
@@ -220,10 +269,40 @@ export const StackedBrandAudi: Story = {
     subtitle:
       "Access complete Audi vehicle data — from Quattro drivetrain specs to MMI system details. Manufacturing plant, trim level, engine code, and full European history.",
     bullets: ["Quattro Specs", "Service History", "Euro NCAP Data"],
+    showForm: true,
   },
-  render: (args) => (
-    <PageHero {...args}>
-      <VinSearchForm />
-    </PageHero>
-  ),
+};
+
+/* ═══════════════════════════════════════════════════════════
+   LIGHT VARIANTS
+   ═══════════════════════════════════════════════════════════ */
+
+export const SplitLight: Story = {
+  name: "Split / Light",
+  args: {
+    variant: "split",
+    tag: "Trusted by 50,000+ Buyers",
+    title: "Check Any European Vehicle's",
+    highlight: "Full History Report",
+    subtitle:
+      "Access accident records, mileage verification, theft status, and more from 40+ countries.",
+    bullets: ["40+ EU Countries", "Instant Results", "Official Records"],
+    dark: false,
+    showForm: true,
+  },
+};
+
+export const StackedLight: Story = {
+  name: "Stacked / Light",
+  args: {
+    variant: "stacked",
+    tag: "VIN Decoder",
+    title: "Decode Any VIN with Our",
+    highlight: "Instant Lookup Tool",
+    subtitle:
+      "Use our free VIN decoder to instantly retrieve detailed vehicle specifications, history, and manufacturing data.",
+    bullets: ["Free VIN Decode", "Full History Report", "Instant Results"],
+    dark: false,
+    showForm: true,
+  },
 };

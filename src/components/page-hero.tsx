@@ -1,5 +1,3 @@
-"use client";
-
 import { ReactNode } from "react";
 
 type Variant = "centered" | "split" | "stacked";
@@ -12,6 +10,9 @@ interface PageHeroProps {
   subtitle?: string;
   bullets?: string[];
   backgroundImage?: string;
+  /** Hero image shown on the right side of the split variant (580×660 @2x recommended) */
+  heroImage?: string;
+  heroImageAlt?: string;
   dark?: boolean;
   children?: ReactNode;
 }
@@ -26,52 +27,13 @@ export default function PageHero({
   subtitle,
   bullets,
   backgroundImage,
+  heroImage,
+  heroImageAlt = "Vehicle history report preview",
   dark = true,
   children,
 }: PageHeroProps) {
   return (
     <section className="relative overflow-hidden">
-      <style>{`
-        @keyframes hero-up {
-          from { opacity: 0; transform: translateY(24px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes hero-scale {
-          from { opacity: 0; transform: scale(0.96); }
-          to   { opacity: 1; transform: scale(1); }
-        }
-        @keyframes hero-gradient {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        @keyframes orb-drift {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          33% { transform: translate(25px, -18px) scale(1.04); }
-          66% { transform: translate(-18px, 12px) scale(0.96); }
-        }
-        @keyframes vin-scroll {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        @keyframes ring-pulse {
-          0% { transform: scale(0.85); opacity: 0.06; }
-          50% { opacity: 0.03; }
-          100% { transform: scale(1.3); opacity: 0; }
-        }
-        @keyframes line-draw {
-          from { transform: scaleX(0); }
-          to { transform: scaleX(1); }
-        }
-        @keyframes glow-pulse {
-          0%, 100% { opacity: 0.5; }
-          50% { opacity: 1; }
-        }
-      `}</style>
-
-      {/* ══════════════════════════════
-          BACKGROUNDS
-          ══════════════════════════════ */}
-
       {dark ? (
         <DarkBackground variant={variant} backgroundImage={backgroundImage} />
       ) : (
@@ -117,18 +79,18 @@ export default function PageHero({
             {/* Left — text */}
             <div style={{ animation: "hero-up 0.7s cubic-bezier(0.16,1,0.3,1) both" }}>
               <HeroTag dark={dark}>{tag}</HeroTag>
-              <HeroTitle dark={dark} title={title} highlight={highlight} size="split" />
+              <HeroTitle dark={dark} title={title} highlight={highlight} compact />
               <HeroSubtitle dark={dark}>{subtitle}</HeroSubtitle>
               <HeroBullets items={bullets} dark={dark} delay={0.18} />
             </div>
 
-            {/* Right — form */}
+            {/* Right — image or form */}
             <div
               className="relative flex justify-center md:justify-end"
               style={{ animation: "hero-scale 0.8s cubic-bezier(0.16,1,0.3,1) 0.15s both" }}
             >
-              {/* Glow frame behind form */}
-              {dark && children && (
+              {/* Glow frame */}
+              {dark && (children || heroImage) && (
                 <>
                   <div className="absolute -inset-6 rounded-[24px] bg-accent/[0.04] blur-2xl" />
                   <div
@@ -140,7 +102,20 @@ export default function PageHero({
                   />
                 </>
               )}
-              <div className="relative w-full max-w-xl">{children}</div>
+              {heroImage ? (
+                <div className="relative w-full max-w-[580px]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={heroImage}
+                    alt={heroImageAlt}
+                    width={580}
+                    height={660}
+                    className="relative h-auto w-full drop-shadow-[0_20px_60px_rgba(0,0,0,0.4)]"
+                  />
+                </div>
+              ) : (
+                <div className="relative w-full max-w-xl">{children}</div>
+              )}
             </div>
           </div>
         </div>
@@ -151,15 +126,15 @@ export default function PageHero({
           ══════════════════════════════ */}
       {variant === "stacked" && (
         <div className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:py-24">
-          {/* Heading — full width, not crammed */}
+          {/* Heading — centered vertical flow */}
           <div
-            className="max-w-3xl"
+            className="mx-auto max-w-3xl text-center"
             style={{ animation: "hero-up 0.7s cubic-bezier(0.16,1,0.3,1) both" }}
           >
             <HeroTag dark={dark}>{tag}</HeroTag>
-            <HeroTitle dark={dark} title={title} highlight={highlight} size="split" />
-            <HeroSubtitle dark={dark}>{subtitle}</HeroSubtitle>
-            <HeroBullets items={bullets} dark={dark} delay={0.18} />
+            <HeroTitle dark={dark} title={title} highlight={highlight} compact />
+            <HeroSubtitle dark={dark} centered>{subtitle}</HeroSubtitle>
+            <HeroBullets items={bullets} dark={dark} centered delay={0.18} />
           </div>
 
           {/* Divider — VIN motif */}
@@ -191,14 +166,15 @@ export default function PageHero({
           )}
           {children && !dark && <div className="my-10" />}
 
-          {/* Children — full width, prominent */}
+          {/* Children — centered */}
           {children && (
             <div
+              className="mx-auto max-w-xl"
               style={{ animation: "hero-up 0.7s cubic-bezier(0.16,1,0.3,1) 0.3s both" }}
             >
               <div className="relative">
                 {dark && <div className="absolute -inset-6 rounded-3xl bg-accent/[0.02] blur-xl" />}
-                <div className="relative max-w-2xl">{children}</div>
+                <div className="relative">{children}</div>
               </div>
             </div>
           )}
@@ -215,7 +191,7 @@ function DarkBackground({ variant, backgroundImage }: { variant: Variant; backgr
   return (
     <>
       {/* Base */}
-      <div className="absolute inset-0 bg-[#0B2230]" />
+      <div className="absolute inset-0 bg-hero-dark" />
 
       {/* Noise grain */}
       <div className="absolute inset-0 opacity-[0.4]" style={{ backgroundImage: NOISE }} />
@@ -241,14 +217,14 @@ function DarkBackground({ variant, backgroundImage }: { variant: Variant; backgr
           <div
             className="absolute left-1/2 top-[38%] h-[450px] w-[650px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30 blur-[130px]"
             style={{
-              background: "radial-gradient(ellipse, #1A4A5C 0%, transparent 70%)",
+              background: "radial-gradient(ellipse, var(--primary) 0%, transparent 70%)",
               animation: "orb-drift 16s ease-in-out infinite",
             }}
           />
           {/* Coral whisper bottom center */}
           <div
             className="absolute bottom-[-5%] left-1/2 h-[200px] w-[400px] -translate-x-1/2 rounded-full opacity-[0.12] blur-[90px]"
-            style={{ background: "radial-gradient(circle, #E85C3A 0%, transparent 70%)" }}
+            style={{ background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)" }}
           />
           {/* Pulsing rings */}
           {[260, 400, 560].map((size, i) => (
@@ -271,7 +247,7 @@ function DarkBackground({ variant, backgroundImage }: { variant: Variant; backgr
           <div
             className="absolute -left-[5%] top-[15%] h-[500px] w-[550px] rounded-full opacity-30 blur-[120px]"
             style={{
-              background: "radial-gradient(circle, #1A4A5C 0%, transparent 70%)",
+              background: "radial-gradient(circle, var(--primary) 0%, transparent 70%)",
               animation: "orb-drift 13s ease-in-out infinite",
             }}
           />
@@ -279,7 +255,7 @@ function DarkBackground({ variant, backgroundImage }: { variant: Variant; backgr
           <div
             className="absolute -right-[3%] bottom-[5%] h-[380px] w-[420px] rounded-full opacity-[0.14] blur-[100px]"
             style={{
-              background: "radial-gradient(circle, #E85C3A 0%, transparent 70%)",
+              background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)",
               animation: "orb-drift 10s ease-in-out infinite reverse",
             }}
           />
@@ -326,7 +302,7 @@ function DarkBackground({ variant, backgroundImage }: { variant: Variant; backgr
           <div
             className="absolute -left-[5%] -top-[15%] h-[350px] w-[110%] rounded-[50%] opacity-20 blur-[110px]"
             style={{
-              background: "linear-gradient(90deg, transparent 5%, #1A4A5C 35%, #2E6B82 65%, transparent 95%)",
+              background: "linear-gradient(90deg, transparent 5%, var(--primary) 35%, var(--primary-light) 65%, transparent 95%)",
               animation: "orb-drift 18s ease-in-out infinite",
             }}
           />
@@ -334,7 +310,7 @@ function DarkBackground({ variant, backgroundImage }: { variant: Variant; backgr
           <div
             className="absolute -right-[5%] bottom-[15%] h-[300px] w-[300px] rounded-full opacity-[0.08] blur-[80px]"
             style={{
-              background: "radial-gradient(circle, #E85C3A 0%, transparent 70%)",
+              background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)",
               animation: "orb-drift 11s ease-in-out infinite reverse",
             }}
           />
@@ -368,7 +344,7 @@ function DarkBackground({ variant, backgroundImage }: { variant: Variant; backgr
 function LightBackground({ variant }: { variant: Variant }) {
   return (
     <>
-      <div className="absolute inset-0 bg-[#FAFAF8]" />
+      <div className="absolute inset-0 bg-surface" />
       <div
         className="absolute inset-0 opacity-[0.3]"
         style={{
@@ -384,14 +360,14 @@ function LightBackground({ variant }: { variant: Variant }) {
             : "-left-[8%] top-[10%]"
         }`}
         style={{
-          background: "radial-gradient(ellipse, #1A4A5C 0%, transparent 70%)",
+          background: "radial-gradient(ellipse, var(--primary) 0%, transparent 70%)",
           animation: "orb-drift 15s ease-in-out infinite",
         }}
       />
       {/* Coral warmth */}
       <div
         className="absolute -bottom-[8%] -right-[8%] h-[300px] w-[350px] rounded-full opacity-[0.03] blur-[80px]"
-        style={{ background: "radial-gradient(circle, #E85C3A 0%, transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)" }}
       />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
     </>
@@ -407,7 +383,7 @@ function HeroTag({ children, dark }: { children?: ReactNode; dark: boolean }) {
   return (
     <div
       className={`mb-5 inline-flex items-center gap-2.5 text-[11px] font-bold uppercase tracking-[0.2em] ${
-        dark ? "text-white/40" : "text-primary/50"
+        dark ? "text-white/60" : "text-primary/60"
       }`}
     >
       <span
@@ -435,14 +411,14 @@ function HeroTitle({
   title,
   highlight,
   dark,
-  size,
+  compact,
 }: {
   title: string;
   highlight?: string;
   dark: boolean;
-  size?: "split";
+  compact?: boolean;
 }) {
-  const fontSize = size === "split"
+  const fontSize = compact
     ? "text-[clamp(2rem,4.5vw,3.8rem)]"
     : "text-[clamp(2.4rem,5.5vw,4.5rem)]";
 
@@ -459,7 +435,7 @@ function HeroTitle({
           <span
             className="font-extrabold"
             style={{
-              background: "linear-gradient(135deg, #E85C3A 0%, #FF8A65 40%, #FFAB91 55%, #E85C3A 100%)",
+              background: "linear-gradient(135deg, var(--accent) 0%, #FF8A65 40%, #FFAB91 55%, var(--accent) 100%)",
               backgroundSize: "200% 200%",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
