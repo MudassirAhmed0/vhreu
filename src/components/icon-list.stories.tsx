@@ -56,6 +56,11 @@ const meta: Meta<typeof IconList> = {
       options: ["tight", "normal", "loose"],
       table: { category: "Layout" },
     },
+    columns: {
+      control: "inline-radio",
+      options: [undefined, 2, 3, 4],
+      table: { category: "Layout" },
+    },
     delay: {
       control: { type: "range", min: 0, max: 1, step: 0.1 },
       table: { category: "Layout" },
@@ -75,7 +80,7 @@ const meta: Meta<typeof IconList> = {
     (Story, context) => (
       <div
         className={`p-10 ${context.args.dark ? "bg-hero-dark" : "bg-white"}`}
-        style={{ maxWidth: 520 }}
+        style={{ maxWidth: context.args.columns ? 960 : 520 }}
       >
         <Story />
       </div>
@@ -212,5 +217,67 @@ export const DarkNeutral: Story = {
     variant: "neutral",
     dark: true,
     tinted: true,
+  },
+};
+
+/* ── Grid — 2 columns ── */
+export const Grid2Cols: Story = {
+  name: "Grid — 2 Columns",
+  args: {
+    items: BUYER_BENEFITS,
+    icon: "check",
+    variant: "success",
+    tinted: true,
+    columns: 2,
+  },
+};
+
+/* ── Grid — 3 columns ── */
+export const Grid3Cols: Story = {
+  name: "Grid — 3 Columns",
+  args: {
+    items: [
+      ...FEATURES,
+      "European recall status and safety notices",
+    ],
+    icon: "check",
+    variant: "neutral",
+    tinted: true,
+    columns: 3,
+  },
+};
+
+/* ── Grid — 4 columns (danger) ── */
+export const Grid4Cols: Story = {
+  name: "Grid — 4 Columns (Danger)",
+  args: {
+    items: WARNINGS,
+    icon: "warning",
+    variant: "danger",
+    columns: 4,
+  },
+};
+
+/* ── Grid — No tint (bare) ── */
+export const GridBare: Story = {
+  name: "Grid — Bare (no bg)",
+  args: {
+    items: FEATURES,
+    icon: "check",
+    variant: "neutral",
+    tinted: false,
+    columns: 2,
+  },
+};
+
+/* ── Grid — Dark ── */
+export const GridDark: Story = {
+  name: "Grid — Dark (2 col)",
+  args: {
+    items: BUYER_BENEFITS,
+    icon: "check",
+    variant: "success",
+    columns: 2,
+    dark: true,
   },
 };

@@ -169,7 +169,7 @@ function DarkBg() {
           opacity: 0.04,
         }}
       />
-      {/* Central teal glow */}
+      {/* Central navy glow */}
       <div
         className="absolute left-1/2 top-1/2 h-[350px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-15 blur-[120px]"
         style={{ background: "radial-gradient(ellipse, var(--primary) 0%, transparent 70%)" }}

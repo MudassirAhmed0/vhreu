@@ -3,13 +3,13 @@
 :root {
   --background: #ffffff;
   --foreground: #1A1F2E;
-  --primary: #1A4A5C;
-  --primary-light: #2E6B82;
-  --accent: #E85C3A;
-  --accent-light: #FEF2EF;
-  --accent-hover: #D44E2E;
-  --muted: #F5F7FA;
-  --muted-dark: #EDF0F4;
+  --primary: #1A365C;
+  --primary-light: #2C5A8C;
+  --accent: #FFCC00;
+  --accent-hover: #E6B800;
+  --accent-light: #FFFBE6;
+  --muted: #F0F2F8;
+  --muted-dark: #E3E7F0;
   --danger: #D94040;
   --success: #1D9C6B;
   --amber: #F0A500;
@@ -17,9 +17,9 @@
   --text-2: #4A5568;
   --text-3: #8A96A8;
   --text-4: #B8C0CC;
-  --border: rgba(26,74,92,0.10);
-  --border-hi: rgba(26,74,92,0.18);
-  --hero-dark: #0B2230;
+  --border: rgba(26,54,92,0.10);
+  --border-hi: rgba(26,54,92,0.18);
+  --hero-dark: #0B1D33;
   --surface: #FAFAF8;
 }
 
@@ -59,7 +59,7 @@ html {
 
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--background); }
-::-webkit-scrollbar-thumb { background: #D0E8F0; border-radius: 99px; }
+::-webkit-scrollbar-thumb { background: #C8D4E4; border-radius: 99px; }
 
 /* ─── Hero keyframes (shared, single injection) ─── */
 @keyframes hero-up {

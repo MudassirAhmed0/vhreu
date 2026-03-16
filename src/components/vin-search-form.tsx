@@ -1,3 +1,11 @@
+/* ══════════════════════════════════════════════════════════
+   VinSearchForm — VIN input + search CTA
+   Simple form: VIN input field + submit button.
+   No tabs, no email, no phone — EU site is VIN-only.
+   Follows design system: rounded-xl, border-white/[0.06],
+   hero-up entrance animation, accent CTA with glow.
+   ══════════════════════════════════════════════════════════ */
+
 "use client";
 
 import { useState } from "react";
@@ -5,9 +13,17 @@ import { useState } from "react";
 interface VinSearchFormProps {
   buttonText?: string;
   dark?: boolean;
+  /** Entrance animation delay in seconds */
+  delay?: number;
 }
 
-export default function VinSearchForm({ buttonText = "Search VIN", dark = true }: VinSearchFormProps) {
+export { type VinSearchFormProps };
+
+export default function VinSearchForm({
+  buttonText = "Search VIN",
+  dark = true,
+  delay = 0,
+}: VinSearchFormProps) {
   const [vin, setVin] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -15,7 +31,15 @@ export default function VinSearchForm({ buttonText = "Search VIN", dark = true }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-xl">
+    <form
+      onSubmit={handleSubmit}
+      className="w-full"
+      style={{
+        animation: delay
+          ? `hero-up 0.7s cubic-bezier(0.16,1,0.3,1) ${delay}s both`
+          : undefined,
+      }}
+    >
       <div className="space-y-3">
         <label htmlFor="vin-input" className="sr-only">
           Vehicle Identification Number (VIN)
@@ -26,16 +50,20 @@ export default function VinSearchForm({ buttonText = "Search VIN", dark = true }
           value={vin}
           onChange={(e) => setVin(e.target.value.toUpperCase())}
           placeholder="Enter VIN"
-          className={`w-full rounded-xl border px-5 py-4 font-mono text-[15px] tracking-wider transition-colors focus:outline-none focus:ring-1 ${
+          className={`w-full rounded-xl border px-5 py-4 font-mono text-[15px] tracking-wider transition-colors focus:outline-none focus:ring-2 ${
             dark
-              ? "border-white/[0.1] bg-white/[0.07] text-white placeholder-white/30 focus:border-accent/40 focus:bg-white/[0.1] focus:ring-accent/20"
-              : "border-border bg-white text-foreground placeholder-text-3 focus:border-accent/40 focus:ring-accent/20"
+              ? "border-white/[0.06] bg-white/[0.05] text-white placeholder-white/30 backdrop-blur-sm focus:border-accent/30 focus:bg-white/[0.07] focus:ring-accent/20"
+              : "border-border bg-white text-foreground placeholder-text-3 shadow-sm focus:border-accent/30 focus:ring-accent/20"
           }`}
           maxLength={17}
         />
         <button
           type="submit"
-          className="w-full rounded-xl bg-accent py-4 text-[15px] font-bold text-white shadow-[0_4px_20px_rgba(232,92,58,0.3)] transition-all hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-[0_6px_28px_rgba(232,92,58,0.4)]"
+          className={`w-full rounded-xl bg-accent py-4 text-[15px] font-bold transition-all hover:-translate-y-0.5 ${
+            dark
+              ? "text-hero-dark shadow-[0_4px_20px_rgba(255,204,0,0.2)] hover:shadow-[0_6px_28px_rgba(255,204,0,0.3)]"
+              : "text-hero-dark shadow-sm hover:shadow-md"
+          }`}
         >
           {buttonText}
         </button>

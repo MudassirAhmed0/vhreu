@@ -185,7 +185,7 @@ export default function DataTable({
               const stickyBg = dark
                 ? i % 2 === 0
                   ? "bg-hero-dark"
-                  : "bg-[#0e2a3a]"
+                  : "bg-[#0f2440]"
                 : i % 2 === 0
                   ? "bg-white"
                   : "bg-surface";

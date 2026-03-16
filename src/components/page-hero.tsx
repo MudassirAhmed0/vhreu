@@ -14,6 +14,9 @@ interface PageHeroProps {
   heroImage?: string;
   heroImageAlt?: string;
   dark?: boolean;
+  /** Disable glow frame around children/image in split variant. Default true.
+   *  Turn off for large children like forms where the glow overwhelms. */
+  glow?: boolean;
   children?: ReactNode;
 }
 
@@ -30,6 +33,7 @@ export default function PageHero({
   heroImage,
   heroImageAlt = "Vehicle history report preview",
   dark = true,
+  glow = true,
   children,
 }: PageHeroProps) {
   return (
@@ -89,14 +93,14 @@ export default function PageHero({
               className="relative flex justify-center md:justify-end"
               style={{ animation: "hero-scale 0.8s cubic-bezier(0.16,1,0.3,1) 0.15s both" }}
             >
-              {/* Glow frame */}
-              {dark && (children || heroImage) && (
+              {/* Glow frame — disable for large children like forms */}
+              {glow && dark && (children || heroImage) && (
                 <>
                   <div className="absolute -inset-6 rounded-[24px] bg-accent/[0.04] blur-2xl" />
                   <div
                     className="absolute -inset-px rounded-[16px]"
                     style={{
-                      background: "linear-gradient(145deg, rgba(26,74,92,0.25) 0%, rgba(232,92,58,0.12) 50%, transparent 100%)",
+                      background: "linear-gradient(145deg, rgba(26,54,92,0.25) 0%, rgba(255,204,0,0.08) 50%, transparent 100%)",
                       animation: "glow-pulse 5s ease-in-out infinite",
                     }}
                   />
@@ -173,7 +177,7 @@ export default function PageHero({
               style={{ animation: "hero-up 0.7s cubic-bezier(0.16,1,0.3,1) 0.3s both" }}
             >
               <div className="relative">
-                {dark && <div className="absolute -inset-6 rounded-3xl bg-accent/[0.02] blur-xl" />}
+                {glow && dark && <div className="absolute -inset-6 rounded-3xl bg-accent/[0.02] blur-xl" />}
                 <div className="relative">{children}</div>
               </div>
             </div>
@@ -213,7 +217,7 @@ function DarkBackground({ variant, backgroundImage }: { variant: Variant; backgr
 
       {variant === "centered" && (
         <>
-          {/* Central teal glow — behind text */}
+          {/* Central navy glow — behind text */}
           <div
             className="absolute left-1/2 top-[38%] h-[450px] w-[650px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30 blur-[130px]"
             style={{
@@ -263,7 +267,7 @@ function DarkBackground({ variant, backgroundImage }: { variant: Variant; backgr
           <div
             className="absolute left-[48%] top-0 hidden h-full w-px origin-top lg:block"
             style={{
-              background: "linear-gradient(180deg, transparent 8%, rgba(232,92,58,0.12) 45%, rgba(232,92,58,0.06) 65%, transparent 92%)",
+              background: "linear-gradient(180deg, transparent 8%, rgba(255,204,0,0.10) 45%, rgba(255,204,0,0.05) 65%, transparent 92%)",
               transform: "rotate(6deg)",
             }}
           />
@@ -298,7 +302,7 @@ function DarkBackground({ variant, backgroundImage }: { variant: Variant; backgr
 
       {variant === "stacked" && (
         <>
-          {/* Wide teal wash top */}
+          {/* Wide navy wash top */}
           <div
             className="absolute -left-[5%] -top-[15%] h-[350px] w-[110%] rounded-[50%] opacity-20 blur-[110px]"
             style={{
@@ -318,7 +322,7 @@ function DarkBackground({ variant, backgroundImage }: { variant: Variant; backgr
           <div
             className="absolute bottom-0 left-6 top-0 w-px sm:left-10 lg:left-[max(1.25rem,calc((100vw-80rem)/2+1.25rem))]"
             style={{
-              background: "linear-gradient(180deg, transparent 5%, rgba(232,92,58,0.1) 25%, rgba(232,92,58,0.06) 75%, transparent 95%)",
+              background: "linear-gradient(180deg, transparent 5%, rgba(255,204,0,0.08) 25%, rgba(255,204,0,0.04) 75%, transparent 95%)",
             }}
           />
           {backgroundImage && (
@@ -344,15 +348,15 @@ function DarkBackground({ variant, backgroundImage }: { variant: Variant; backgr
 function LightBackground({ variant }: { variant: Variant }) {
   return (
     <>
-      <div className="absolute inset-0 bg-surface" />
+      <div className="absolute inset-0 bg-white" />
       <div
         className="absolute inset-0 opacity-[0.3]"
         style={{
-          backgroundImage: "radial-gradient(circle, rgba(26,74,92,0.06) 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(circle, rgba(26,54,92,0.06) 1px, transparent 1px)",
           backgroundSize: "32px 32px",
         }}
       />
-      {/* Soft teal glow */}
+      {/* Soft navy glow */}
       <div
         className={`absolute h-[400px] w-[500px] rounded-full opacity-[0.05] blur-[100px] ${
           variant === "centered"
@@ -390,8 +394,8 @@ function HeroTag({ children, dark }: { children?: ReactNode; dark: boolean }) {
         className="inline-block h-px w-8"
         style={{
           background: dark
-            ? "linear-gradient(90deg, transparent, rgba(232,92,58,0.7))"
-            : "linear-gradient(90deg, transparent, rgba(232,92,58,0.5))",
+            ? "linear-gradient(90deg, transparent, rgba(255,204,0,0.6))"
+            : "linear-gradient(90deg, transparent, rgba(255,204,0,0.5))",
         }}
       />
       {children}
@@ -399,8 +403,8 @@ function HeroTag({ children, dark }: { children?: ReactNode; dark: boolean }) {
         className="inline-block h-px w-8"
         style={{
           background: dark
-            ? "linear-gradient(90deg, rgba(232,92,58,0.7), transparent)"
-            : "linear-gradient(90deg, rgba(232,92,58,0.5), transparent)",
+            ? "linear-gradient(90deg, rgba(255,204,0,0.6), transparent)"
+            : "linear-gradient(90deg, rgba(255,204,0,0.5), transparent)",
         }}
       />
     </div>
@@ -432,18 +436,35 @@ function HeroTitle({
       {highlight && (
         <>
           <br />
-          <span
-            className="font-extrabold"
-            style={{
-              background: "linear-gradient(135deg, var(--accent) 0%, #FF8A65 40%, #FFAB91 55%, var(--accent) 100%)",
-              backgroundSize: "200% 200%",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              animation: "hero-gradient 5s ease infinite",
-            }}
-          >
-            {highlight}
-          </span>
+          {dark ? (
+            /* Dark bg: yellow gradient text — #FFCC00 pops on navy */
+            <span
+              className="font-extrabold"
+              style={{
+                background: "linear-gradient(135deg, #FFCC00 0%, #FFE566 40%, #FFF0A0 55%, #FFCC00 100%)",
+                backgroundSize: "200% 200%",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                animation: "hero-gradient 5s ease infinite",
+              }}
+            >
+              {highlight}
+            </span>
+          ) : (
+            /* Light bg: same yellow gradient text */
+            <span
+              className="font-extrabold"
+              style={{
+                background: "linear-gradient(135deg, #FFCC00 0%, #FFE566 40%, #FFF0A0 55%, #FFCC00 100%)",
+                backgroundSize: "200% 200%",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                animation: "hero-gradient 5s ease infinite",
+              }}
+            >
+              {highlight}
+            </span>
+          )}
         </>
       )}
     </h1>
@@ -493,7 +514,7 @@ function HeroBullets({
         >
           <span className="relative flex h-1.5 w-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-40" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_6px_rgba(232,92,58,0.5)]" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_6px_rgba(255,204,0,0.5)]" />
           </span>
           {b}
         </span>

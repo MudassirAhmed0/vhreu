@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   IconList — vertical list with icon + text
+   IconList — icon + text list (vertical or grid)
    Foundational pattern: warnings, benefits, features, callouts.
    Composable into SplitContent, CardSection, or standalone.
    Non-actionable — no hover effects.
@@ -22,6 +22,8 @@ interface IconListProps {
   delay?: number;
   /** Gap between items: "tight" (8px) | "normal" (12px) | "loose" (16px) */
   spacing?: "tight" | "normal" | "loose";
+  /** Grid columns — omit for vertical stack, 2/3/4 for responsive grid */
+  columns?: 2 | 3 | 4;
 }
 
 export { type ListItem, type IconType, type Variant, type IconListProps };
@@ -86,12 +88,28 @@ const DARK_BOLD_COLOR: Record<Variant, string> = {
   muted:   "text-white/50",
 };
 
-/* ── Spacing ── */
+/* ── Spacing (vertical stack) ── */
 
 const GAP: Record<"tight" | "normal" | "loose", string> = {
   tight:  "space-y-2",
   normal: "space-y-3",
   loose:  "space-y-4",
+};
+
+/* ── Grid gap ── */
+
+const GRID_GAP: Record<"tight" | "normal" | "loose", string> = {
+  tight:  "gap-x-4 gap-y-3",
+  normal: "gap-x-5 gap-y-3.5",
+  loose:  "gap-x-6 gap-y-4",
+};
+
+/* ── Grid columns (mobile always 1-col, then responsive) ── */
+
+const GRID_COLS: Record<2 | 3 | 4, string> = {
+  2: "grid-cols-1 sm:grid-cols-2",
+  3: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+  4: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
 };
 
 /* ── Icons ── */
@@ -151,9 +169,10 @@ export default function IconList({
   dark = false,
   delay = 0,
   spacing = "normal",
+  columns,
 }: IconListProps) {
-  /* Default tinted to true for danger, false otherwise */
-  const showTint = tinted ?? variant === "danger";
+  /* Grid items always tinted by default (need visual boundary), vertical only for danger */
+  const showTint = tinted ?? (columns ? true : variant === "danger");
 
   const IconComponent = ICON_MAP[icon];
   const iconSize = icon === "warning" ? "h-[18px] w-[18px]" : "h-[18px] w-[18px]";
@@ -162,8 +181,12 @@ export default function IconList({
   const boldColor = dark ? DARK_BOLD_COLOR[variant] : BOLD_COLOR[variant];
   const tintBg = dark ? DARK_TINT_BG[variant] : TINT_BG[variant];
 
+  const listClass = columns
+    ? `grid ${GRID_COLS[columns]} ${GRID_GAP[spacing]}`
+    : GAP[spacing];
+
   return (
-    <ul className={GAP[spacing]}>
+    <ul className={listClass}>
       {items.map((item, i) => {
         const isComplex = typeof item === "object";
         const staggerDelay = delay ? delay + i * 0.06 : 0;

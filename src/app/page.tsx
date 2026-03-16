@@ -8,6 +8,9 @@ import FeatureCard from "@/components/feature-card";
 import SplitContent from "@/components/split-content";
 import IconList from "@/components/icon-list";
 import DataTable from "@/components/data-table";
+import SectionWrapper from "@/components/section-wrapper";
+import BlogCard from "@/components/blog-card";
+import BlogGrid from "@/components/blog-grid";
 import {
   HERO,
   SAVE_MONEY,
@@ -21,6 +24,7 @@ import {
   COUNTRIES_LIST,
   CAR_MAKES,
   BLOG_POSTS,
+  FAQS,
 } from "@/lib/constants";
 
 /* ─── ICON COMPONENTS ─── */
@@ -320,52 +324,22 @@ export default function Home() {
       </section>
 
       {/* ═══ BLOG ═══ */}
-      <section className="bg-muted py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center text-3xl font-extrabold text-primary sm:text-4xl">
-            Blog
-          </h2>
-          <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {BLOG_POSTS.map((post) => (
-              <article
-                key={post.slug}
-                className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-lg"
-              >
-                <div className="aspect-video bg-gradient-to-br from-slate-100 to-slate-200 p-6">
-                  <div className="flex h-full items-center justify-center text-4xl text-slate-300">
-                    <svg className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={0.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5a1.5 1.5 0 001.5-1.5V5.25a1.5 1.5 0 00-1.5-1.5H3.75a1.5 1.5 0 00-1.5 1.5v14.25a1.5 1.5 0 001.5 1.5z" />
-                    </svg>
-                  </div>
-                </div>
-                <div className="p-5">
-                  <h3 className="text-lg font-bold text-primary group-hover:text-primary-light">
-                    {post.title}
-                  </h3>
-                  <div className="mt-2 flex items-center gap-3 text-xs text-slate-400">
-                    <span className="flex items-center gap-1">
-                      <div className="h-5 w-5 rounded-full bg-primary/10" />
-                      {post.author}
-                    </span>
-                    <span>{post.date}</span>
-                  </div>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                    {post.excerpt}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
-          <div className="mt-10 text-center">
-            <Link
-              href="/blog"
-              className="inline-flex rounded-lg bg-primary px-8 py-3.5 text-sm font-bold text-white transition-colors hover:bg-primary-light"
-            >
-              More Posts
-            </Link>
-          </div>
-        </div>
-      </section>
+      <SectionWrapper bg="muted" heading="Blog">
+        <BlogGrid moreHref="/blog">
+          {BLOG_POSTS.map((post, i) => (
+            <BlogCard
+              key={post.slug}
+              title={post.title}
+              slug={post.slug}
+              image={post.image}
+              author={post.author}
+              date={post.date}
+              excerpt={post.excerpt}
+              delay={0.1 + i * 0.08}
+            />
+          ))}
+        </BlogGrid>
+      </SectionWrapper>
 
       {/* ═══ FAQ ═══ */}
       <section className="bg-white py-16 sm:py-24">
@@ -374,7 +348,7 @@ export default function Home() {
             Frequently Asked Questions
           </h2>
           <div className="mt-12">
-            <FaqAccordion />
+            <FaqAccordion items={FAQS} />
           </div>
         </div>
       </section>
