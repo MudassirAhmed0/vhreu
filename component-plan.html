@@ -1,0 +1,2084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VehicleHistory.EU — Component Library Plan</title>
+<style>
+  :root {
+    --navy: #1A365C;
+    --navy-dark: #0B1D33;
+    --gold: #FFCC00;
+    --gold-light: #FFFBE6;
+    --surface: #FAFAF8;
+    --muted: #F0F2F8;
+    --green: #1D9C6B;
+    --red: #D94040;
+    --text-1: #1A1F2E;
+    --text-2: #4A5568;
+    --text-3: #8A96A8;
+    --border: rgba(26,54,92,0.10);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--surface);
+    color: var(--text-1);
+    line-height: 1.6;
+  }
+
+  /* ── Top Bar ── */
+  .topbar {
+    background: var(--navy-dark);
+    color: white;
+    padding: 12px 32px;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .topbar strong { color: var(--gold); }
+
+  /* ── Nav ── */
+  .nav {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    position: sticky;
+    top: 40px;
+    z-index: 99;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+  }
+  .nav a {
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-2);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .nav a:hover { color: var(--navy); border-color: var(--navy); }
+
+  /* ── Container ── */
+  .container { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+
+  /* ── Header ── */
+  .page-header {
+    background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%);
+    color: white;
+    padding: 60px 32px 48px;
+  }
+  .page-header h1 { font-size: 36px; font-weight: 800; margin-bottom: 8px; }
+  .page-header .highlight { color: var(--gold); }
+  .page-header p { color: rgba(255,255,255,0.6); font-size: 16px; max-width: 600px; margin-top: 8px; }
+
+  /* ── Stats Bar ── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-card .num { font-size: 32px; font-weight: 800; color: var(--gold); }
+  .stat-card .label { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+  /* ── Section ── */
+  .section { margin-bottom: 48px; }
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-head .icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .section-head h2 { font-size: 22px; font-weight: 700; }
+  .section-head .count {
+    margin-left: auto;
+    background: var(--muted);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-2);
+  }
+
+  /* ── Component Card ── */
+  .component-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .comp-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .comp-card:hover { box-shadow: 0 4px 20px rgba(26,54,92,0.08); }
+
+  .comp-top {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+  }
+
+  .comp-num {
+    width: 56px; height: 56px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 800;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .comp-info h3 { font-size: 17px; font-weight: 700; }
+  .comp-info .comp-file { font-size: 12px; color: var(--text-3); font-family: monospace; margin-top: 2px; }
+
+  .comp-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+  .badge {
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-done { background: #E6F7EF; color: var(--green); }
+  .badge-wip { background: #FEF3CD; color: #92700C; }
+  .badge-todo { background: #FEE2E2; color: var(--red); }
+  .badge-variant { background: var(--muted); color: var(--text-2); }
+
+  /* ── Details area ── */
+  .comp-details {
+    border-top: 1px solid var(--border);
+    padding: 16px 24px 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .detail-col h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-3);
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .detail-col ul {
+    list-style: none;
+    padding: 0;
+  }
+  .detail-col li {
+    font-size: 13px;
+    color: var(--text-2);
+    padding: 3px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .detail-col li::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+
+  .detail-col p {
+    font-size: 13px;
+    color: var(--text-2);
+  }
+
+  /* ── Props table ── */
+  .props-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 4px;
+  }
+  .props-table th {
+    text-align: left;
+    padding: 6px 10px;
+    background: var(--muted);
+    font-weight: 600;
+    color: var(--text-2);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .props-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-2);
+  }
+  .props-table code {
+    background: var(--muted);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--navy);
+  }
+
+  /* ── Page templates ── */
+  .template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+  }
+
+  .template-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+  }
+  .template-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .template-card .route {
+    font-family: monospace;
+    font-size: 13px;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .template-card .page-count {
+    font-size: 12px;
+    color: var(--text-3);
+    margin-bottom: 12px;
+  }
+  .template-card h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-3);
+    margin: 12px 0 6px;
+    font-weight: 700;
+  }
+  .template-card ol {
+    padding-left: 20px;
+    font-size: 13px;
+    color: var(--text-2);
+  }
+  .template-card ol li { padding: 2px 0; }
+  .template-card ol li strong { color: var(--text-1); }
+
+  /* ── Sitemap ── */
+  .sitemap-group { margin-bottom: 24px; }
+  .sitemap-group h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sitemap-group .url-count {
+    background: var(--muted);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-3);
+  }
+  .url-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 4px;
+    font-size: 13px;
+    font-family: monospace;
+  }
+  .url-list a {
+    color: var(--navy);
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .url-list a:hover { background: var(--muted); }
+
+  /* ── Color swatches ── */
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  .swatch {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: white;
+  }
+  .swatch-color { height: 48px; }
+  .swatch-info { padding: 10px 12px; }
+  .swatch-info .name { font-size: 13px; font-weight: 600; }
+  .swatch-info .hex { font-size: 12px; color: var(--text-3); font-family: monospace; }
+  .swatch-info .var { font-size: 11px; color: var(--text-3); font-family: monospace; }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .comp-details { grid-template-columns: 1fr; }
+    .comp-top { grid-template-columns: 48px 1fr; }
+    .comp-badges { grid-column: 1 / -1; }
+    .template-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ TOP BAR ═══════════ -->
+<div class="topbar">
+  <span><strong>VehicleHistory.EU</strong> &mdash; Component Library Migration Plan</span>
+  <span>Last updated: March 16, 2026</span>
+</div>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav class="nav" id="nav">
+  <a href="#overview">Overview</a>
+  <a href="#design-system">Design System</a>
+  <a href="#templates">Page Templates</a>
+  <a href="#layout">Layout</a>
+  <a href="#heroes">Heroes</a>
+  <a href="#forms">Forms</a>
+  <a href="#content">Content Blocks</a>
+  <a href="#blog">Blog</a>
+  <a href="#grids">Link Grids</a>
+  <a href="#trust">Trust &amp; Proof</a>
+  <a href="#overlays">Overlays</a>
+  <a href="#viz">Visualizations</a>
+  <a href="#legal">Legal</a>
+  <a href="#utility">Utility</a>
+  <a href="#sitemap">Sitemap</a>
+</nav>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<div class="page-header">
+  <div class="container" style="padding-top:0;padding-bottom:0;">
+    <h1>Component Library <span class="highlight">Migration Plan</span></h1>
+    <p>Full audit of vehiclehistory.eu &mdash; every page, every section, every UI pattern mapped to reusable Lego-block components for Payload CMS integration.</p>
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="num">42</div>
+        <div class="label">Components</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">7</div>
+        <div class="label">Page Templates</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">116</div>
+        <div class="label">Total URLs</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">9</div>
+        <div class="label">Already Built</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════════════
+     OVERVIEW
+     ═══════════════════════════════════════════ -->
+<section class="section" id="overview">
+  <div class="section-head">
+    <div class="icon" style="background:#E6F7EF;color:var(--green);">&#x2713;</div>
+    <div>
+      <h2>Build Status Overview</h2>
+    </div>
+  </div>
+
+  <table class="props-table" style="max-width:100%;">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Total</th>
+        <th>Done</th>
+        <th>In Progress</th>
+        <th>To Do</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Layout</td><td>4</td><td>2 (Header, Footer)</td><td>0</td><td>2 (SectionWrapper, LanguageSwitcher)</td></tr>
+      <tr><td>Heroes</td><td>1</td><td>1 (PageHero)</td><td>0</td><td>0</td></tr>
+      <tr><td>Forms</td><td>5</td><td>1 (VinSearchForm)</td><td>0</td><td>4</td></tr>
+      <tr><td>Content Blocks</td><td>11</td><td>7</td><td>0</td><td>4 (PricingCard, PricingGrid, ContactCard, StepCard)</td></tr>
+      <tr><td>Blog</td><td>5</td><td>0</td><td>0</td><td>5</td></tr>
+      <tr><td>Link Grids</td><td>2</td><td>0</td><td>0</td><td>2</td></tr>
+      <tr><td>Trust &amp; Proof</td><td>4</td><td>0</td><td>0</td><td>4</td></tr>
+      <tr><td>Overlays</td><td>4</td><td>0</td><td>0</td><td>4</td></tr>
+      <tr><td>Visualizations</td><td>3</td><td>0</td><td>0</td><td>3</td></tr>
+      <tr><td>Legal / Static</td><td>2</td><td>0</td><td>0</td><td>2</td></tr>
+      <tr><td>Utility</td><td>3</td><td>0</td><td>0</td><td>3</td></tr>
+      <tr><td><strong>TOTAL</strong></td><td><strong>42</strong></td><td><strong>9</strong></td><td><strong>0</strong></td><td><strong>33</strong></td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     DESIGN SYSTEM
+     ═══════════════════════════════════════════ -->
+<section class="section" id="design-system">
+  <div class="section-head">
+    <div class="icon" style="background:var(--gold-light);color:var(--gold);">&#9678;</div>
+    <h2>Design System</h2>
+  </div>
+
+  <h3 style="margin-bottom:12px; font-size:15px;">Color Palette</h3>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#1A365C;"></div><div class="swatch-info"><div class="name">Primary (Navy)</div><div class="hex">#1A365C</div><div class="var">--primary</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#2C5A8C;"></div><div class="swatch-info"><div class="name">Primary Light</div><div class="hex">#2C5A8C</div><div class="var">--primary-light</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#0B1D33;"></div><div class="swatch-info"><div class="name">Hero Dark</div><div class="hex">#0B1D33</div><div class="var">--hero-dark</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#FFCC00;"></div><div class="swatch-info"><div class="name">Accent (Gold)</div><div class="hex">#FFCC00</div><div class="var">--accent</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#E6B800;"></div><div class="swatch-info"><div class="name">Accent Hover</div><div class="hex">#E6B800</div><div class="var">--accent-hover</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#FFFBE6;"></div><div class="swatch-info"><div class="name">Accent Light</div><div class="hex">#FFFBE6</div><div class="var">--accent-light</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#FAFAF8;"></div><div class="swatch-info"><div class="name">Surface (Cream)</div><div class="hex">#FAFAF8</div><div class="var">--surface</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#F0F2F8;"></div><div class="swatch-info"><div class="name">Muted</div><div class="hex">#F0F2F8</div><div class="var">--muted</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#1D9C6B;"></div><div class="swatch-info"><div class="name">Green / Success</div><div class="hex">#1D9C6B</div><div class="var">--success</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#D94040;"></div><div class="swatch-info"><div class="name">Red / Danger</div><div class="hex">#D94040</div><div class="var">--danger</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#F0A500;"></div><div class="swatch-info"><div class="name">Amber</div><div class="hex">#F0A500</div><div class="var">--amber</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#1A1F2E;"></div><div class="swatch-info"><div class="name">Text Primary</div><div class="hex">#1A1F2E</div><div class="var">--foreground</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#4A5568;"></div><div class="swatch-info"><div class="name">Text Secondary</div><div class="hex">#4A5568</div><div class="var">--text-2</div></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#8A96A8;"></div><div class="swatch-info"><div class="name">Text Muted</div><div class="hex">#8A96A8</div><div class="var">--text-3</div></div></div>
+  </div>
+
+  <h3 style="margin:24px 0 12px; font-size:15px;">Typography</h3>
+  <table class="props-table">
+    <tr><th>Element</th><th>Font</th><th>Weight</th><th>Notes</th></tr>
+    <tr><td>Body</td><td>Figtree</td><td>400</td><td>Primary font via next/font/google</td></tr>
+    <tr><td>Headings</td><td>Figtree</td><td>700-800</td><td>Same family, heavier weights</td></tr>
+    <tr><td>Mono / VIN</td><td>Geist Mono</td><td>400-600</td><td>VIN displays, code snippets</td></tr>
+  </table>
+
+  <h3 style="margin:24px 0 12px; font-size:15px;">CSS Keyframe Animations</h3>
+  <table class="props-table">
+    <tr><th>Name</th><th>Purpose</th><th>Used In</th></tr>
+    <tr><td><code>hero-up</code></td><td>Fade-in + slide up entrance</td><td>All section entrance animations, FAQ items</td></tr>
+    <tr><td><code>hero-scale</code></td><td>Fade-in + scale entrance</td><td>Hero elements</td></tr>
+    <tr><td><code>hero-gradient</code></td><td>Animated gradient shift</td><td>Hero highlight text</td></tr>
+    <tr><td><code>orb-drift</code></td><td>Floating decorative backgrounds</td><td>PageHero dark variants</td></tr>
+    <tr><td><code>vin-scroll</code></td><td>Horizontal infinite marquee</td><td>Hero VIN motif</td></tr>
+    <tr><td><code>ring-pulse</code></td><td>Pulsing ring decoration</td><td>Hero backgrounds</td></tr>
+    <tr><td><code>line-draw</code></td><td>Progressive line reveal</td><td>HowItWorks connector</td></tr>
+    <tr><td><code>glow-pulse</code></td><td>Pulsing glow effect</td><td>CTA buttons, step icons</td></tr>
+  </table>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE TEMPLATES
+     ═══════════════════════════════════════════ -->
+<section class="section" id="templates">
+  <div class="section-head">
+    <div class="icon" style="background:var(--muted);color:var(--navy);">&#9783;</div>
+    <h2>Page Templates</h2>
+    <span class="count">7 templates &rarr; 116 pages</span>
+  </div>
+
+  <div class="template-grid">
+
+    <!-- Homepage -->
+    <div class="template-card">
+      <h3>Homepage</h3>
+      <div class="route">/  /de/  /uk/  /pl/  /it/  /ru/  /fr/  /es/</div>
+      <div class="page-count">8 pages (1 per language)</div>
+      <h4>Sections (top &rarr; bottom)</h4>
+      <ol>
+        <li><strong>PageHero</strong> (split) &mdash; headline, trust badges, VinSearchForm</li>
+        <li><strong>SplitContent</strong> &mdash; "Save Money" + IconList (4 danger warnings)</li>
+        <li><strong>SplitContent</strong> (reverse) &mdash; "What is a VIN" + VinStructureWidget</li>
+        <li><strong>CardSection</strong> (3-col) &mdash; "Why Run VIN Check" + 6&times; FeatureCard (icon mode)</li>
+        <li><strong>HowItWorks</strong> (dark, 5 steps) &mdash; "How to Run a European VIN Check"</li>
+        <li><strong>CardSection</strong> (2-col) &mdash; "Why Need Lookup" + 2&times; FeatureCard (checklist: buyers/dealers)</li>
+        <li><strong>CardSection</strong> (3-col) &mdash; "Report Contents" + 5&times; FeatureCard (checklist, color-coded)</li>
+        <li><strong>DataTable</strong> &mdash; "Our Reports vs Competitors" (VHR vs Carfax vs AutoDNA)</li>
+        <li><strong>CardSection</strong> (3-col) &mdash; "Why Choose Us" + 6&times; FeatureCard (icon mode)</li>
+        <li><strong>PillGrid</strong> &mdash; "Countries" (44 country link pills)</li>
+        <li><strong>LinkCardGrid</strong> &mdash; "Car Makes" (15 brand cards)</li>
+        <li><strong>BlogGrid</strong> &mdash; 3 latest blog cards + "More Posts" CTA</li>
+        <li><strong>FaqAccordion</strong> &mdash; 5 Q&amp;A items</li>
+        <li><strong>CTABanner</strong> &mdash; navy bg + VIN input</li>
+      </ol>
+    </div>
+
+    <!-- Country VIN Check -->
+    <div class="template-card">
+      <h3>Country VIN Check</h3>
+      <div class="route">/[country]-vin-check</div>
+      <div class="page-count">44 pages (germany, france, poland...)</div>
+      <h4>Sections (top &rarr; bottom)</h4>
+      <ol>
+        <li><strong>PageHero</strong> (centered) &mdash; country-specific headline + VinSearchForm</li>
+        <li><strong>TrustBadges</strong> &mdash; sample report, coverage, checkmarks</li>
+        <li><strong>SplitContent</strong> &mdash; "Save Money" + StatCards (4 red alerts)</li>
+        <li><strong>SplitContent</strong> &mdash; "What is a VIN"</li>
+        <li><strong>CardSection</strong> &mdash; "Why Run VIN Check" (6 benefit cards)</li>
+        <li><strong>HowItWorks</strong> (5 steps)</li>
+        <li><strong>CardSection</strong> &mdash; "Why Need Lookup" (buyers + dealers)</li>
+        <li><strong>CardSection</strong> &mdash; "Report Contents" (5 categories)</li>
+        <li><strong>DataTable</strong> &mdash; competitor comparison</li>
+        <li><strong>CardSection</strong> &mdash; "Why Choose Us"</li>
+        <li><strong>PillGrid</strong> &mdash; countries</li>
+        <li><strong>LinkCardGrid</strong> &mdash; car makes</li>
+        <li><strong>BlogGrid</strong> &mdash; 3 posts</li>
+        <li><strong>FaqAccordion</strong></li>
+      </ol>
+    </div>
+
+    <!-- Brand VIN Decoder -->
+    <div class="template-card">
+      <h3>Brand VIN Decoder</h3>
+      <div class="route">/vin-decoder/[brand]</div>
+      <div class="page-count">15 brand pages + 1 hub (/vin-decoder)</div>
+      <h4>Sections (top &rarr; bottom)</h4>
+      <ol>
+        <li><strong>PageHero</strong> (centered) &mdash; brand-specific headline + VinSearchForm</li>
+        <li><strong>SplitContent</strong> &mdash; "What is a [Brand] VIN Number?"</li>
+        <li><strong>IconList</strong> &mdash; VIN components (WMI, VDS, VIS)</li>
+        <li><strong>VinLocationDiagram</strong> &mdash; where to find VIN (4 locations)</li>
+        <li><strong>IconList</strong> &mdash; model list (brand-specific)</li>
+        <li><strong>SampleReportCard</strong> &mdash; decoded vehicle example</li>
+        <li><strong>CardSection</strong> (5 icon-box cards) &mdash; feature grid</li>
+        <li><strong>HowItWorks</strong> (4 steps) &mdash; how to use decoder</li>
+        <li><strong>CardSection</strong> &mdash; "What You'll Learn" (6 subsections)</li>
+        <li><strong>SplitContent</strong> &mdash; brand history paragraph</li>
+        <li><strong>LinkCardGrid</strong> &mdash; other brand decoder links</li>
+        <li><strong>FaqAccordion</strong> &mdash; brand-specific Q&amp;A</li>
+      </ol>
+    </div>
+
+    <!-- Pricing -->
+    <div class="template-card">
+      <h3>Pricing</h3>
+      <div class="route">/pricing</div>
+      <div class="page-count">1 page</div>
+      <h4>Sections (top &rarr; bottom)</h4>
+      <ol>
+        <li><strong>PageHero</strong> (centered, dark) &mdash; "Detailed Report at Affordable Pricing" + bullet list</li>
+        <li><strong>PricingGrid</strong> &mdash; 6&times; PricingCard (Basic &euro;9.98 &rarr; Executive &euro;300)</li>
+        <li><strong>TrustSection</strong> &mdash; TRUSTe badge + 3 trust features</li>
+        <li><strong>HowItWorks</strong> (4 steps) &mdash; "How to gain lifetime access"</li>
+        <li><strong>FaqAccordion</strong> &mdash; 4 pricing-specific Q&amp;A</li>
+      </ol>
+    </div>
+
+    <!-- Contact -->
+    <div class="template-card">
+      <h3>Contact</h3>
+      <div class="route">/contact-us</div>
+      <div class="page-count">1 page</div>
+      <h4>Sections (top &rarr; bottom)</h4>
+      <ol>
+        <li><strong>PageHero</strong> (centered, dark) &mdash; "Got any Questions?" + help desk / FAQ links</li>
+        <li><strong>ContactCards</strong> (3-col) &mdash; Live Chat / Phone / Email cards with icons</li>
+        <li><strong>ContactForm</strong> &mdash; name, email, concern dropdown, message, submit</li>
+        <li><strong>FaqAccordion</strong> &mdash; 3 Q&amp;A + "See more" link</li>
+      </ol>
+    </div>
+
+    <!-- Window Sticker -->
+    <div class="template-card">
+      <h3>Window Sticker</h3>
+      <div class="route">/window-sticker</div>
+      <div class="page-count">1 page</div>
+      <h4>Sections (top &rarr; bottom)</h4>
+      <ol>
+        <li><strong>PageHero</strong> (centered, dark) &mdash; headline + VinSearchForm</li>
+        <li><strong>SplitContent</strong> &mdash; "What Is a Window Sticker?" + preview image</li>
+        <li><strong>CardSection</strong> (3-col) &mdash; info categories (equipment, pricing, specs)</li>
+        <li><strong>CardSection</strong> (3-col) &mdash; "Who Benefits Most" (buyers/sellers/collectors)</li>
+        <li><strong>HowItWorks</strong> (3 steps) &mdash; find VIN &rarr; fill form &rarr; review</li>
+        <li><strong>VinLocationDiagram</strong> &mdash; 4-card location guide</li>
+        <li><strong>CTABanner</strong> &mdash; "Get Window Sticker Now"</li>
+        <li><strong>LinkCardGrid</strong> &mdash; 24 brand pills</li>
+        <li><strong>FaqAccordion</strong> &mdash; 7 Q&amp;A items</li>
+      </ol>
+    </div>
+
+    <!-- Blog -->
+    <div class="template-card">
+      <h3>Blog</h3>
+      <div class="route">/blog (listing) &amp; /[slug] (post)</div>
+      <div class="page-count">1 listing + 39 posts = 40 pages</div>
+      <h4>Listing Page</h4>
+      <ol>
+        <li><strong>BlogGrid</strong> &mdash; card grid with featured images</li>
+        <li><strong>Pagination</strong> &mdash; numbered page navigation</li>
+      </ol>
+      <h4>Single Post</h4>
+      <ol>
+        <li>Featured image (full-width)</li>
+        <li>Post title (44px, 900 weight)</li>
+        <li><strong>AuthorBox</strong> &mdash; avatar, name, bio, social links</li>
+        <li>Post content (headings, paragraphs, lists, images)</li>
+        <li><strong>SidebarCTA</strong> &mdash; "Ensure a Smart Purchase" widget</li>
+        <li><strong>FaqAccordion</strong> &mdash; post-specific Q&amp;A (some posts)</li>
+      </ol>
+    </div>
+
+    <!-- Legal -->
+    <div class="template-card">
+      <h3>Legal / Static</h3>
+      <div class="route">/privacy-policy &nbsp; /terms-of-service &nbsp; /request-a-refund &nbsp; /sample-report</div>
+      <div class="page-count">4 pages</div>
+      <h4>Sections</h4>
+      <ol>
+        <li><strong>PageHero</strong> (centered, dark) &mdash; page title</li>
+        <li><strong>LegalContent</strong> &mdash; single-column prose (for privacy/terms)</li>
+        <li><strong>SampleReportCard</strong> &mdash; vehicle photo + details (for sample-report)</li>
+        <li><strong>RefundForm</strong> &mdash; refund request (for request-a-refund)</li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     COMPONENT CARDS — LAYOUT
+     ═══════════════════════════════════════════ -->
+<section class="section" id="layout">
+  <div class="section-head">
+    <div class="icon" style="background:var(--muted);color:var(--navy);">&#9638;</div>
+    <h2>Layout Components</h2>
+    <span class="count">4 components</span>
+  </div>
+  <div class="component-grid">
+
+    <!-- #1 Header -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--green);">1</div>
+        <div class="comp-info">
+          <h3>Header</h3>
+          <div class="comp-file">src/components/header.tsx (94 lines)</div>
+        </div>
+        <div class="comp-badges"><span class="badge badge-done">DONE</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Features</h4>
+          <ul>
+            <li>Sticky top nav (z-50)</li>
+            <li>Glass effect (backdrop blur)</li>
+            <li>Logo + nav links + Login/Sign Up</li>
+            <li>Mobile hamburger menu</li>
+            <li>Light border bottom</li>
+          </ul>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li>Every page (root layout)</li>
+          </ul>
+          <h4 style="margin-top:12px;">Needs Update</h4>
+          <ul>
+            <li>Add LanguageSwitcher integration (8 langs)</li>
+            <li>Add mobile slide-out menu</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- #2 Footer -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--green);">2</div>
+        <div class="comp-info">
+          <h3>Footer</h3>
+          <div class="comp-file">src/components/footer.tsx (99 lines)</div>
+        </div>
+        <div class="comp-badges"><span class="badge badge-done">DONE</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Features</h4>
+          <ul>
+            <li>Dark navy background</li>
+            <li>5-column grid (responsive)</li>
+            <li>Brand + phone + email (left)</li>
+            <li>Company / Sample Reports / Decoder / Quick Links columns</li>
+            <li>Gold copyright bar at bottom</li>
+          </ul>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul><li>Every page (root layout)</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- #3 SectionWrapper -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">3</div>
+        <div class="comp-info">
+          <h3>SectionWrapper</h3>
+          <div class="comp-file">src/components/section-wrapper.tsx (NEW)</div>
+        </div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Purpose</h4>
+          <p>Universal section container that wraps every content block. Eliminates repeated bg + py + heading + subtitle patterns across every section on every page.</p>
+          <h4 style="margin-top:12px;">Props</h4>
+          <table class="props-table">
+            <tr><td><code>bg</code></td><td>"white" | "muted" | "dark" | "surface"</td></tr>
+            <tr><td><code>heading</code></td><td>string (optional)</td></tr>
+            <tr><td><code>subtitle</code></td><td>string (optional)</td></tr>
+            <tr><td><code>id</code></td><td>string &mdash; anchor link target</td></tr>
+            <tr><td><code>children</code></td><td>ReactNode</td></tr>
+            <tr><td><code>narrow</code></td><td>boolean &mdash; max-w-3xl vs max-w-7xl</td></tr>
+          </table>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li>Every section on every page</li>
+            <li>Replaces repeated className="py-16 sm:py-24" patterns</li>
+            <li>Provides consistent heading hierarchy</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- #4 LanguageSwitcher -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">4</div>
+        <div class="comp-info">
+          <h3>LanguageSwitcher</h3>
+          <div class="comp-file">src/components/language-switcher.tsx (NEW)</div>
+        </div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Purpose</h4>
+          <p>Dropdown to switch between 8 language versions of the site.</p>
+          <h4 style="margin-top:12px;">Languages</h4>
+          <ul>
+            <li>EN (default /)</li>
+            <li>DE (/de/)</li>
+            <li>UK (/uk/)</li>
+            <li>PL (/pl/)</li>
+            <li>IT (/it/)</li>
+            <li>RU (/ru/)</li>
+            <li>FR (/fr/)</li>
+            <li>ES (/es/)</li>
+          </ul>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul><li>Header (all pages)</li></ul>
+          <h4 style="margin-top:12px;">Features</h4>
+          <ul>
+            <li>Flag emoji + language code</li>
+            <li>Dropdown with hover/click toggle</li>
+            <li>Current language highlighted</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     HEROES
+     ═══════════════════════════════════════════ -->
+<section class="section" id="heroes">
+  <div class="section-head">
+    <div class="icon" style="background:#E6E0F8;color:#6B46C1;">&#9733;</div>
+    <h2>Hero Components</h2>
+    <span class="count">1 component, 3 variants</span>
+  </div>
+  <div class="component-grid">
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--green);">5</div>
+        <div class="comp-info">
+          <h3>PageHero</h3>
+          <div class="comp-file">src/components/page-hero.tsx (504 lines)</div>
+        </div>
+        <div class="comp-badges">
+          <span class="badge badge-done">DONE</span>
+          <span class="badge badge-variant">centered</span>
+          <span class="badge badge-variant">split</span>
+          <span class="badge badge-variant">stacked</span>
+        </div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Props</h4>
+          <table class="props-table">
+            <tr><td><code>variant</code></td><td>"centered" | "split" | "stacked"</td></tr>
+            <tr><td><code>tag</code></td><td>Badge label ("Trusted by 50,000+")</td></tr>
+            <tr><td><code>title</code></td><td>Main headline</td></tr>
+            <tr><td><code>highlight</code></td><td>Animated gradient text</td></tr>
+            <tr><td><code>subtitle</code></td><td>Body text</td></tr>
+            <tr><td><code>bullets</code></td><td>Trust badge strings</td></tr>
+            <tr><td><code>children</code></td><td>Form or CTA area</td></tr>
+            <tr><td><code>dark</code></td><td>boolean (default: true)</td></tr>
+            <tr><td><code>heroImage</code></td><td>Right-side image (split)</td></tr>
+            <tr><td><code>backgroundImage</code></td><td>Subtle bg pattern</td></tr>
+          </table>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li><strong>split</strong> &mdash; Homepage</li>
+            <li><strong>centered</strong> &mdash; Pricing, Contact, Window Sticker, Legal pages</li>
+            <li><strong>stacked</strong> &mdash; Country pages, Brand pages</li>
+          </ul>
+          <h4 style="margin-top:12px;">Visual Features</h4>
+          <ul>
+            <li>Animated orbs, noise texture, dot grid</li>
+            <li>Pulsing rings, gradient dividers</li>
+            <li>VIN motif marquee</li>
+            <li>Staggered entrance animations</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     FORMS
+     ═══════════════════════════════════════════ -->
+<section class="section" id="forms">
+  <div class="section-head">
+    <div class="icon" style="background:#FEE2E2;color:var(--red);">&#9998;</div>
+    <h2>Form Components</h2>
+    <span class="count">5 components</span>
+  </div>
+  <div class="component-grid">
+
+    <!-- #6 VinSearchForm -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--green);">6</div>
+        <div class="comp-info">
+          <h3>VinSearchForm</h3>
+          <div class="comp-file">src/components/vin-search-form.tsx (46 lines)</div>
+        </div>
+        <div class="comp-badges"><span class="badge badge-done">DONE</span><span class="badge badge-wip">Needs tabs</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Current State</h4>
+          <p>Simple VIN input + gold CTA button. Works but missing tab variants from original site.</p>
+          <h4 style="margin-top:12px;">Missing from Original</h4>
+          <ul>
+            <li>Tab toggle: "By VIN" / "By US License Plate" / "By Year, Make, Model"</li>
+            <li>Year/Make/Model cascading dropdowns</li>
+            <li>License plate + state selector</li>
+            <li>Email + Phone inputs</li>
+            <li>Phone discount badge ("10% OFF")</li>
+            <li>"Why do we need your phone?" tooltip</li>
+          </ul>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li>Homepage hero</li>
+            <li>Country VIN check pages</li>
+            <li>Brand VIN decoder pages</li>
+            <li>Window sticker page</li>
+            <li>Sample report page</li>
+            <li>VIN decoder hub</li>
+            <li>Bottom CTA banner</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- #7 ContactForm -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">7</div>
+        <div class="comp-info">
+          <h3>ContactForm</h3>
+          <div class="comp-file">src/components/contact-form.tsx (NEW)</div>
+        </div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Fields</h4>
+          <ul>
+            <li>Full Name (text input)</li>
+            <li>Email (email input)</li>
+            <li>Concern (select: Support, Decode Error, Marketing, Business, Others)</li>
+            <li>Message (textarea)</li>
+            <li>Submit button</li>
+          </ul>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul><li>Contact page</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- #8 EmailCaptureForm -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">8</div>
+        <div class="comp-info">
+          <h3>EmailCaptureForm</h3>
+          <div class="comp-file">src/components/email-capture-form.tsx (NEW)</div>
+        </div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Features</h4>
+          <ul>
+            <li>Email input (full width)</li>
+            <li>"Proceed to Checkout" gold CTA</li>
+            <li>Validation error messages</li>
+          </ul>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul><li>Checkout modal (pricing page)</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- #9 LoginForm -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">9</div>
+        <div class="comp-info">
+          <h3>LoginForm</h3>
+          <div class="comp-file">src/components/login-form.tsx (NEW)</div>
+        </div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Fields</h4>
+          <ul>
+            <li>Username / Email input</li>
+            <li>Password input (with strength meter)</li>
+            <li>"Remember Me" checkbox</li>
+            <li>Login button</li>
+            <li>"Lost your password?" link</li>
+            <li>reCAPTCHA integration</li>
+          </ul>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul><li>Login page (/login)</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- #10 SignupForm -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">10</div>
+        <div class="comp-info">
+          <h3>SignupForm</h3>
+          <div class="comp-file">src/components/signup-form.tsx (NEW)</div>
+        </div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Fields</h4>
+          <ul>
+            <li>Name / Email / Password</li>
+            <li>Terms checkbox</li>
+            <li>Sign Up button</li>
+            <li>Link to Login</li>
+          </ul>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul><li>Signup page (/signup)</li></ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     CONTENT BLOCKS
+     ═══════════════════════════════════════════ -->
+<section class="section" id="content">
+  <div class="section-head">
+    <div class="icon" style="background:var(--gold-light);color:var(--gold);">&#9632;</div>
+    <h2>Content Block Components</h2>
+    <span class="count">11 components</span>
+  </div>
+  <div class="component-grid">
+
+    <!-- #11 SplitContent -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--green);">11</div>
+        <div class="comp-info"><h3>SplitContent</h3><div class="comp-file">src/components/split-content.tsx (211 lines)</div></div>
+        <div class="comp-badges"><span class="badge badge-done">DONE</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Props</h4>
+          <table class="props-table">
+            <tr><td><code>heading</code></td><td>string</td></tr>
+            <tr><td><code>description</code></td><td>string | string[]</td></tr>
+            <tr><td><code>children</code></td><td>Extra content (lists, bullets)</td></tr>
+            <tr><td><code>media</code></td><td>ReactNode (right-side visual)</td></tr>
+            <tr><td><code>cta / secondaryCta</code></td><td>{ label, href }</td></tr>
+            <tr><td><code>bg</code></td><td>"white" | "muted" | "dark"</td></tr>
+            <tr><td><code>reverse</code></td><td>boolean (swap columns)</td></tr>
+          </table>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li>Homepage: "Save Money" + "What is VIN"</li>
+            <li>Brand pages: brand description + VIN explanation</li>
+            <li>Window Sticker: "What is a Window Sticker"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- #12 CardSection -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--green);">12</div>
+        <div class="comp-info"><h3>CardSection</h3><div class="comp-file">src/components/card-section.tsx (157 lines)</div></div>
+        <div class="comp-badges"><span class="badge badge-done">DONE</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Props</h4>
+          <table class="props-table">
+            <tr><td><code>heading</code></td><td>string</td></tr>
+            <tr><td><code>subtitle</code></td><td>string</td></tr>
+            <tr><td><code>bg</code></td><td>"white" | "muted" | "dark"</td></tr>
+            <tr><td><code>columns</code></td><td>2 | 3 | 4</td></tr>
+            <tr><td><code>cta</code></td><td>{ label, href }</td></tr>
+            <tr><td><code>children</code></td><td>Card components</td></tr>
+          </table>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li>Homepage: Why Run VIN (3-col), Why Need (2-col), Report Contents (3-col), Why Choose (3-col)</li>
+            <li>Country pages: same sections</li>
+            <li>Brand pages: feature grid, what you'll learn</li>
+            <li>Window Sticker: info categories, benefits</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- #13 FeatureCard -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--green);">13</div>
+        <div class="comp-info"><h3>FeatureCard</h3><div class="comp-file">src/components/feature-card.tsx (301 lines)</div></div>
+        <div class="comp-badges">
+          <span class="badge badge-done">DONE</span>
+          <span class="badge badge-variant">icon mode</span>
+          <span class="badge badge-variant">checklist mode</span>
+        </div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Props</h4>
+          <table class="props-table">
+            <tr><td><code>title</code></td><td>string</td></tr>
+            <tr><td><code>icon</code></td><td>ReactNode (icon mode)</td></tr>
+            <tr><td><code>description</code></td><td>string (icon mode)</td></tr>
+            <tr><td><code>items</code></td><td>ChecklistItem[] (checklist mode)</td></tr>
+            <tr><td><code>accent</code></td><td>"blue" | "amber" | "green" | "purple" | "red"</td></tr>
+            <tr><td><code>dark</code></td><td>boolean</td></tr>
+            <tr><td><code>delay</code></td><td>number (stagger animation)</td></tr>
+          </table>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li><strong>Icon mode:</strong> Why Run VIN Check (6), Why Choose Us (6)</li>
+            <li><strong>Checklist mode:</strong> Report Contents (5 color-coded), Why Need Lookup (2 buyer/dealer)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- #14 IconList -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--green);">14</div>
+        <div class="comp-info"><h3>IconList</h3><div class="comp-file">src/components/icon-list.tsx (225 lines)</div></div>
+        <div class="comp-badges"><span class="badge badge-done">DONE</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Props</h4>
+          <table class="props-table">
+            <tr><td><code>items</code></td><td>string[] | { bold, text }[]</td></tr>
+            <tr><td><code>icon</code></td><td>"warning" | "check" | "info" | "arrow"</td></tr>
+            <tr><td><code>variant</code></td><td>"danger" | "success" | "neutral" | "muted"</td></tr>
+            <tr><td><code>columns</code></td><td>2 | 3 | 4 (grid layout)</td></tr>
+            <tr><td><code>spacing</code></td><td>"tight" | "normal" | "loose"</td></tr>
+            <tr><td><code>tinted / dark / delay</code></td><td>boolean / boolean / number</td></tr>
+          </table>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li>Homepage: "Save Money" warnings (danger variant)</li>
+            <li>Brand pages: VIN components, model lists</li>
+            <li>Pricing hero: bullet features</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- #15 DataTable -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--green);">15</div>
+        <div class="comp-info"><h3>DataTable</h3><div class="comp-file">src/components/data-table.tsx (237 lines)</div></div>
+        <div class="comp-badges"><span class="badge badge-done">DONE</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Features</h4>
+          <ul>
+            <li>Sticky first column</li>
+            <li>Zebra striping</li>
+            <li>Boolean &rarr; checkmark/X icons</li>
+            <li>Column highlighting (gold badge)</li>
+            <li>Dark mode support</li>
+          </ul>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li>Homepage: "Our Reports vs. Competitors"</li>
+            <li>Country pages: same comparison table</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- #16 HowItWorks -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--green);">16</div>
+        <div class="comp-info"><h3>HowItWorks</h3><div class="comp-file">src/components/how-it-works.tsx (206 lines)</div></div>
+        <div class="comp-badges"><span class="badge badge-done">DONE</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Props</h4>
+          <table class="props-table">
+            <tr><td><code>heading</code></td><td>string</td></tr>
+            <tr><td><code>closingText</code></td><td>string</td></tr>
+            <tr><td><code>steps</code></td><td>{ icon, description }[]</td></tr>
+            <tr><td><code>dark</code></td><td>boolean</td></tr>
+          </table>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li>Homepage: 5 steps (dark bg)</li>
+            <li>Pricing: 4 steps</li>
+            <li>Window Sticker: 3 steps</li>
+            <li>Brand decoder: 4 steps</li>
+            <li>VIN decoder hub: 3 steps</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- #17 FaqAccordion -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--green);">17</div>
+        <div class="comp-info"><h3>FaqAccordion</h3><div class="comp-file">src/components/faq-accordion.tsx (143 lines)</div></div>
+        <div class="comp-badges"><span class="badge badge-done">DONE</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Props</h4>
+          <table class="props-table">
+            <tr><td><code>items</code></td><td>{ question, answer }[]</td></tr>
+            <tr><td><code>defaultOpen</code></td><td>boolean (first item open)</td></tr>
+            <tr><td><code>dark</code></td><td>boolean</td></tr>
+          </table>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li>Homepage (5 Q&amp;A)</li>
+            <li>Pricing (4 Q&amp;A)</li>
+            <li>Contact (3 Q&amp;A)</li>
+            <li>Country pages (varies)</li>
+            <li>Brand pages (6 Q&amp;A)</li>
+            <li>Window Sticker (7 Q&amp;A)</li>
+            <li>Blog posts (some)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- #18 PricingCard -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">18</div>
+        <div class="comp-info"><h3>PricingCard</h3><div class="comp-file">src/components/pricing-card.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Props</h4>
+          <table class="props-table">
+            <tr><td><code>name</code></td><td>"Basic" | "Silver" | "Gold" | "Platinum" | "Diamond" | "Executive"</td></tr>
+            <tr><td><code>price</code></td><td>number (e.g., 9.98)</td></tr>
+            <tr><td><code>credits</code></td><td>number (1-50)</td></tr>
+            <tr><td><code>savings</code></td><td>string (e.g., "20%")</td></tr>
+            <tr><td><code>code</code></td><td>string (e.g., "VHREU5")</td></tr>
+            <tr><td><code>highlighted</code></td><td>boolean (featured tier)</td></tr>
+          </table>
+        </div>
+        <div class="detail-col">
+          <h4>Design</h4>
+          <ul>
+            <li>Gold header bar with large price</li>
+            <li>Plan name + credit count</li>
+            <li>"Never Expires" label</li>
+            <li>Promo code display</li>
+            <li>"Get Credit(s)" CTA button</li>
+          </ul>
+          <h4 style="margin-top:12px;">Used On</h4>
+          <ul><li>Pricing page (6 tiers)</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- #19 PricingGrid -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">19</div>
+        <div class="comp-info"><h3>PricingGrid</h3><div class="comp-file">src/components/pricing-grid.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Purpose</h4>
+          <p>Wrapper that arranges PricingCard children in a responsive 3-column grid with consistent spacing. May include a toggle for monthly/annual billing in the future.</p>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul><li>Pricing page</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- #20 ContactCard -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">20</div>
+        <div class="comp-info"><h3>ContactCard</h3><div class="comp-file">src/components/contact-card.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Purpose</h4>
+          <p>Contact method cards &mdash; icon + heading + sub-info + link. Used for the 3 contact channels (Live Chat, Phone, Email).</p>
+          <h4 style="margin-top:12px;">Props</h4>
+          <table class="props-table">
+            <tr><td><code>icon</code></td><td>ReactNode (chat/phone/email SVG)</td></tr>
+            <tr><td><code>heading</code></td><td>string</td></tr>
+            <tr><td><code>detail</code></td><td>string (phone number, email, etc.)</td></tr>
+            <tr><td><code>href</code></td><td>string (tel:, mailto:, chat link)</td></tr>
+          </table>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul><li>Contact page (3 cards in a row)</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- #21 StatCards -->
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">21</div>
+        <div class="comp-info"><h3>StatCards</h3><div class="comp-file">src/components/stat-cards.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Purpose</h4>
+          <p>Red alert stat boxes showing risk statistics. 4 cards with icon + stat text.</p>
+          <h4 style="margin-top:12px;">Data</h4>
+          <ul>
+            <li>"1 in 3 used cars have a hidden problem"</li>
+            <li>"Up to 30% have tampered odometers"</li>
+            <li>"Around 20% have undisclosed damages"</li>
+            <li>"~10% have unresolved recall issues"</li>
+          </ul>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li>Homepage: risk section</li>
+            <li>Country pages: same section</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     BLOG
+     ═══════════════════════════════════════════ -->
+<section class="section" id="blog">
+  <div class="section-head">
+    <div class="icon" style="background:#E6F7EF;color:var(--green);">&#9997;</div>
+    <h2>Blog Components</h2>
+    <span class="count">5 components</span>
+  </div>
+  <div class="component-grid">
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">22</div>
+        <div class="comp-info"><h3>BlogCard</h3><div class="comp-file">src/components/blog-card.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Props</h4>
+          <table class="props-table">
+            <tr><td><code>title</code></td><td>string</td></tr>
+            <tr><td><code>slug</code></td><td>string</td></tr>
+            <tr><td><code>image</code></td><td>string (featured image URL)</td></tr>
+            <tr><td><code>author</code></td><td>{ name, avatar }</td></tr>
+            <tr><td><code>date</code></td><td>string</td></tr>
+            <tr><td><code>excerpt</code></td><td>string</td></tr>
+          </table>
+        </div>
+        <div class="detail-col">
+          <h4>Design</h4>
+          <ul>
+            <li>Featured image (aspect-video)</li>
+            <li>Title (18px, 700 weight)</li>
+            <li>Author avatar (circle) + name + date</li>
+            <li>Excerpt text</li>
+            <li>Hover: shadow lift</li>
+          </ul>
+          <h4 style="margin-top:12px;">Used On</h4>
+          <ul>
+            <li>Blog listing page</li>
+            <li>Homepage blog section</li>
+            <li>Country / brand pages</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">23</div>
+        <div class="comp-info"><h3>BlogGrid</h3><div class="comp-file">src/components/blog-grid.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col"><h4>Purpose</h4><p>3-column responsive grid wrapper for BlogCard children. Includes optional "More Posts" CTA link.</p></div>
+        <div class="detail-col"><h4>Used On</h4><ul><li>Homepage, blog listing, country pages</li></ul></div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">24</div>
+        <div class="comp-info"><h3>BlogPostLayout</h3><div class="comp-file">src/components/blog-post-layout.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Features</h4>
+          <ul>
+            <li>Full-width featured image</li>
+            <li>Title (44px, 900 weight)</li>
+            <li>Content area with prose styling</li>
+            <li>Sidebar slot (for CTA widget)</li>
+          </ul>
+        </div>
+        <div class="detail-col"><h4>Used On</h4><ul><li>All 39 blog post pages</li></ul></div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">25</div>
+        <div class="comp-info"><h3>AuthorBox</h3><div class="comp-file">src/components/author-box.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Props</h4>
+          <table class="props-table">
+            <tr><td><code>name</code></td><td>string</td></tr>
+            <tr><td><code>avatar</code></td><td>string (image URL)</td></tr>
+            <tr><td><code>bio</code></td><td>string</td></tr>
+            <tr><td><code>socials</code></td><td>{ facebook?, twitter? }</td></tr>
+          </table>
+        </div>
+        <div class="detail-col"><h4>Used On</h4><ul><li>Blog post pages (below title)</li></ul></div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">26</div>
+        <div class="comp-info"><h3>Pagination</h3><div class="comp-file">src/components/pagination.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Props</h4>
+          <table class="props-table">
+            <tr><td><code>currentPage</code></td><td>number</td></tr>
+            <tr><td><code>totalPages</code></td><td>number</td></tr>
+            <tr><td><code>basePath</code></td><td>string</td></tr>
+          </table>
+        </div>
+        <div class="detail-col"><h4>Used On</h4><ul><li>Blog listing page</li></ul></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     LINK GRIDS
+     ═══════════════════════════════════════════ -->
+<section class="section" id="grids">
+  <div class="section-head">
+    <div class="icon" style="background:var(--muted);color:var(--navy);">&#9783;</div>
+    <h2>Link Grid Components</h2>
+    <span class="count">2 components</span>
+  </div>
+  <div class="component-grid">
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">27</div>
+        <div class="comp-info"><h3>PillGrid</h3><div class="comp-file">src/components/pill-grid.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Props</h4>
+          <table class="props-table">
+            <tr><td><code>items</code></td><td>{ label, href }[]</td></tr>
+            <tr><td><code>dark</code></td><td>boolean</td></tr>
+          </table>
+          <h4 style="margin-top:12px;">Design</h4>
+          <p>Flex-wrap of pill-shaped link buttons. Border + bg-white default, primary bg on hover. Responsive wrapping.</p>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li>Homepage: 44 country pills</li>
+            <li>Country pages: same country grid</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">28</div>
+        <div class="comp-info"><h3>LinkCardGrid</h3><div class="comp-file">src/components/link-card-grid.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Props</h4>
+          <table class="props-table">
+            <tr><td><code>items</code></td><td>{ label, href, icon? }[]</td></tr>
+            <tr><td><code>columns</code></td><td>2 | 3 | 4 | 5 | 6</td></tr>
+          </table>
+          <h4 style="margin-top:12px;">Design</h4>
+          <p>Responsive grid of rectangular cards with centered text. Border, subtle shadow, hover lift. Used for car brands, decoder links.</p>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li>Homepage: 15 car makes (5-col)</li>
+            <li>Brand pages: other brand links (3-col)</li>
+            <li>Window Sticker: 24 brands (6-col)</li>
+            <li>VIN Decoder hub: brand links</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     TRUST & PROOF
+     ═══════════════════════════════════════════ -->
+<section class="section" id="trust">
+  <div class="section-head">
+    <div class="icon" style="background:#E6F7EF;color:var(--green);">&#9745;</div>
+    <h2>Trust &amp; Social Proof</h2>
+    <span class="count">4 components</span>
+  </div>
+  <div class="component-grid">
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">29</div>
+        <div class="comp-info"><h3>TrustBadges</h3><div class="comp-file">src/components/trust-badges.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Elements</h4>
+          <ul>
+            <li>"View Sample Report" link</li>
+            <li>"Pan-European Coverage" text</li>
+            <li>Checkmarks: Reliable, Detailed, Accurate, Affordable</li>
+          </ul>
+        </div>
+        <div class="detail-col"><h4>Used On</h4><ul><li>Below hero form on homepage, country pages</li></ul></div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">30</div>
+        <div class="comp-info"><h3>TrustSection</h3><div class="comp-file">src/components/trust-section.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Elements</h4>
+          <ul>
+            <li>TRUSTe badge image</li>
+            <li>3 icon-box features: Comprehensive Reports, Exceptional Accuracy, Real-time Information</li>
+          </ul>
+        </div>
+        <div class="detail-col"><h4>Used On</h4><ul><li>Pricing page</li></ul></div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">31</div>
+        <div class="comp-info"><h3>TestimonialCard</h3><div class="comp-file">src/components/testimonial-card.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Props</h4>
+          <table class="props-table">
+            <tr><td><code>name</code></td><td>string</td></tr>
+            <tr><td><code>quote</code></td><td>string</td></tr>
+            <tr><td><code>rating</code></td><td>number (1-5 stars)</td></tr>
+            <tr><td><code>location</code></td><td>string (optional)</td></tr>
+          </table>
+        </div>
+        <div class="detail-col"><h4>Used On</h4><ul><li>Homepage reviews section (3 cards)</li></ul></div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">32</div>
+        <div class="comp-info"><h3>CalloutBanner</h3><div class="comp-file">src/components/callout-banner.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Purpose</h4>
+          <p>Gold background stat callout: "Over 73% of cars imported to Europe between 2011 and 2021 had salvage titles." Used for impactful single-stat highlights.</p>
+        </div>
+        <div class="detail-col"><h4>Used On</h4><ul><li>Sample report page</li></ul></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     OVERLAYS
+     ═══════════════════════════════════════════ -->
+<section class="section" id="overlays">
+  <div class="section-head">
+    <div class="icon" style="background:#FEE2E2;color:var(--red);">&#9888;</div>
+    <h2>Overlay &amp; Banner Components</h2>
+    <span class="count">4 components</span>
+  </div>
+  <div class="component-grid">
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">33</div>
+        <div class="comp-info"><h3>NotificationBanner</h3><div class="comp-file">src/components/notification-banner.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Purpose</h4>
+          <p>Shows VIN lookup results with car image, VIN, vehicle Y/M/M, discount badge, and CTA button. Dismissible.</p>
+        </div>
+        <div class="detail-col"><h4>Used On</h4><ul><li>All pages (triggered by VIN search)</li></ul></div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">34</div>
+        <div class="comp-info"><h3>ExitIntentPopup</h3><div class="comp-file">src/components/exit-intent-popup.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Elements</h4>
+          <ul>
+            <li>Report preview image</li>
+            <li>"15% OFF" headline</li>
+            <li>"Don't leave the history behind" subtext</li>
+            <li>"Take 15% off" CTA + "No Thanks" dismiss</li>
+            <li>Semi-transparent overlay</li>
+          </ul>
+        </div>
+        <div class="detail-col"><h4>Used On</h4><ul><li>All pages (on mouse exit intent)</li></ul></div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">35</div>
+        <div class="comp-info"><h3>DiscountBanner</h3><div class="comp-file">src/components/discount-banner.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Purpose</h4>
+          <p>Fixed top bar: "You've received DISCOUNT!" with close button. Light cyan (#D1ECF1) background.</p>
+        </div>
+        <div class="detail-col"><h4>Used On</h4><ul><li>All pages (conditional)</li></ul></div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">36</div>
+        <div class="comp-info"><h3>CheckoutModal</h3><div class="comp-file">src/components/checkout-modal.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Elements</h4>
+          <ul>
+            <li>EmailCaptureForm inside a modal overlay</li>
+            <li>Close button (X)</li>
+            <li>Semi-transparent backdrop</li>
+          </ul>
+        </div>
+        <div class="detail-col"><h4>Used On</h4><ul><li>Pricing page (on "Get Credits" click)</li></ul></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     VISUALIZATIONS
+     ═══════════════════════════════════════════ -->
+<section class="section" id="viz">
+  <div class="section-head">
+    <div class="icon" style="background:#E6E0F8;color:#6B46C1;">&#9881;</div>
+    <h2>Visualization Components</h2>
+    <span class="count">3 components</span>
+  </div>
+  <div class="component-grid">
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">37</div>
+        <div class="comp-info"><h3>VinStructureWidget</h3><div class="comp-file">src/components/vin-structure-widget.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Purpose</h4>
+          <p>Interactive 17-character VIN breakdown. Each character slot is color-coded by section: WMI (blue, chars 1-3), VDS (amber, chars 4-9), VIS (green, chars 10-17). Monospace font, labels below.</p>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li>Homepage: VIN Explainer section</li>
+            <li>Brand decoder pages</li>
+            <li>VIN decoder hub</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">38</div>
+        <div class="comp-info"><h3>VinLocationDiagram</h3><div class="comp-file">src/components/vin-location-diagram.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Purpose</h4>
+          <p>4-card grid showing where to find the VIN on a car: Dashboard, Driver's Door, Documents, Under Bonnet. Each card has an icon in a dark circle + location name + description.</p>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li>Window Sticker page</li>
+            <li>Brand decoder pages</li>
+            <li>VIN decoder hub</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">39</div>
+        <div class="comp-info"><h3>SampleReportCard</h3><div class="comp-file">src/components/sample-report-card.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Props</h4>
+          <table class="props-table">
+            <tr><td><code>image</code></td><td>string (vehicle photo)</td></tr>
+            <tr><td><code>brandLogo</code></td><td>string (optional)</td></tr>
+            <tr><td><code>year</code></td><td>number</td></tr>
+            <tr><td><code>model</code></td><td>string</td></tr>
+            <tr><td><code>vin</code></td><td>string</td></tr>
+            <tr><td><code>bodyStyle</code></td><td>string</td></tr>
+            <tr><td><code>engine</code></td><td>string</td></tr>
+            <tr><td><code>country</code></td><td>string</td></tr>
+          </table>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li>Sample Report page (2 cards)</li>
+            <li>Brand decoder pages (decoded example)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     LEGAL
+     ═══════════════════════════════════════════ -->
+<section class="section" id="legal">
+  <div class="section-head">
+    <div class="icon" style="background:var(--muted);color:var(--text-2);">&#9878;</div>
+    <h2>Legal / Static Components</h2>
+    <span class="count">2 components</span>
+  </div>
+  <div class="component-grid">
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">40</div>
+        <div class="comp-info"><h3>LegalContent</h3><div class="comp-file">src/components/legal-content.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Purpose</h4>
+          <p>Single-column prose renderer for legal text (privacy policy, terms). Max-width container, numbered headings, bullet lists, bold defined terms. Accepts rich text / HTML from Payload CMS.</p>
+        </div>
+        <div class="detail-col"><h4>Used On</h4><ul><li>/privacy-policy</li><li>/terms-of-service</li></ul></div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">41</div>
+        <div class="comp-info"><h3>RefundForm</h3><div class="comp-file">src/components/refund-form.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Purpose</h4>
+          <p>Refund request form. Likely: email, order ID, reason dropdown, message, submit.</p>
+        </div>
+        <div class="detail-col"><h4>Used On</h4><ul><li>/request-a-refund</li></ul></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     UTILITY
+     ═══════════════════════════════════════════ -->
+<section class="section" id="utility">
+  <div class="section-head">
+    <div class="icon" style="background:var(--gold-light);color:var(--gold);">&#9881;</div>
+    <h2>Utility Components</h2>
+    <span class="count">3 components</span>
+  </div>
+  <div class="component-grid">
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">42</div>
+        <div class="comp-info"><h3>CTABanner</h3><div class="comp-file">src/components/cta-banner.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Purpose</h4>
+          <p>Full-width navy background CTA with centered heading, subtext, and VIN input or button. Used as bottom-of-page conversion block.</p>
+          <h4 style="margin-top:12px;">Props</h4>
+          <table class="props-table">
+            <tr><td><code>heading</code></td><td>string</td></tr>
+            <tr><td><code>subtitle</code></td><td>string (optional)</td></tr>
+            <tr><td><code>showVinInput</code></td><td>boolean</td></tr>
+            <tr><td><code>ctaLabel</code></td><td>string (if no VIN input)</td></tr>
+            <tr><td><code>ctaHref</code></td><td>string</td></tr>
+          </table>
+        </div>
+        <div class="detail-col">
+          <h4>Used On</h4>
+          <ul>
+            <li>Homepage: bottom CTA</li>
+            <li>Window Sticker: "Get Window Sticker Now"</li>
+            <li>Country pages: bottom CTA</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">43</div>
+        <div class="comp-info"><h3>Breadcrumbs</h3><div class="comp-file">src/components/breadcrumbs.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Props</h4>
+          <table class="props-table">
+            <tr><td><code>items</code></td><td>{ label, href }[]</td></tr>
+          </table>
+          <p style="margin-top:8px;">Renders breadcrumb trail with &gt; separators. Also outputs BreadcrumbList JSON-LD schema for SEO.</p>
+        </div>
+        <div class="detail-col"><h4>Used On</h4><ul><li>Blog posts, brand pages, country pages, inner pages</li></ul></div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-top">
+        <div class="comp-num" style="background:var(--red);">44</div>
+        <div class="comp-info"><h3>SidebarCTA</h3><div class="comp-file">src/components/sidebar-cta.tsx (NEW)</div></div>
+        <div class="comp-badges"><span class="badge badge-todo">TO DO</span></div>
+      </div>
+      <div class="comp-details">
+        <div class="detail-col">
+          <h4>Purpose</h4>
+          <p>Sticky sidebar widget for blog posts: "Ensure a Smart Purchase with Vehicle History EU" with "Get Access" button. Drives conversions within content.</p>
+        </div>
+        <div class="detail-col"><h4>Used On</h4><ul><li>Blog post sidebar</li></ul></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SITEMAP
+     ═══════════════════════════════════════════ -->
+<section class="section" id="sitemap">
+  <div class="section-head">
+    <div class="icon" style="background:var(--muted);color:var(--navy);">&#9776;</div>
+    <h2>Full Sitemap</h2>
+    <span class="count">116 URLs</span>
+  </div>
+
+  <div class="sitemap-group">
+    <h3>Homepage + Translations <span class="url-count">8</span></h3>
+    <div class="url-list">
+      <a>/</a><a>/de/</a><a>/uk/</a><a>/pl/</a><a>/it/</a><a>/ru/</a><a>/fr/</a><a>/es/</a>
+    </div>
+  </div>
+
+  <div class="sitemap-group">
+    <h3>Country VIN Check Pages <span class="url-count">44</span></h3>
+    <div class="url-list">
+      <a>/albania-vin-check</a><a>/andorra-vin-check</a><a>/austria-vin-check</a><a>/belarus-vin-check</a>
+      <a>/belgium-vin-check</a><a>/bosnia-hertzegovina-vin-check</a><a>/bulgaria-vin-check</a><a>/croatia-vin-check</a>
+      <a>/czech-republic-vin-check</a><a>/denmark-vin-check</a><a>/estonia-vin-check</a><a>/finland-vin-check</a>
+      <a>/france-vin-check</a><a>/germany-vin-check</a><a>/greece-vin-check</a><a>/holy-see-vin-check</a>
+      <a>/hungary-vin-check</a><a>/iceland-vin-check</a><a>/ireland-vin-check</a><a>/italy-vin-check</a>
+      <a>/latvia-vin-check</a><a>/liechtenstein-vin-check</a><a>/lithuania-vin-check</a><a>/luxembourg-vin-check</a>
+      <a>/malta-vin-check</a><a>/moldova-vin-check</a><a>/monaco-vin-check</a><a>/montenegro-vin-check</a>
+      <a>/netherlands-vin-check</a><a>/north-macedonia-vin-check</a><a>/norway-vin-check</a><a>/poland-vin-check</a>
+      <a>/portugal-vin-check</a><a>/romania-vin-check</a><a>/russia-vin-check</a><a>/san-marino-vin-check</a>
+      <a>/serbia-vin-check</a><a>/slovakia-vin-check</a><a>/slovenia-vin-check</a><a>/spain-vin-check</a>
+      <a>/sweden-vin-check</a><a>/switzerland-vin-check</a><a>/ukraine-vin-check</a><a>/united-kingdom-vin-check</a>
+    </div>
+  </div>
+
+  <div class="sitemap-group">
+    <h3>Brand VIN Decoder Pages <span class="url-count">16</span></h3>
+    <div class="url-list">
+      <a>/vin-decoder</a><a>/vin-decoder/alfa-romeo</a><a>/vin-decoder/audi</a><a>/vin-decoder/bmw</a>
+      <a>/vin-decoder/citroen</a><a>/vin-decoder/fiat</a><a>/vin-decoder/jaguar</a><a>/vin-decoder/land-rover</a>
+      <a>/vin-decoder/mercedes-benz</a><a>/vin-decoder/mini</a><a>/vin-decoder/peugeot</a><a>/vin-decoder/porsche</a>
+      <a>/vin-decoder/renault</a><a>/vin-decoder/saab</a><a>/vin-decoder/volkswagen</a><a>/vin-decoder/volvo</a>
+    </div>
+  </div>
+
+  <div class="sitemap-group">
+    <h3>Static / Utility Pages <span class="url-count">7</span></h3>
+    <div class="url-list">
+      <a>/pricing</a><a>/contact-us</a><a>/sample-report</a><a>/window-sticker</a>
+      <a>/privacy-policy</a><a>/terms-of-service</a><a>/request-a-refund</a>
+    </div>
+  </div>
+
+  <div class="sitemap-group">
+    <h3>Blog Posts <span class="url-count">39</span></h3>
+    <div class="url-list">
+      <a>/blog</a>
+      <a>/what-is-the-best-used-suv-to-buy-in</a>
+      <a>/best-family-suv-2024</a>
+      <a>/best-used-electric-cars</a>
+      <a>/best-peugeot-car</a>
+      <a>/best-vauxhall-car</a>
+      <a>/best-citroen-car</a>
+      <a>/best-hybrid-cars-in-ireland</a>
+      <a>/cheapest-electric-car-ireland</a>
+      <a>/electrifying-savings-finding-the-cheapest-electric-car-in-ireland</a>
+      <a>/how-much-does-it-cost-to-charge-an-electric-car-in-ireland</a>
+      <a>/top-european-car-brands</a>
+      <a>/how-many-cars-in-europe</a>
+      <a>/most-popular-car-in-poland</a>
+      <a>/how-to-check-how-many-owners-a-car-has-had</a>
+      <a>/how-to-check-equipment-by-vin-number</a>
+      <a>/how-to-find-service-history-of-a-car</a>
+      <a>/how-to-check-engine-size-by-vin-number</a>
+      <a>/how-to-check-bmw-chassis-number-explained-for-beginners</a>
+      <a>/how-to-jump-start-a-car-a-comprehensive-guide</a>
+      <a>/how-much-over-the-speed-limit-are-you-allowed-in-ireland</a>
+      <a>/car-dashboard-symbols-and-meanings</a>
+      <a>/where-to-find-vin-number-on-car</a>
+      <a>/what-is-a-gt-car</a>
+      <a>/what-is-good-fuel-economy-for-a-car</a>
+      <a>/what-is-considered-bad-gas-mileage</a>
+      <a>/what-is-the-best-site-to-check-the-vin-number</a>
+      <a>/what-is-vin-etching</a>
+      <a>/why-a-mileage-check-is-crucial-when-buying-a-used-car</a>
+      <a>/why-a-hyundai-vin-check-is-crucial-before-you-buy-a-used-car-in-europe</a>
+      <a>/buying-a-car-that-was-in-an-accident</a>
+      <a>/the-truth-about-volvo-performance</a>
+      <a>/vin-cloning</a>
+      <a>/citroen-vin-check-free-why-its-important-and-where-to-do-it</a>
+      <a>/european-car-check-tools-7-essential-resources-for-every-european-car-owner</a>
+      <a>/tips-for-securing-your-vehicle-at-night</a>
+      <a>/signs-of-flood-damage-car</a>
+      <a>/body-control-module</a>
+      <a>/the-check-engine-light-on-car-what-does-it-mean</a>
+    </div>
+  </div>
+
+  <div class="sitemap-group">
+    <h3>Other <span class="url-count">2</span></h3>
+    <div class="url-list">
+      <a>/acura-vin-check</a>
+      <a>/frequently-asked-questions</a>
+    </div>
+  </div>
+
+</section>
+
+</div><!-- /container -->
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<div style="background:var(--navy-dark); color:rgba(255,255,255,0.4); text-align:center; padding:24px; font-size:13px; margin-top:40px;">
+  VehicleHistory.EU Component Migration Plan &mdash; 42 components &bull; 7 templates &bull; 116 URLs<br>
+  Next.js 16 + React 19 + Tailwind 4 + Payload CMS
+</div>
+
+</body>
+</html>
