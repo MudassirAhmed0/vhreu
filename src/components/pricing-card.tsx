@@ -171,21 +171,15 @@ export default function PricingCard({
   );
 }
 
-/* ── Check icon ── */
+/* ── Check icon (lucide-react) ── */
+import { Check } from "lucide-react";
+
 function CheckIcon({ dark }: { dark: boolean }) {
   return (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 14 14"
-      fill="none"
-      stroke="currentColor"
+    <Check
+      size={14}
       strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
       className={`shrink-0 ${dark ? "text-accent/50" : "text-accent"}`}
-    >
-      <path d="M3.5 7l2.5 2.5 4.5-5" />
-    </svg>
+    />
   );
 }

@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { TriangleAlert } from "lucide-react";
 import { CheckIcon } from "./shared/icons";
 
 /* ══════════════════════════════════════════════════════════
@@ -349,28 +350,7 @@ function StatContent({
     <div className="flex flex-col">
       {/* Alert icon */}
       <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-danger/10">
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-          className="text-danger"
-        >
-          <path
-            d="M10 2L1.5 17h17L10 2z"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M10 8v3.5"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-          />
-          <circle cx="10" cy="14" r="0.8" fill="currentColor" />
-        </svg>
+        <TriangleAlert size={20} className="text-danger" strokeWidth={1.6} />
       </div>
       <p className="text-[28px] font-extrabold leading-none tracking-tight text-danger">
         {stat}

@@ -112,43 +112,14 @@ const GRID_COLS: Record<2 | 3 | 4, string> = {
   4: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
 };
 
-/* ── Icons ── */
+/* ── Icons (lucide-react) ── */
 
-function WarningIcon({ className }: { className: string }) {
-  return (
-    <svg className={className} fill="currentColor" viewBox="0 0 20 20">
-      <path
-        fillRule="evenodd"
-        d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
+import { TriangleAlert, CircleCheck, Info, ChevronRight } from "lucide-react";
 
-function CheckIcon({ className }: { className: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-  );
-}
-
-function InfoIcon({ className }: { className: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-    </svg>
-  );
-}
-
-function ArrowIcon({ className }: { className: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-    </svg>
-  );
-}
+const WarningIcon = ({ className }: { className: string }) => <TriangleAlert className={className} strokeWidth={0} fill="currentColor" />;
+const CheckIcon = ({ className }: { className: string }) => <CircleCheck className={className} strokeWidth={1.8} />;
+const InfoIcon = ({ className }: { className: string }) => <Info className={className} strokeWidth={1.8} />;
+const ArrowIcon = ({ className }: { className: string }) => <ChevronRight className={className} strokeWidth={2} />;
 
 const ICON_MAP: Record<IconType, React.FC<{ className: string }>> = {
   warning: WarningIcon,
