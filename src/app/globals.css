@@ -96,6 +96,10 @@ html {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
 }
+@keyframes badge-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
