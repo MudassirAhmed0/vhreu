@@ -4,6 +4,8 @@
    location. Used on homepage reviews section.
    ══════════════════════════════════════════════════════════ */
 
+import { StarIcon } from "./shared/icons";
+
 interface TestimonialCardProps {
   /** Reviewer name */
   name: string;
@@ -44,14 +46,9 @@ export default function TestimonialCard({
       {/* Stars */}
       <div className="flex gap-0.5">
         {Array.from({ length: 5 }).map((_, i) => (
-          <svg
+          <StarIcon
             key={i}
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill={i < rating ? "currentColor" : "none"}
-            stroke="currentColor"
-            strokeWidth="1.2"
+            filled={i < rating}
             className={
               i < rating
                 ? "text-accent"
@@ -59,9 +56,7 @@ export default function TestimonialCard({
                   ? "text-white/15"
                   : "text-border-hi"
             }
-          >
-            <path d="M8 1.5l1.85 3.75 4.15.6-3 2.93.71 4.12L8 10.88 4.29 12.9l.71-4.12-3-2.93 4.15-.6L8 1.5z" />
-          </svg>
+          />
         ))}
       </div>
 

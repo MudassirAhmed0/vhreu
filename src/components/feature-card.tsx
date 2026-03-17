@@ -1,16 +1,20 @@
 import { ReactNode } from "react";
+import { CheckIcon } from "./shared/icons";
 
 /* ══════════════════════════════════════════════════════════
    FeatureCard — versatile card for grids
    Variants:
-   • Icon mode:      icon + title + description
-   • Checklist mode: title + list of items (string or {bold,text})
-   Accent colors for category theming (Report Contents, etc.)
+   • icon:      icon + title + description
+   • checklist: title + list of items (string or {bold,text})
+   • stat:      alert icon + stat number + label + description
+   • contact:   centered icon + label + value link
+   • callout:   gold stat + text + source (horizontal)
    Non-actionable — no hover effects (cards are not links).
    ══════════════════════════════════════════════════════════ */
 
 type AccentColor = "blue" | "amber" | "green" | "purple" | "red";
 type ChecklistItem = string | { bold: string; text: string };
+type Variant = "icon" | "checklist" | "stat" | "contact" | "callout";
 
 interface FeatureCardProps {
   title: string;
@@ -25,9 +29,21 @@ interface FeatureCardProps {
   items?: ChecklistItem[];
   /** Color accent for category cards */
   accent?: AccentColor;
+  /** Explicit variant override (auto-detected when omitted) */
+  variant?: Variant;
+  /* ── Stat variant props ── */
+  stat?: string;
+  label?: string;
+  /* ── Contact variant props ── */
+  value?: string;
+  href?: string;
+  secondary?: string;
+  /* ── Callout variant props ── */
+  text?: string;
+  source?: string;
 }
 
-export { type AccentColor, type ChecklistItem, type FeatureCardProps };
+export { type AccentColor, type ChecklistItem, type FeatureCardProps, type Variant };
 
 /* ── Accent color system ── */
 
@@ -81,48 +97,63 @@ const ACCENT_DARK_CHECK: Record<AccentColor, string> = {
   red:    "text-red-400",
 };
 
-/* ── Check circle icon ── */
-function CheckIcon({ className }: { className: string }) {
-  return (
-    <svg
-      className={className}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={1.8}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-      />
-    </svg>
-  );
-}
-
 /* ══════════════════════════════════════════════════════════
    MAIN COMPONENT
    ══════════════════════════════════════════════════════════ */
 
-export default function FeatureCard({
-  title,
-  dark = false,
-  delay = 0,
-  icon,
-  description,
-  items,
-  accent,
-}: FeatureCardProps) {
-  const isChecklist = !!items?.length;
+export default function FeatureCard(props: FeatureCardProps) {
+  const {
+    title,
+    dark = false,
+    delay = 0,
+    icon,
+    description,
+    items,
+    accent,
+    variant: explicitVariant,
+    stat,
+    label,
+    value,
+    href,
+    secondary,
+    text,
+    source,
+  } = props;
+
+  /* Auto-detect variant from props */
+  const variant: Variant = explicitVariant
+    ?? (stat && text ? "callout"
+    : stat ? "stat"
+    : value !== undefined ? "contact"
+    : items?.length ? "checklist"
+    : "icon");
+
+  /* ── Callout variant has its own shell ── */
+  if (variant === "callout") {
+    return (
+      <CalloutContent
+        stat={stat!}
+        text={text!}
+        source={source}
+        dark={dark}
+        delay={delay}
+      />
+    );
+  }
 
   /* ── Card shell classes (no hover — cards are not actionable) ── */
   let cardClasses: string;
   let padding: string;
 
-  if (isChecklist && accent) {
+  if (variant === "checklist" && accent) {
     cardClasses = dark ? ACCENT_DARK_CARD[accent] : ACCENT_CARD[accent];
     padding = "p-7";
-  } else if (isChecklist) {
+  } else if (variant === "contact") {
+    cardClasses = dark
+      ? "border border-white/[0.06] bg-white/[0.03] backdrop-blur-sm"
+      : "border border-border bg-white";
+    padding = "p-8";
+  } else if (variant === "checklist") {
     cardClasses = dark
       ? "border border-white/[0.06] bg-white/[0.03] backdrop-blur-sm"
       : "border border-border bg-white shadow-sm";
@@ -143,13 +174,29 @@ export default function FeatureCard({
           : undefined,
       }}
     >
-      {isChecklist ? (
+      {variant === "checklist" ? (
         <ChecklistContent
           title={title}
-          items={items}
+          items={items!}
           accent={accent}
           dark={dark}
           delay={delay}
+        />
+      ) : variant === "stat" ? (
+        <StatContent
+          stat={stat!}
+          label={label || title}
+          description={description || ""}
+          dark={dark}
+        />
+      ) : variant === "contact" ? (
+        <ContactContent
+          icon={icon}
+          label={label || title}
+          value={value!}
+          href={href}
+          secondary={secondary}
+          dark={dark}
         />
       ) : (
         <IconContent
@@ -180,7 +227,6 @@ function IconContent({
 }) {
   return (
     <>
-      {/* Icon container */}
       {icon && (
         <div
           className={`flex h-12 w-12 items-center justify-center rounded-xl ${
@@ -192,8 +238,6 @@ function IconContent({
           {icon}
         </div>
       )}
-
-      {/* Title */}
       <h3
         className={`mt-4 text-[17px] font-bold leading-snug ${
           dark ? "text-white/90" : "text-foreground"
@@ -201,8 +245,6 @@ function IconContent({
       >
         {title}
       </h3>
-
-      {/* Description */}
       {description && (
         <p
           className={`mt-2 text-[14px] leading-relaxed ${
@@ -217,7 +259,7 @@ function IconContent({
 }
 
 /* ══════════════════════════════════════════════════════════
-   CHECKLIST VARIANT (new)
+   CHECKLIST VARIANT
    ══════════════════════════════════════════════════════════ */
 
 function ChecklistContent({
@@ -233,30 +275,19 @@ function ChecklistContent({
   dark: boolean;
   delay: number;
 }) {
-  /* Title color */
   const titleClass = accent
-    ? dark
-      ? ACCENT_DARK_TITLE[accent]
-      : ACCENT_TITLE[accent]
-    : dark
-      ? "text-white/90"
-      : "text-foreground";
+    ? dark ? ACCENT_DARK_TITLE[accent] : ACCENT_TITLE[accent]
+    : dark ? "text-white/90" : "text-foreground";
 
-  /* Check icon color */
   const checkClass = accent
-    ? dark
-      ? ACCENT_DARK_CHECK[accent]
-      : ACCENT_CHECK[accent]
-    : dark
-      ? "text-accent/70"
-      : "text-primary";
+    ? dark ? ACCENT_DARK_CHECK[accent] : ACCENT_CHECK[accent]
+    : dark ? "text-accent/70" : "text-primary";
 
   return (
     <>
       <h3 className={`text-[18px] font-bold leading-snug ${titleClass}`}>
         {title}
       </h3>
-
       <ul className="mt-5 space-y-3.5">
         {items.map((item, i) => {
           const isComplex = typeof item === "object";
@@ -296,5 +327,209 @@ function ChecklistContent({
         })}
       </ul>
     </>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════
+   STAT VARIANT (absorbs StatCard)
+   ══════════════════════════════════════════════════════════ */
+
+function StatContent({
+  stat,
+  label,
+  description,
+  dark,
+}: {
+  stat: string;
+  label: string;
+  description: string;
+  dark: boolean;
+}) {
+  return (
+    <div className="flex flex-col">
+      {/* Alert icon */}
+      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-danger/10">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          className="text-danger"
+        >
+          <path
+            d="M10 2L1.5 17h17L10 2z"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M10 8v3.5"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+          <circle cx="10" cy="14" r="0.8" fill="currentColor" />
+        </svg>
+      </div>
+      <p className="text-[28px] font-extrabold leading-none tracking-tight text-danger">
+        {stat}
+      </p>
+      <p
+        className={`mt-2 text-[14px] font-bold ${
+          dark ? "text-white" : "text-foreground"
+        }`}
+      >
+        {label}
+      </p>
+      <p
+        className={`mt-2 text-[13px] leading-relaxed ${
+          dark ? "text-white/40" : "text-text-2"
+        }`}
+      >
+        {description}
+      </p>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════
+   CONTACT VARIANT (absorbs ContactCard)
+   ══════════════════════════════════════════════════════════ */
+
+function ContactContent({
+  icon,
+  label,
+  value,
+  href,
+  secondary,
+  dark,
+}: {
+  icon?: ReactNode;
+  label: string;
+  value: string;
+  href?: string;
+  secondary?: string;
+  dark: boolean;
+}) {
+  return (
+    <div className="flex flex-col items-center text-center">
+      {icon && (
+        <div
+          className={`flex h-12 w-12 items-center justify-center rounded-xl ${
+            dark ? "bg-accent/10 text-accent" : "bg-primary/8 text-primary"
+          }`}
+        >
+          {icon}
+        </div>
+      )}
+      <p
+        className={`mt-4 text-[12px] font-bold uppercase tracking-[0.15em] ${
+          dark ? "text-white/40" : "text-text-3"
+        }`}
+      >
+        {label}
+      </p>
+      {href ? (
+        <a
+          href={href}
+          className={`mt-2 text-[15px] font-semibold transition-colors duration-200 ${
+            dark
+              ? "text-white hover:text-accent"
+              : "text-foreground hover:text-primary"
+          }`}
+        >
+          {value}
+        </a>
+      ) : (
+        <p
+          className={`mt-2 text-[15px] font-semibold ${
+            dark ? "text-white" : "text-foreground"
+          }`}
+        >
+          {value}
+        </p>
+      )}
+      {secondary && (
+        <p
+          className={`mt-1 text-[13px] ${
+            dark ? "text-white/40" : "text-text-3"
+          }`}
+        >
+          {secondary}
+        </p>
+      )}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════
+   CALLOUT VARIANT (absorbs CalloutBanner)
+   ══════════════════════════════════════════════════════════ */
+
+function CalloutContent({
+  stat,
+  text,
+  source,
+  dark,
+  delay,
+}: {
+  stat: string;
+  text: string;
+  source?: string;
+  dark: boolean;
+  delay: number;
+}) {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-2xl border p-8 sm:p-10 ${
+        dark
+          ? "border-accent/15 bg-accent/[0.04]"
+          : "border-accent/20 bg-accent-light"
+      }`}
+      style={{
+        animation: delay
+          ? `hero-up 0.7s cubic-bezier(0.16,1,0.3,1) ${delay}s both`
+          : undefined,
+      }}
+    >
+      {/* Accent glow */}
+      <div
+        className="absolute -right-10 -top-10 h-32 w-32 rounded-full opacity-20 blur-[60px]"
+        style={{
+          background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)",
+        }}
+      />
+      <div className="relative flex flex-col items-center text-center sm:flex-row sm:gap-6 sm:text-left">
+        <span
+          className="shrink-0 text-[48px] font-extrabold leading-none tracking-tight sm:text-[56px]"
+          style={{
+            background: "linear-gradient(135deg, #E6B800 0%, #FFCC00 40%, #FFE566 70%, #FFCC00 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          {stat}
+        </span>
+        <div>
+          <p
+            className={`text-[16px] font-semibold leading-relaxed sm:text-[17px] ${
+              dark ? "text-white/70" : "text-foreground"
+            }`}
+          >
+            {text}
+          </p>
+          {source && (
+            <p
+              className={`mt-2 text-[12px] ${
+                dark ? "text-white/25" : "text-text-3"
+              }`}
+            >
+              Source: {source}
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
