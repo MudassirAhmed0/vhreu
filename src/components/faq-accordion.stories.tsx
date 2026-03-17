@@ -61,7 +61,7 @@ const PRICING_FAQS = [
 ];
 
 const meta: Meta<typeof FaqAccordion> = {
-  title: "Components/FaqAccordion",
+  title: "Content/FaqAccordion",
   component: FaqAccordion,
   argTypes: {
     dark: {

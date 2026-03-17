@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import VinStructureWidget from "./vin-structure-widget";
 
 const meta: Meta<typeof VinStructureWidget> = {
-  title: "Components/VinStructureWidget",
+  title: "Content/VinStructureWidget",
   component: VinStructureWidget,
   argTypes: {
     vin: { control: "text", table: { category: "Content" } },

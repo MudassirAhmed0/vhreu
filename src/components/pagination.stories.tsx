@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import Pagination from "./pagination";
 
 const meta: Meta<typeof Pagination> = {
-  title: "Components/Pagination",
+  title: "Blog/Pagination",
   component: Pagination,
   argTypes: {
     currentPage: { control: { type: "range", min: 1, max: 20, step: 1 } },

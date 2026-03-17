@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import LegalContent from "./legal-content";
 
 const meta: Meta<typeof LegalContent> = {
-  title: "Components/LegalContent",
+  title: "Content/LegalContent",
   component: LegalContent,
   parameters: { layout: "fullscreen" },
 };

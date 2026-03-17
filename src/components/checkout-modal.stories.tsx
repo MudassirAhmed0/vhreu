@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import CheckoutModal from "./checkout-modal";
 
 const meta: Meta<typeof CheckoutModal> = {
-  title: "Components/CheckoutModal",
+  title: "Overlays/CheckoutModal",
   component: CheckoutModal,
   parameters: { layout: "fullscreen" },
 };

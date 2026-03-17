@@ -4,7 +4,7 @@ import FaqAccordion from "@/components/faq-accordion";
 import PageHero from "@/components/page-hero";
 import HowItWorks from "@/components/how-it-works";
 import CardSection from "@/components/card-section";
-import FeatureCard from "@/components/feature-card";
+import Card from "@/components/card";
 import SplitContent from "@/components/split-content";
 import IconList from "@/components/icon-list";
 import DataTable from "@/components/data-table";
@@ -190,7 +190,7 @@ export default function Home() {
         {WHY_RUN_VIN_CHECK.reasons.map((reason, i) => {
           const Icon = REASON_ICONS[reason.icon];
           return (
-            <FeatureCard
+            <Card
               key={reason.title}
               icon={Icon && <Icon />}
               title={reason.title}
@@ -210,13 +210,13 @@ export default function Home() {
 
       {/* ═══ WHY YOU NEED VIN LOOKUP (Buyers vs Dealers) ═══ */}
       <CardSection heading={WHY_NEED_LOOKUP.heading} bg="muted" columns={2}>
-        <FeatureCard
+        <Card
           title={WHY_NEED_LOOKUP.buyers.title}
           items={WHY_NEED_LOOKUP.buyers.benefits}
           accent="amber"
           delay={0.1}
         />
-        <FeatureCard
+        <Card
           title={WHY_NEED_LOOKUP.dealers.title}
           items={WHY_NEED_LOOKUP.dealers.benefits}
           accent="amber"
@@ -233,7 +233,7 @@ export default function Home() {
         cta={{ label: "Check VIN Now!", href: "#hero" }}
       >
         {REPORT_CONTENTS.categories.map((cat, i) => (
-          <FeatureCard
+          <Card
             key={cat.title}
             title={cat.title}
             items={cat.items}
@@ -269,7 +269,7 @@ export default function Home() {
         columns={3}
       >
         {WHY_CHOOSE.features.map((feature, i) => (
-          <FeatureCard
+          <Card
             key={feature.title}
             icon={WHY_CHOOSE_ICONS[feature.icon]}
             title={feature.title}

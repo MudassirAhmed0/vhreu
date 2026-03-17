@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import VinSearchForm from "./vin-search-form";
 
 const meta: Meta<typeof VinSearchForm> = {
-  title: "Components/VinSearchForm",
+  title: "Forms/VinSearchForm",
   component: VinSearchForm,
   argTypes: {
     buttonText: {

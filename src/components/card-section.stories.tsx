@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import CardSection from "./card-section";
-import FeatureCard from "./feature-card";
+import Card from "./card";
 import {
   IconEye, IconShield, IconGauge, IconFile, IconAlert, IconLock,
   IconZap, IconDatabase, IconTool,
@@ -24,7 +24,7 @@ const WHY_CHOOSE_CARDS = [
 ];
 
 const meta: Meta<typeof CardSection> = {
-  title: "Components/CardSection",
+  title: "Cards/CardSection",
   component: CardSection,
   argTypes: {
     bg: { control: "inline-radio", options: ["white", "muted", "dark"], table: { category: "Layout" } },
@@ -60,7 +60,7 @@ export const SixCardsLight: Story = {
   render: (args) => (
     <CardSection {...args}>
       {REASON_CARDS.map((card, i) => (
-        <FeatureCard key={card.title} {...card} delay={0.1 + i * 0.08} />
+        <Card key={card.title} {...card} delay={0.1 + i * 0.08} />
       ))}
     </CardSection>
   ),
@@ -79,7 +79,7 @@ export const ThreeCardsMuted: Story = {
   render: (args) => (
     <CardSection {...args}>
       {WHY_CHOOSE_CARDS.map((card, i) => (
-        <FeatureCard key={card.title} {...card} delay={0.1 + i * 0.08} />
+        <Card key={card.title} {...card} delay={0.1 + i * 0.08} />
       ))}
     </CardSection>
   ),
@@ -98,7 +98,7 @@ export const ThreeCardsDark: Story = {
   render: (args) => (
     <CardSection {...args}>
       {WHY_CHOOSE_CARDS.map((card, i) => (
-        <FeatureCard key={card.title} {...card} dark delay={0.1 + i * 0.08} />
+        <Card key={card.title} {...card} dark delay={0.1 + i * 0.08} />
       ))}
     </CardSection>
   ),
@@ -111,7 +111,7 @@ export const TwoColumns: Story = {
   render: (args) => (
     <CardSection {...args}>
       {REASON_CARDS.slice(0, 4).map((card, i) => (
-        <FeatureCard key={card.title} {...card} delay={0.1 + i * 0.08} />
+        <Card key={card.title} {...card} delay={0.1 + i * 0.08} />
       ))}
     </CardSection>
   ),
@@ -124,7 +124,7 @@ export const FourColumns: Story = {
   render: (args) => (
     <CardSection {...args}>
       {REASON_CARDS.slice(0, 4).map((card, i) => (
-        <FeatureCard key={card.title} {...card} delay={0.1 + i * 0.08} />
+        <Card key={card.title} {...card} delay={0.1 + i * 0.08} />
       ))}
     </CardSection>
   ),
@@ -143,7 +143,7 @@ export const WithBothCTAs: Story = {
   render: (args) => (
     <CardSection {...args}>
       {REASON_CARDS.map((card, i) => (
-        <FeatureCard key={card.title} {...card} delay={0.1 + i * 0.08} />
+        <Card key={card.title} {...card} delay={0.1 + i * 0.08} />
       ))}
     </CardSection>
   ),
@@ -159,8 +159,8 @@ export const TwoColumnChecklist: Story = {
   args: { heading: "Why You Need European VIN Lookup", bg: "muted", columns: 2 },
   render: (args) => (
     <CardSection {...args}>
-      <FeatureCard title="For Car Buyers" items={BUYER_ITEMS} accent="amber" delay={0.1} />
-      <FeatureCard title="For Dealerships and Resellers" items={DEALER_ITEMS} accent="amber" delay={0.18} />
+      <Card title="For Car Buyers" items={BUYER_ITEMS} accent="amber" delay={0.1} />
+      <Card title="For Dealerships and Resellers" items={DEALER_ITEMS} accent="amber" delay={0.18} />
     </CardSection>
   ),
 };
@@ -178,7 +178,7 @@ export const AccentedChecklist: Story = {
   render: (args) => (
     <CardSection {...args}>
       {REPORT_CATEGORIES.map((cat, i) => (
-        <FeatureCard
+        <Card
           key={cat.title}
           title={cat.title}
           items={cat.items}
@@ -197,7 +197,7 @@ export const DarkChecklist: Story = {
   render: (args) => (
     <CardSection {...args}>
       {REPORT_CATEGORIES.slice(0, 3).map((cat, i) => (
-        <FeatureCard
+        <Card
           key={cat.title}
           title={cat.title}
           items={cat.items}

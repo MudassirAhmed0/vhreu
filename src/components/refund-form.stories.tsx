@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import RefundForm from "./refund-form";
 
 const meta: Meta<typeof RefundForm> = {
-  title: "Components/RefundForm",
+  title: "Forms/RefundForm",
   component: RefundForm,
   argTypes: {
     card: { control: "boolean", table: { category: "Layout" } },

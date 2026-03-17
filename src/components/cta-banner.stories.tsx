@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import CTABanner from "./cta-banner";
 
 const meta: Meta<typeof CTABanner> = {
-  title: "Components/CTABanner",
+  title: "Sections/CTABanner",
   component: CTABanner,
   argTypes: {
     heading: { control: "text", table: { category: "Content" } },

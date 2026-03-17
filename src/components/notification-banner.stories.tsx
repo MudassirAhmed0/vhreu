@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import NotificationBanner from "./notification-banner";
 
 const meta: Meta<typeof NotificationBanner> = {
-  title: "Components/NotificationBanner",
+  title: "Overlays/NotificationBanner",
   component: NotificationBanner,
   parameters: { layout: "fullscreen" },
 };

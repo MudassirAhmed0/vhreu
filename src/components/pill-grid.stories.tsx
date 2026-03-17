@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import PillGrid from "./pill-grid";
 
 const meta: Meta<typeof PillGrid> = {
-  title: "Components/PillGrid",
+  title: "Content/PillGrid",
   component: PillGrid,
   argTypes: {
     dark: { control: "boolean", table: { category: "Layout" } },

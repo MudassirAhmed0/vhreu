@@ -7,7 +7,7 @@ import BlogGrid from "./blog-grid";
    ═══════════════════════════════════════ */
 
 const meta: Meta<typeof BlogCard> = {
-  title: "Components/BlogCard",
+  title: "Cards/BlogCard",
   component: BlogCard,
   argTypes: {
     title: { control: "text", table: { category: "Content" } },

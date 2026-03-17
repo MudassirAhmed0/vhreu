@@ -10,7 +10,7 @@ const DEFAULT_STEPS = [
 ];
 
 const meta: Meta<typeof HowItWorks> = {
-  title: "Components/HowItWorks",
+  title: "Sections/HowItWorks",
   component: HowItWorks,
   argTypes: {
     dark: { control: "boolean", table: { category: "Layout" } },

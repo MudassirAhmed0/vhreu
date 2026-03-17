@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import AuthorBox from "./author-box";
 
 const meta: Meta<typeof AuthorBox> = {
-  title: "Components/AuthorBox",
+  title: "Blog/AuthorBox",
   component: AuthorBox,
   parameters: { layout: "centered" },
 };

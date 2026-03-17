@@ -5,7 +5,7 @@ import DataTable from "./data-table";
 import IconList from "./icon-list";
 
 const meta: Meta<typeof SectionWrapper> = {
-  title: "Components/SectionWrapper",
+  title: "Sections/SectionWrapper",
   component: SectionWrapper,
   argTypes: {
     bg: {

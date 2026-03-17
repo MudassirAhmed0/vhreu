@@ -9,7 +9,7 @@ type HeroStoryProps = React.ComponentProps<typeof PageHero> & {
 };
 
 const meta: Meta<HeroStoryProps> = {
-  title: "Components/PageHero",
+  title: "Navigation/PageHero",
   component: PageHero,
   argTypes: {
     variant: {

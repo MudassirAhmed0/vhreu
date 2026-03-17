@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import SampleReportCard from "./sample-report-card";
 
 const meta: Meta<typeof SampleReportCard> = {
-  title: "Components/SampleReportCard",
+  title: "Cards/SampleReportCard",
   component: SampleReportCard,
   parameters: { layout: "fullscreen" },
 };

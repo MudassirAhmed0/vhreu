@@ -30,7 +30,7 @@ const INFO_ITEMS = [
 ];
 
 const meta: Meta<typeof IconList> = {
-  title: "Components/IconList",
+  title: "Content/IconList",
   component: IconList,
   argTypes: {
     icon: {

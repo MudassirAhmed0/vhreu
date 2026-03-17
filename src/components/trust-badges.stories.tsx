@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import TrustBadges from "./trust-badges";
 
 const meta: Meta<typeof TrustBadges> = {
-  title: "Components/TrustBadges",
+  title: "Content/TrustBadges",
   component: TrustBadges,
   parameters: { layout: "fullscreen" },
 };

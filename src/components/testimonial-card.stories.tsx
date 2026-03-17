@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import TestimonialCard from "./testimonial-card";
 
 const meta: Meta<typeof TestimonialCard> = {
-  title: "Components/TestimonialCard",
+  title: "Cards/TestimonialCard",
   component: TestimonialCard,
   argTypes: {
     name: { control: "text", table: { category: "Content" } },

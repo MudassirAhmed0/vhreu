@@ -39,7 +39,7 @@ function VinGraphic() {
 }
 
 const meta: Meta<typeof SplitContent> = {
-  title: "Components/SplitContent",
+  title: "Sections/SplitContent",
   component: SplitContent,
   argTypes: {
     bg: { control: "inline-radio", options: ["white", "muted", "dark"], table: { category: "Layout" } },

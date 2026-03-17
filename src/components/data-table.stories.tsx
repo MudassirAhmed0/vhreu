@@ -58,7 +58,7 @@ const COUNTRY_ROWS = [
 ];
 
 const meta: Meta<typeof DataTable> = {
-  title: "Components/DataTable",
+  title: "Content/DataTable",
   component: DataTable,
   argTypes: {
     dark: {

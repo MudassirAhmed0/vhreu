@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import EmailCaptureForm from "./email-capture-form";
 
 const meta: Meta<typeof EmailCaptureForm> = {
-  title: "Components/EmailCaptureForm",
+  title: "Forms/EmailCaptureForm",
   component: EmailCaptureForm,
   parameters: { layout: "fullscreen" },
 };

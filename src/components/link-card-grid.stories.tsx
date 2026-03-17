@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import LinkCardGrid from "./link-card-grid";
 
 const meta: Meta<typeof LinkCardGrid> = {
-  title: "Components/LinkCardGrid",
+  title: "Content/LinkCardGrid",
   component: LinkCardGrid,
   argTypes: {
     columns: {

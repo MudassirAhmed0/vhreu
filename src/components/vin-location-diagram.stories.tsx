@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import VinLocationDiagram from "./vin-location-diagram";
 
 const meta: Meta<typeof VinLocationDiagram> = {
-  title: "Components/VinLocationDiagram",
+  title: "Content/VinLocationDiagram",
   component: VinLocationDiagram,
   parameters: { layout: "fullscreen" },
 };

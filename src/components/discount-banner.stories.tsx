@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import DiscountBanner from "./discount-banner";
 
 const meta: Meta<typeof DiscountBanner> = {
-  title: "Components/DiscountBanner",
+  title: "Overlays/DiscountBanner",
   component: DiscountBanner,
   parameters: { layout: "fullscreen" },
 };

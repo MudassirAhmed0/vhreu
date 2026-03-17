@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { CheckIcon } from "./shared/icons";
 
 /* ══════════════════════════════════════════════════════════
-   FeatureCard — versatile card for grids
+   Card — versatile card for grids
    Variants:
    • icon:      icon + title + description
    • checklist: title + list of items (string or {bold,text})
@@ -101,7 +101,7 @@ const ACCENT_DARK_CHECK: Record<AccentColor, string> = {
    MAIN COMPONENT
    ══════════════════════════════════════════════════════════ */
 
-export default function FeatureCard(props: FeatureCardProps) {
+export default function Card(props: FeatureCardProps) {
   const {
     title,
     dark = false,

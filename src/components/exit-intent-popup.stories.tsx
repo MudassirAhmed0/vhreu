@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import ExitIntentPopup from "./exit-intent-popup";
 
 const meta: Meta<typeof ExitIntentPopup> = {
-  title: "Components/ExitIntentPopup",
+  title: "Overlays/ExitIntentPopup",
   component: ExitIntentPopup,
   parameters: { layout: "fullscreen" },
 };

@@ -3,7 +3,7 @@ import ContactForm from "./contact-form";
 import PageHero from "./page-hero";
 
 const meta: Meta<typeof ContactForm> = {
-  title: "Components/ContactForm",
+  title: "Forms/ContactForm",
   component: ContactForm,
   argTypes: {
     card: { control: "boolean", table: { category: "Layout" } },

@@ -3,7 +3,7 @@
    Avoids duplicating domain text in each story.
    ══════════════════════════════════════════════════════════ */
 
-import type { AccentColor, ChecklistItem } from "../feature-card";
+import type { AccentColor, ChecklistItem } from "../card";
 
 export const WARNINGS = [
   "1 in 3 used cars have a hidden problem",

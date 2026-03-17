@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import SidebarCTA from "./sidebar-cta";
 
 const meta: Meta<typeof SidebarCTA> = {
-  title: "Components/SidebarCTA",
+  title: "Navigation/SidebarCTA",
   component: SidebarCTA,
   parameters: { layout: "centered" },
 };

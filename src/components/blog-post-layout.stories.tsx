@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import BlogPostLayout from "./blog-post-layout";
 
 const meta: Meta<typeof BlogPostLayout> = {
-  title: "Components/BlogPostLayout",
+  title: "Blog/BlogPostLayout",
   component: BlogPostLayout,
   parameters: { layout: "fullscreen" },
 };

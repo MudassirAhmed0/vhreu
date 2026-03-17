@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import TrustSection from "./trust-section";
 
 const meta: Meta<typeof TrustSection> = {
-  title: "Components/TrustSection",
+  title: "Sections/TrustSection",
   component: TrustSection,
   parameters: { layout: "fullscreen" },
 };
