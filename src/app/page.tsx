@@ -124,10 +124,12 @@ export default function Home() {
       <PageHero
         variant="split"
         tag="Trusted by 50,000+ buyers"
-        title="European VIN Check"
-        highlight="EU VIN Lookup"
+        title="Check Any European Vehicle's"
+        highlight="Full History Report"
         subtitle={HERO.subheading}
         bullets={HERO.trustBadges}
+        heroImage="/report-preview.png"
+        heroImageAlt="Sample vehicle history report preview"
       >
         <VinSearchForm />
       </PageHero>
