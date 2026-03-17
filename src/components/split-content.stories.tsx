@@ -1,27 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import SplitContent from "./split-content";
+import IconList from "./icon-list";
+import { WARNINGS } from "./__fixtures__/sample-data";
 
-/* ── Warning alert item (used by SaveMoney story) ── */
-function WarningItem({ text }: { text: string }) {
-  return (
-    <div className="flex items-start gap-3 rounded-xl border border-red-100/80 bg-gradient-to-r from-red-50/80 to-red-50/30 px-4 py-3.5">
-      <svg
-        className="mt-0.5 h-[18px] w-[18px] shrink-0 text-red-500"
-        fill="currentColor"
-        viewBox="0 0 20 20"
-      >
-        <path
-          fillRule="evenodd"
-          d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
-          clipRule="evenodd"
-        />
-      </svg>
-      <span className="text-[14px] font-medium leading-relaxed text-red-800/80">{text}</span>
-    </div>
-  );
-}
-
-/* ── VIN structure graphic (used by VIN Explainer story) ── */
+/* ── VIN structure graphic ── */
 function VinGraphic() {
   const chars = ["W","V","W","Z","Z","Z","3","C","Z","W","E","1","2","3","4","5","6"];
   return (
@@ -56,26 +38,12 @@ function VinGraphic() {
   );
 }
 
-const WARNINGS = [
-  "1 in 3 used cars have a hidden problem",
-  "Up to 30% of used cars in Europe have tampered odometers",
-  "Around 20% of used cars in Germany have undisclosed damages",
-  "Approximately 10% of vehicles on European roads have unresolved recall issues",
-];
-
 const meta: Meta<typeof SplitContent> = {
   title: "Components/SplitContent",
   component: SplitContent,
   argTypes: {
-    bg: {
-      control: "inline-radio",
-      options: ["white", "muted", "dark"],
-      table: { category: "Layout" },
-    },
-    reverse: {
-      control: "boolean",
-      table: { category: "Layout" },
-    },
+    bg: { control: "inline-radio", options: ["white", "muted", "dark"], table: { category: "Layout" } },
+    reverse: { control: "boolean", table: { category: "Layout" } },
     heading: { control: "text", table: { category: "Content" } },
     description: { control: "text", table: { category: "Content" } },
     cta: { control: "object", table: { category: "Actions" } },
@@ -84,9 +52,8 @@ const meta: Meta<typeof SplitContent> = {
     media: { table: { disable: true } },
   },
   args: {
-    heading: "Save Money and Avoid Costly Mistakes",
-    description:
-      "Purchasing a vehicle with hidden problems can lead to expensive repairs and decreased resale value. Our comprehensive vehicle history report can save you thousands of euros by revealing potential issues before you buy.",
+    heading: "Two-Column Section",
+    description: "Supporting text that explains the value of this section to the user.",
     bg: "white",
     reverse: false,
   },
@@ -96,36 +63,31 @@ const meta: Meta<typeof SplitContent> = {
 export default meta;
 type Story = StoryObj<typeof SplitContent>;
 
-/* ── SAVE MONEY (homepage) ── */
-export const SaveMoney: Story = {
-  name: "Save Money (Warnings + CTAs)",
+/* ── With child content (warnings) ── */
+export const WithChildContent: Story = {
+  name: "With Child Content",
   args: {
     heading: "Save Money and Avoid Costly Mistakes",
-    description:
-      "Purchasing a vehicle with hidden problems can lead to expensive repairs and decreased resale value. Our comprehensive vehicle history report can save you thousands of euros by revealing potential issues before you buy.",
+    description: "Purchasing a vehicle with hidden problems can lead to expensive repairs and decreased resale value. Our comprehensive vehicle history report can save you thousands of euros by revealing potential issues before you buy.",
     bg: "white",
     secondaryCta: { label: "View Sample", href: "/sample-report" },
     cta: { label: "Check Vehicle History!", href: "#hero" },
   },
   render: (args) => (
     <SplitContent {...args}>
-      <div className="space-y-3">
-        {WARNINGS.map((w) => (
-          <WarningItem key={w} text={w} />
-        ))}
-      </div>
+      <IconList items={WARNINGS} icon="warning" variant="danger" />
     </SplitContent>
   ),
 };
 
-/* ── VIN EXPLAINER (homepage, reversed) ── */
-export const VinExplainer: Story = {
-  name: "VIN Explainer (Reversed)",
+/* ── Reversed with media ── */
+export const ReversedWithMedia: Story = {
+  name: "Reversed With Media",
   args: {
     heading: "What is a VIN Number?",
     description: [
       "A Vehicle Identification Number (VIN) is a unique 17-character code assigned to every car. It's like a car's fingerprint!",
-      "The VIN number contains crucial information, including the vehicle's manufacturer, model, year, engine type, and country of origin. It also tracks the car's history, such as accidents, repairs, and ownership.",
+      "The VIN number contains crucial information, including the vehicle's manufacturer, model, year, engine type, and country of origin.",
     ],
     bg: "muted",
     reverse: true,
@@ -135,47 +97,44 @@ export const VinExplainer: Story = {
   ),
 };
 
-/* ── DEFAULT PLACEHOLDER (no media) ── */
+/* ── Default placeholder (no media) ── */
 export const DefaultPlaceholder: Story = {
   name: "Default Placeholder",
   args: {
     heading: "Comprehensive Vehicle Reports",
-    description:
-      "Get detailed insights into any European vehicle's history, from accidents and mileage verification to title checks and theft records.",
+    description: "Get detailed insights into any European vehicle's history, from accidents and mileage verification to title checks and theft records.",
     bg: "white",
     cta: { label: "Get Started", href: "#hero" },
   },
 };
 
-/* ── DARK VARIANT ── */
+/* ── Dark ── */
 export const Dark: Story = {
   name: "Dark",
   args: {
     heading: "Protect Your Investment",
-    description:
-      "Don't let hidden vehicle problems cost you thousands. Our reports give you the full picture before you commit.",
+    description: "Don't let hidden vehicle problems cost you thousands. Our reports give you the full picture before you commit.",
     bg: "dark",
     cta: { label: "Check VIN Now", href: "#hero" },
     secondaryCta: { label: "Learn More", href: "/about" },
   },
 };
 
-/* ── REVERSED (media left) ── */
+/* ── Reversed (media left) ── */
 export const Reversed: Story = {
   name: "Reversed (Media Left)",
   args: {
     heading: "Know What You're Buying",
-    description:
-      "Our detailed reports cover everything from accident history to ownership records, giving you complete peace of mind.",
+    description: "Our detailed reports cover everything from accident history to ownership records, giving you complete peace of mind.",
     bg: "muted",
     reverse: true,
     cta: { label: "View Sample Report", href: "/sample-report" },
   },
 };
 
-/* ── COUNTRY PAGE VARIANT ── */
-export const CountryPage: Story = {
-  name: "Country Page (Germany)",
+/* ── Multi-paragraph ── */
+export const MultiParagraph: Story = {
+  name: "Multi-Paragraph",
   args: {
     heading: "German Vehicle History Check",
     description: [
