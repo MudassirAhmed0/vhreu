@@ -75,7 +75,7 @@ export const WithChildContent: Story = {
   },
   render: (args) => (
     <SplitContent {...args}>
-      <IconList items={WARNINGS} icon="warning" variant="danger" />
+      <IconList items={WARNINGS} icon="triangle-alert" variant="danger" />
     </SplitContent>
   ),
 };

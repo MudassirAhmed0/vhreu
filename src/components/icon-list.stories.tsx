@@ -69,7 +69,7 @@ const meta: Meta<typeof IconList> = {
   },
   args: {
     items: FEATURES,
-    icon: "check",
+    icon: "circle-check",
     variant: "neutral",
     dark: false,
     spacing: "normal",
@@ -96,7 +96,7 @@ export const DangerWarnings: Story = {
   name: "Danger — Warnings (Tinted)",
   args: {
     items: WARNINGS,
-    icon: "warning",
+    icon: "triangle-alert",
     variant: "danger",
   },
 };
@@ -106,7 +106,7 @@ export const SuccessBenefits: Story = {
   name: "Success — Benefits (Bold+Text)",
   args: {
     items: BUYER_BENEFITS,
-    icon: "check",
+    icon: "circle-check",
     variant: "success",
   },
 };
@@ -116,7 +116,7 @@ export const SuccessTinted: Story = {
   name: "Success — Tinted Rows",
   args: {
     items: BUYER_BENEFITS,
-    icon: "check",
+    icon: "circle-check",
     variant: "success",
     tinted: true,
   },
@@ -127,7 +127,7 @@ export const NeutralFeatures: Story = {
   name: "Neutral — Feature List",
   args: {
     items: FEATURES,
-    icon: "check",
+    icon: "circle-check",
     variant: "neutral",
   },
 };
@@ -137,7 +137,7 @@ export const ArrowList: Story = {
   name: "Arrow — Highlights",
   args: {
     items: FEATURES.slice(0, 3),
-    icon: "arrow",
+    icon: "chevron-right",
     variant: "neutral",
   },
 };
@@ -158,7 +158,7 @@ export const TightSpacing: Story = {
   name: "Tight Spacing",
   args: {
     items: FEATURES,
-    icon: "check",
+    icon: "circle-check",
     variant: "neutral",
     spacing: "tight",
   },
@@ -169,7 +169,7 @@ export const LooseSpacing: Story = {
   name: "Loose Spacing",
   args: {
     items: WARNINGS,
-    icon: "warning",
+    icon: "triangle-alert",
     variant: "danger",
     spacing: "loose",
   },
@@ -180,7 +180,7 @@ export const WithStagger: Story = {
   name: "With Stagger Animation",
   args: {
     items: FEATURES,
-    icon: "check",
+    icon: "circle-check",
     variant: "success",
     delay: 0.1,
   },
@@ -191,7 +191,7 @@ export const DarkDanger: Story = {
   name: "Dark — Danger",
   args: {
     items: WARNINGS,
-    icon: "warning",
+    icon: "triangle-alert",
     variant: "danger",
     dark: true,
   },
@@ -202,7 +202,7 @@ export const DarkSuccess: Story = {
   name: "Dark — Success",
   args: {
     items: BUYER_BENEFITS,
-    icon: "check",
+    icon: "circle-check",
     variant: "success",
     dark: true,
   },
@@ -213,7 +213,7 @@ export const DarkNeutral: Story = {
   name: "Dark — Neutral (Tinted)",
   args: {
     items: FEATURES.slice(0, 4),
-    icon: "arrow",
+    icon: "chevron-right",
     variant: "neutral",
     dark: true,
     tinted: true,
@@ -225,7 +225,7 @@ export const Grid2Cols: Story = {
   name: "Grid — 2 Columns",
   args: {
     items: BUYER_BENEFITS,
-    icon: "check",
+    icon: "circle-check",
     variant: "success",
     tinted: true,
     columns: 2,
@@ -240,7 +240,7 @@ export const Grid3Cols: Story = {
       ...FEATURES,
       "European recall status and safety notices",
     ],
-    icon: "check",
+    icon: "circle-check",
     variant: "neutral",
     tinted: true,
     columns: 3,
@@ -252,7 +252,7 @@ export const Grid4Cols: Story = {
   name: "Grid — 4 Columns (Danger)",
   args: {
     items: WARNINGS,
-    icon: "warning",
+    icon: "triangle-alert",
     variant: "danger",
     columns: 4,
   },
@@ -263,7 +263,7 @@ export const GridBare: Story = {
   name: "Grid — Bare (no bg)",
   args: {
     items: FEATURES,
-    icon: "check",
+    icon: "circle-check",
     variant: "neutral",
     tinted: false,
     columns: 2,
@@ -275,7 +275,7 @@ export const GridDark: Story = {
   name: "Grid — Dark (2 col)",
   args: {
     items: BUYER_BENEFITS,
-    icon: "check",
+    icon: "circle-check",
     variant: "success",
     columns: 2,
     dark: true,

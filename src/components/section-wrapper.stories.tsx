@@ -210,7 +210,7 @@ export const NoHeading: Story = {
           "Around 20% of used cars in Germany have undisclosed damages",
           "Approximately 10% of vehicles have unresolved recall issues",
         ]}
-        icon="warning"
+        icon="triangle-alert"
         variant="danger"
       />
     </SectionWrapper>

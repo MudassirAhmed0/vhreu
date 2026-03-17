@@ -5,14 +5,15 @@
    Non-actionable — no hover effects.
    ══════════════════════════════════════════════════════════ */
 
+import DynamicIcon, { type IconName } from "./shared/dynamic-icon";
+
 type ListItem = string | { bold: string; text: string };
-type IconType = "warning" | "check" | "info" | "arrow";
 type Variant = "danger" | "success" | "neutral" | "muted";
 
 interface IconListProps {
   items: ListItem[];
-  /** Built-in icon: warning triangle, check circle, info circle, arrow right */
-  icon?: IconType;
+  /** Any lucide icon name (e.g. "triangle-alert", "circle-check", "info", "chevron-right") */
+  icon?: string;
   /** Color variant — controls icon color and optional row tint */
   variant?: Variant;
   /** Tinted background rows per item (default: true for danger, false otherwise) */
@@ -26,7 +27,7 @@ interface IconListProps {
   columns?: 2 | 3 | 4;
 }
 
-export { type ListItem, type IconType, type Variant, type IconListProps };
+export { type ListItem, type IconName, type Variant, type IconListProps };
 
 /* ── Variant colors (light) ── */
 
@@ -112,21 +113,7 @@ const GRID_COLS: Record<2 | 3 | 4, string> = {
   4: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
 };
 
-/* ── Icons (lucide-react) ── */
-
-import { TriangleAlert, CircleCheck, Info, ChevronRight } from "lucide-react";
-
-const WarningIcon = ({ className }: { className: string }) => <TriangleAlert className={className} strokeWidth={0} fill="currentColor" />;
-const CheckIcon = ({ className }: { className: string }) => <CircleCheck className={className} strokeWidth={1.8} />;
-const InfoIcon = ({ className }: { className: string }) => <Info className={className} strokeWidth={1.8} />;
-const ArrowIcon = ({ className }: { className: string }) => <ChevronRight className={className} strokeWidth={2} />;
-
-const ICON_MAP: Record<IconType, React.FC<{ className: string }>> = {
-  warning: WarningIcon,
-  check:   CheckIcon,
-  info:    InfoIcon,
-  arrow:   ArrowIcon,
-};
+/* ── Icon rendering uses DynamicIcon from shared ── */
 
 /* ══════════════════════════════════════════════════════════
    MAIN COMPONENT
@@ -145,8 +132,7 @@ export default function IconList({
   /* Grid items always tinted by default (need visual boundary), vertical only for danger */
   const showTint = tinted ?? (columns ? true : variant === "danger");
 
-  const IconComponent = ICON_MAP[icon];
-  const iconSize = icon === "warning" ? "h-[18px] w-[18px]" : "h-[18px] w-[18px]";
+  const iconSize = "h-[18px] w-[18px]";
   const iconColor = dark ? DARK_ICON_COLOR[variant] : ICON_COLOR[variant];
   const textColor = dark ? DARK_TEXT_COLOR[variant] : TEXT_COLOR[variant];
   const boldColor = dark ? DARK_BOLD_COLOR[variant] : BOLD_COLOR[variant];
@@ -174,7 +160,7 @@ export default function IconList({
                 : undefined,
             }}
           >
-            <IconComponent className={`mt-0.5 ${iconSize} shrink-0 ${iconColor}`} />
+            <DynamicIcon name={icon as IconName} className={`mt-0.5 ${iconSize} shrink-0 ${iconColor}`} strokeWidth={1.8} />
             <span className={`text-[14px] leading-relaxed ${textColor}`}>
               {isComplex ? (
                 <>

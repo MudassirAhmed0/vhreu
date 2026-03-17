@@ -62,7 +62,7 @@ export const WHY_RUN_VIN_CHECK = {
       title: "Avoid Accidented Cars",
       description:
         "A car's accident history can reveal whether a car has undergone major repairs that might compromise its safety or performance. A VIN check helps you avoid vehicles with serious damage.",
-      icon: "shield",
+      icon: "shield-check",
     },
     {
       title: "Detect Odometer Fraud",
@@ -74,13 +74,13 @@ export const WHY_RUN_VIN_CHECK = {
       title: "Ensure Title Authenticity",
       description:
         "A VIN number check verifies that the vehicle's title is clean and free from issues like salvage or rebuilt titles, which could affect the car's value and insurability.",
-      icon: "file",
+      icon: "file-text",
     },
     {
       title: "Check for Open Recalls",
       description:
         "About 10% of vehicles on European roads have unresolved recall issues. A VIN check ensures you're aware of any unresolved recalls, enabling you to address safety concerns before purchasing a car.",
-      icon: "alert",
+      icon: "triangle-alert",
     },
     {
       title: "Avoid Buying Stolen Cars",
@@ -106,16 +106,16 @@ export const HOW_TO_STEPS = {
         "Provide your email and phone number so we can deliver your report securely.",
     },
     {
-      icon: "click",
+      icon: "mouse-pointer-click",
       description: 'Click "Check Vehicle History" to start the process.',
     },
     {
-      icon: "document",
+      icon: "file-text",
       description:
         "Review the detailed report to understand the car's history, usage, and condition.",
     },
     {
-      icon: "check",
+      icon: "circle-check",
       description:
         "Make an informed decision before buying or selling the vehicle.",
     },
@@ -240,7 +240,7 @@ export const WHY_CHOOSE = {
     {
       title: "Easy-to-Use Tools",
       description: "Simply enter the VIN, and our system does the rest in seconds.",
-      icon: "tool",
+      icon: "wrench",
     },
     {
       title: "Affordable Options",
@@ -255,7 +255,7 @@ export const WHY_CHOOSE = {
     {
       title: "24/7 Customer Service",
       description: "Get issues resolved on time. Make informed decisions without delay.",
-      icon: "headset",
+      icon: "headphones",
     },
   ],
 };

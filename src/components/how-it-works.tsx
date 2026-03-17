@@ -1,14 +1,15 @@
-import { ReactNode } from "react";
-import { Search, Mail, MousePointerClick, FileText, CircleCheck } from "lucide-react";
 import SectionBackground from "./shared/backgrounds";
 import { entranceAnimation } from "./shared/constants";
+import DynamicIcon, { type IconName } from "./shared/dynamic-icon";
 
 /* ══════════════════════════════════════════════════════════
    HowItWorks — step-by-step process component
    Uses SectionBackground for background layers.
+   Pass any lucide icon name as step.icon (e.g. "search", "mail").
    ══════════════════════════════════════════════════════════ */
 
 interface Step {
+  /** Any lucide icon name (e.g. "search", "mail", "file-text") */
   icon: string;
   description: string;
 }
@@ -19,16 +20,6 @@ interface HowItWorksProps {
   steps: Step[];
   dark?: boolean;
 }
-
-/* ── Step icons (lucide-react) ── */
-
-const ICONS: Record<string, ReactNode> = {
-  search:   <Search className="h-6 w-6" strokeWidth={1.5} />,
-  mail:     <Mail className="h-6 w-6" strokeWidth={1.5} />,
-  click:    <MousePointerClick className="h-6 w-6" strokeWidth={1.5} />,
-  document: <FileText className="h-6 w-6" strokeWidth={1.5} />,
-  check:    <CircleCheck className="h-6 w-6" strokeWidth={1.5} />,
-};
 
 export default function HowItWorks({
   heading,
@@ -93,7 +84,7 @@ export default function HowItWorks({
                   }`}
                   style={{ transitionTimingFunction: "cubic-bezier(0.25,0.74,0.22,0.99)" }}
                 >
-                  {ICONS[step.icon] || ICONS.check}
+                  <DynamicIcon name={step.icon as IconName} className="h-6 w-6" strokeWidth={1.5} />
                 </div>
 
                 {/* Step label */}

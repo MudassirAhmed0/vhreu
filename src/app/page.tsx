@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Eye, ShieldCheck, Gauge, FileText, TriangleAlert, Lock, Zap, Database, Wrench, Wallet, Globe, Headphones } from "lucide-react";
+import DynamicIcon from "@/components/shared/dynamic-icon";
 import VinSearchForm from "@/components/vin-search-form";
 import FaqAccordion from "@/components/faq-accordion";
 import PageHero from "@/components/page-hero";
@@ -28,25 +28,6 @@ import {
   FAQS,
 } from "@/lib/constants";
 
-/* ─── ICON MAPS (lucide-react) ─── */
-
-const REASON_ICONS: Record<string, React.FC<{ className?: string }>> = {
-  eye:    (p) => <Eye {...p} strokeWidth={1.5} />,
-  shield: (p) => <ShieldCheck {...p} strokeWidth={1.5} />,
-  gauge:  (p) => <Gauge {...p} strokeWidth={1.5} />,
-  file:   (p) => <FileText {...p} strokeWidth={1.5} />,
-  alert:  (p) => <TriangleAlert {...p} strokeWidth={1.5} />,
-  lock:   (p) => <Lock {...p} strokeWidth={1.5} />,
-};
-
-const WHY_CHOOSE_ICONS: Record<string, React.ReactNode> = {
-  zap:      <Zap className="h-7 w-7" strokeWidth={1.5} />,
-  database: <Database className="h-7 w-7" strokeWidth={1.5} />,
-  tool:     <Wrench className="h-7 w-7" strokeWidth={1.5} />,
-  wallet:   <Wallet className="h-7 w-7" strokeWidth={1.5} />,
-  globe:    <Globe className="h-7 w-7" strokeWidth={1.5} />,
-  headset:  <Headphones className="h-7 w-7" strokeWidth={1.5} />,
-};
 
 
 /* ─── MAIN PAGE ─── */
@@ -75,7 +56,7 @@ export default function Home() {
         secondaryCta={{ label: "View Sample", href: "/sample-report" }}
         cta={{ label: "Check Vehicle History!", href: "#hero" }}
       >
-        <IconList items={SAVE_MONEY.warnings} icon="warning" variant="danger" />
+        <IconList items={SAVE_MONEY.warnings} icon="triangle-alert" variant="danger" />
       </SplitContent>
 
       {/* ═══ WHAT IS A VIN ═══ */}
@@ -120,18 +101,15 @@ export default function Home() {
         columns={3}
         cta={{ label: "Run a VIN check now!", href: "#hero" }}
       >
-        {WHY_RUN_VIN_CHECK.reasons.map((reason, i) => {
-          const Icon = REASON_ICONS[reason.icon];
-          return (
-            <Card
-              key={reason.title}
-              icon={Icon && <Icon />}
-              title={reason.title}
-              description={reason.description}
-              delay={0.1 + i * 0.08}
-            />
-          );
-        })}
+        {WHY_RUN_VIN_CHECK.reasons.map((reason, i) => (
+          <Card
+            key={reason.title}
+            icon={<DynamicIcon name={reason.icon as any} className="h-6 w-6" strokeWidth={1.5} />}
+            title={reason.title}
+            description={reason.description}
+            delay={0.1 + i * 0.08}
+          />
+        ))}
       </CardSection>
 
       {/* ═══ HOW TO RUN ═══ */}
@@ -204,7 +182,7 @@ export default function Home() {
         {WHY_CHOOSE.features.map((feature, i) => (
           <Card
             key={feature.title}
-            icon={WHY_CHOOSE_ICONS[feature.icon]}
+            icon={<DynamicIcon name={feature.icon as any} className="h-7 w-7" strokeWidth={1.5} />}
             title={feature.title}
             description={feature.description}
             delay={0.1 + i * 0.08}
