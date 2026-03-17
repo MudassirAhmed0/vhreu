@@ -1,7 +1,10 @@
 import { ReactNode } from "react";
+import SectionBackground from "./shared/backgrounds";
+import { entranceAnimation } from "./shared/constants";
 
 /* ══════════════════════════════════════════════════════════
-   Types
+   HowItWorks — step-by-step process component
+   Uses SectionBackground for background layers.
    ══════════════════════════════════════════════════════════ */
 
 interface Step {
@@ -16,11 +19,7 @@ interface HowItWorksProps {
   dark?: boolean;
 }
 
-/* ══════════════════════════════════════════════════════════
-   Shared assets
-   ══════════════════════════════════════════════════════════ */
-
-const NOISE = `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")`;
+/* ── Step icons ── */
 
 const ICONS: Record<string, ReactNode> = {
   search: (
@@ -50,19 +49,22 @@ const ICONS: Record<string, ReactNode> = {
   ),
 };
 
-/* ══════════════════════════════════════════════════════════
-   Main component
-   ══════════════════════════════════════════════════════════ */
-
 export default function HowItWorks({
   heading,
   closingText,
   steps,
   dark = false,
 }: HowItWorksProps) {
+  const bg = dark ? "dark" as const : "muted" as const;
+
   return (
     <section className="relative overflow-hidden py-20 sm:py-28">
-      {dark ? <DarkBg /> : <LightBg />}
+      <SectionBackground bg={bg} />
+
+      {/* HowItWorks dark variant has extra top edge + wider glow */}
+      {dark && (
+        <div className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" />
+      )}
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         {/* ── Heading ── */}
@@ -72,7 +74,7 @@ export default function HowItWorks({
               className={`text-center text-[clamp(1.8rem,4vw,2.8rem)] font-extrabold tracking-[-0.02em] ${
                 dark ? "text-white" : "text-foreground"
               }`}
-              style={{ animation: "hero-up 0.9s cubic-bezier(0.16,1,0.3,1) both" }}
+              style={entranceAnimation(0.9)}
             >
               {heading}
             </h2>
@@ -81,7 +83,7 @@ export default function HowItWorks({
 
         {/* ── Steps ── */}
         <div className="relative mt-16 lg:mt-20">
-          {/* Horizontal connector — desktop only, 4+ steps */}
+          {/* Horizontal connector — desktop only */}
           <div
             className={`absolute left-0 right-0 top-7 hidden h-px origin-left ${steps.length > 3 ? "lg:block" : "sm:block"}`}
             style={{
@@ -99,9 +101,7 @@ export default function HowItWorks({
               <div
                 key={i}
                 className="relative flex flex-col items-center text-center"
-                style={{
-                  animation: `hero-up 0.8s cubic-bezier(0.16,1,0.3,1) ${0.2 + i * 0.12}s both`,
-                }}
+                style={entranceAnimation(0.8, 0.2 + i * 0.12)}
               >
                 {/* Icon container */}
                 <div
@@ -143,63 +143,12 @@ export default function HowItWorks({
             className={`mx-auto mt-14 max-w-lg text-center text-[15px] leading-relaxed ${
               dark ? "text-white/35" : "text-text-3"
             }`}
-            style={{ animation: "hero-up 0.7s cubic-bezier(0.16,1,0.3,1) 0.9s both" }}
+            style={entranceAnimation(0.7, 0.9)}
           >
             {closingText}
           </p>
         )}
       </div>
     </section>
-  );
-}
-
-/* ══════════════════════════════════════════════════════════
-   DARK BACKGROUND
-   ══════════════════════════════════════════════════════════ */
-function DarkBg() {
-  return (
-    <>
-      <div className="absolute inset-0 bg-hero-dark" />
-      <div className="absolute inset-0 opacity-[0.35]" style={{ backgroundImage: NOISE }} />
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.25) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-          opacity: 0.04,
-        }}
-      />
-      {/* Central navy glow */}
-      <div
-        className="absolute left-1/2 top-1/2 h-[350px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-15 blur-[120px]"
-        style={{ background: "radial-gradient(ellipse, var(--primary) 0%, transparent 70%)" }}
-      />
-      {/* Edge lines */}
-      <div className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/20 to-transparent" />
-    </>
-  );
-}
-
-/* ══════════════════════════════════════════════════════════
-   LIGHT BACKGROUND
-   ══════════════════════════════════════════════════════════ */
-function LightBg() {
-  return (
-    <>
-      <div className="absolute inset-0 bg-surface" />
-      <div
-        className="absolute inset-0 opacity-[0.2]"
-        style={{
-          backgroundImage: "radial-gradient(circle, rgba(26,74,92,0.06) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-        }}
-      />
-      <div
-        className="absolute left-1/2 top-[30%] h-[250px] w-[500px] -translate-x-1/2 rounded-full opacity-[0.04] blur-[100px]"
-        style={{ background: "radial-gradient(ellipse, var(--primary) 0%, transparent 70%)" }}
-      />
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
-    </>
   );
 }
