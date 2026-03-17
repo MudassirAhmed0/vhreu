@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import PricingCard from "./pricing-card";
-import PricingGrid from "./pricing-grid";
 
 const meta: Meta<typeof PricingCard> = {
   title: "Components/PricingCard",
@@ -100,14 +99,14 @@ export const FullGrid: Story = {
   render: () => (
     <div className="bg-surface px-8 py-16">
       <div className="mx-auto max-w-5xl">
-        <PricingGrid>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <PricingCard name="Basic" price={9.98} credits={1} delay={0.1} />
           <PricingCard name="Silver" price={17} credits={2} savings="15%" delay={0.14} />
           <PricingCard name="Gold" price={40} credits={5} savings="20%" featured delay={0.18} />
           <PricingCard name="Platinum" price={75} credits={10} savings="25%" delay={0.22} />
           <PricingCard name="Diamond" price={175} credits={25} savings="30%" delay={0.26} />
           <PricingCard name="Executive" price={300} credits={50} savings="40%" delay={0.3} />
-        </PricingGrid>
+        </div>
       </div>
     </div>
   ),
@@ -120,14 +119,14 @@ export const FullGridDark: Story = {
   render: () => (
     <div className="px-8 py-16" style={{ background: "var(--hero-dark)" }}>
       <div className="mx-auto max-w-5xl">
-        <PricingGrid>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <PricingCard name="Basic" price={9.98} credits={1} dark delay={0.1} />
           <PricingCard name="Silver" price={17} credits={2} savings="15%" dark delay={0.14} />
           <PricingCard name="Gold" price={40} credits={5} savings="20%" featured dark delay={0.18} />
           <PricingCard name="Platinum" price={75} credits={10} savings="25%" dark delay={0.22} />
           <PricingCard name="Diamond" price={175} credits={25} savings="30%" dark delay={0.26} />
           <PricingCard name="Executive" price={300} credits={50} savings="40%" dark delay={0.3} />
-        </PricingGrid>
+        </div>
       </div>
     </div>
   ),
