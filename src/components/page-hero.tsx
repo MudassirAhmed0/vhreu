@@ -17,6 +17,11 @@ interface PageHeroProps {
   /** Disable glow frame around children/image in split variant. Default true.
    *  Turn off for large children like forms where the glow overwhelms. */
   glow?: boolean;
+  /** Fill full viewport height. Default true. Set false for shorter heroes. */
+  fullHeight?: boolean;
+  /** Right-side content for split variant (e.g. ReportPreview component).
+   *  When provided with children, children go below text on the left. */
+  rightContent?: ReactNode;
   children?: ReactNode;
 }
 
@@ -34,10 +39,12 @@ export default function PageHero({
   heroImageAlt = "Vehicle history report preview",
   dark = true,
   glow = true,
+  fullHeight = true,
+  rightContent,
   children,
 }: PageHeroProps) {
   return (
-    <section className="relative overflow-hidden">
+    <section className={`relative overflow-hidden ${fullHeight ? "min-h-dvh" : ""}`}>
       {dark ? (
         <DarkBackground variant={variant} backgroundImage={backgroundImage} />
       ) : (
@@ -48,7 +55,7 @@ export default function PageHero({
           CENTERED
           ══════════════════════════════ */}
       {variant === "centered" && (
-        <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:py-28">
+        <div className={`relative mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:py-28 ${fullHeight ? "flex min-h-dvh flex-col justify-center" : ""}`}>
           <div
             className="mx-auto max-w-3xl text-center"
             style={{ animation: "hero-up 0.7s cubic-bezier(0.16,1,0.3,1) both" }}
@@ -78,17 +85,26 @@ export default function PageHero({
           SPLIT
           ══════════════════════════════ */}
       {variant === "split" && (
-        <div className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:py-20">
+        <div className={`relative mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:py-20 ${fullHeight ? "flex min-h-dvh flex-col justify-center" : ""}`}>
           <div className="grid items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-16">
-            {/* Left — text */}
+            {/* Left — text + optional children below when image is on right */}
             <div style={{ animation: "hero-up 0.7s cubic-bezier(0.16,1,0.3,1) both" }}>
               <HeroTag dark={dark}>{tag}</HeroTag>
               <HeroTitle dark={dark} title={title} highlight={highlight} compact />
               <HeroSubtitle dark={dark}>{subtitle}</HeroSubtitle>
               <HeroBullets items={bullets} dark={dark} delay={0.18} />
+              {/* When right content exists, children go below text on the left */}
+              {(heroImage || rightContent) && children && (
+                <div
+                  className="mt-8"
+                  style={{ animation: "hero-up 0.7s cubic-bezier(0.16,1,0.3,1) 0.25s both" }}
+                >
+                  {children}
+                </div>
+              )}
             </div>
 
-            {/* Right — image or form */}
+            {/* Right — image or form (form only when no heroImage) */}
             <div
               className="relative flex justify-center md:justify-end"
               style={{ animation: "hero-scale 0.8s cubic-bezier(0.16,1,0.3,1) 0.15s both" }}
@@ -106,7 +122,9 @@ export default function PageHero({
                   />
                 </>
               )}
-              {heroImage ? (
+              {rightContent ? (
+                <div className="relative w-full max-w-xl">{rightContent}</div>
+              ) : heroImage ? (
                 <div className="relative w-full max-w-[580px]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -129,7 +147,7 @@ export default function PageHero({
           STACKED
           ══════════════════════════════ */}
       {variant === "stacked" && (
-        <div className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:py-24">
+        <div className={`relative mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:py-24 ${fullHeight ? "flex min-h-dvh flex-col justify-center" : ""}`}>
           {/* Heading — centered vertical flow */}
           <div
             className="mx-auto max-w-3xl text-center"
