@@ -13,6 +13,11 @@ const meta: Meta<typeof SectionWrapper> = {
       options: ["white", "muted", "dark"],
       table: { category: "Layout" },
     },
+    scene: {
+      control: "select",
+      options: ["default", "glow", "rings", "grid", "waves", "minimal"],
+      table: { category: "Layout" },
+    },
     heading: { control: "text", table: { category: "Content" } },
     subtitle: { control: "text", table: { category: "Content" } },
     narrow: { control: "boolean", table: { category: "Layout" } },
@@ -215,4 +220,70 @@ export const NoHeading: Story = {
       />
     </SectionWrapper>
   ),
+};
+
+/* ══════════════════════════════════════════════════════════
+   SCENE VARIANTS — all 5 scenes × light & dark
+   ══════════════════════════════════════════════════════════ */
+
+const SCENE_CONTENT = (
+  <div className="mx-auto max-w-lg text-center">
+    <p className="text-[15px] leading-relaxed opacity-60">
+      Scene decoration preview — check the background layers behind this content.
+    </p>
+  </div>
+);
+
+export const SceneGlowLight: Story = {
+  name: "Scene: Glow (Light)",
+  args: { bg: "white", scene: "glow", heading: "Glow Scene" },
+  render: (args) => <SectionWrapper {...args}>{SCENE_CONTENT}</SectionWrapper>,
+};
+
+export const SceneGlowDark: Story = {
+  name: "Scene: Glow (Dark)",
+  args: { bg: "dark", scene: "glow", heading: "Glow Scene" },
+  render: (args) => <SectionWrapper {...args}>{SCENE_CONTENT}</SectionWrapper>,
+};
+
+export const SceneRingsLight: Story = {
+  name: "Scene: Rings (Light)",
+  args: { bg: "muted", scene: "rings", heading: "Rings Scene" },
+  render: (args) => <SectionWrapper {...args}>{SCENE_CONTENT}</SectionWrapper>,
+};
+
+export const SceneRingsDark: Story = {
+  name: "Scene: Rings (Dark)",
+  args: { bg: "dark", scene: "rings", heading: "Rings Scene" },
+  render: (args) => <SectionWrapper {...args}>{SCENE_CONTENT}</SectionWrapper>,
+};
+
+export const SceneGridLight: Story = {
+  name: "Scene: Grid (Light)",
+  args: { bg: "white", scene: "grid", heading: "Grid Scene" },
+  render: (args) => <SectionWrapper {...args}>{SCENE_CONTENT}</SectionWrapper>,
+};
+
+export const SceneGridDark: Story = {
+  name: "Scene: Grid (Dark)",
+  args: { bg: "dark", scene: "grid", heading: "Grid Scene" },
+  render: (args) => <SectionWrapper {...args}>{SCENE_CONTENT}</SectionWrapper>,
+};
+
+export const SceneWavesLight: Story = {
+  name: "Scene: Waves (Light)",
+  args: { bg: "muted", scene: "waves", heading: "Waves Scene" },
+  render: (args) => <SectionWrapper {...args}>{SCENE_CONTENT}</SectionWrapper>,
+};
+
+export const SceneWavesDark: Story = {
+  name: "Scene: Waves (Dark)",
+  args: { bg: "dark", scene: "waves", heading: "Waves Scene" },
+  render: (args) => <SectionWrapper {...args}>{SCENE_CONTENT}</SectionWrapper>,
+};
+
+export const SceneMinimal: Story = {
+  name: "Scene: Minimal",
+  args: { bg: "white", scene: "minimal", heading: "Minimal Scene" },
+  render: (args) => <SectionWrapper {...args}>{SCENE_CONTENT}</SectionWrapper>,
 };

@@ -6,7 +6,7 @@
    ══════════════════════════════════════════════════════════ */
 
 import { ReactNode } from "react";
-import SectionBackground from "./shared/backgrounds";
+import SectionBackground, { type Scene } from "./shared/backgrounds";
 import {
   type BgVariant,
   HEADING_CLASSES,
@@ -18,6 +18,8 @@ interface SectionWrapperProps {
   children: ReactNode;
   /** Background style */
   bg?: BgVariant;
+  /** Decorative scene: "default" | "glow" | "rings" | "grid" | "waves" | "minimal" */
+  scene?: Scene;
   /** Section heading (h2) */
   heading?: string;
   /** Subtitle below heading */
@@ -30,11 +32,12 @@ interface SectionWrapperProps {
   delay?: number;
 }
 
-export { type BgVariant, type SectionWrapperProps };
+export { type BgVariant, type Scene, type SectionWrapperProps };
 
 export default function SectionWrapper({
   children,
   bg = "white",
+  scene,
   heading,
   subtitle,
   id,
@@ -43,7 +46,7 @@ export default function SectionWrapper({
 }: SectionWrapperProps) {
   return (
     <section id={id} className="relative overflow-hidden py-20 sm:py-28">
-      <SectionBackground bg={bg} />
+      <SectionBackground bg={bg} scene={scene} />
 
       {/* ── Content ── */}
       <div
