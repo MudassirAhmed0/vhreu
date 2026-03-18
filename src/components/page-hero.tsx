@@ -386,10 +386,10 @@ function LightBackground({ variant }: { variant: Variant }) {
           animation: "orb-drift 15s ease-in-out infinite",
         }}
       />
-      {/* Coral warmth */}
+      {/* Secondary glow */}
       <div
-        className="absolute -bottom-[8%] -right-[8%] h-[300px] w-[350px] rounded-full opacity-[0.03] blur-[80px]"
-        style={{ background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)" }}
+        className="absolute -bottom-[8%] -right-[8%] h-[300px] w-[350px] rounded-full opacity-[0.04] blur-[80px]"
+        style={{ background: "radial-gradient(circle, var(--primary-light) 0%, transparent 70%)" }}
       />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
     </>
@@ -526,13 +526,13 @@ function HeroBullets({
           className={`inline-flex items-center gap-2.5 rounded-full px-4 py-2 text-[13px] font-semibold transition-colors duration-300 ${
             dark
               ? "border border-white/[0.06] bg-white/[0.04] text-white/65 backdrop-blur-sm hover:border-accent/20 hover:text-white/80"
-              : "border border-primary/10 bg-primary/[0.03] text-primary/65 hover:border-accent/20 hover:text-primary/80"
+              : "border border-primary/10 bg-primary/[0.03] text-primary/65 hover:border-primary/25 hover:text-primary/80"
           }`}
           style={{ animation: `hero-up 0.5s cubic-bezier(0.16,1,0.3,1) ${delay + 0.05 + i * 0.06}s both` }}
         >
           <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-40" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_6px_rgba(255,204,0,0.5)]" />
+            <span className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-40 ${dark ? "bg-accent" : "bg-primary"}`} />
+            <span className={`relative inline-flex h-1.5 w-1.5 rounded-full ${dark ? "bg-accent shadow-[0_0_6px_rgba(255,204,0,0.5)]" : "bg-primary shadow-[0_0_6px_rgba(26,54,92,0.4)]"}`} />
           </span>
           {b}
         </span>
