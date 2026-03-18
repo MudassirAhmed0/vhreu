@@ -29,7 +29,6 @@ import {
 } from "@/lib/constants";
 
 
-
 /* ─── MAIN PAGE ─── */
 export default function Home() {
   return (
@@ -75,8 +74,8 @@ export default function Home() {
                 {["W","V","W","Z","Z","Z","3","C","Z","W","E","1","2","3","4","5","6"].map((ch, i) => (
                   <span
                     key={i}
-                    className={`flex h-9 w-7 items-center justify-center rounded text-sm font-bold ${
-                      i < 3 ? "bg-blue-100 text-blue-700" : i < 9 ? "bg-amber-100 text-amber-700" : "bg-green-100 text-green-700"
+                    className={`flex h-9 w-7 items-center justify-center rounded text-[13px] font-bold ${
+                      i < 3 ? "bg-primary/10 text-primary" : i < 9 ? "bg-accent/15 text-accent-hover" : "bg-green/10 text-green"
                     }`}
                   >
                     {ch}
@@ -84,9 +83,9 @@ export default function Home() {
                 ))}
               </div>
               <div className="mt-4 flex justify-between text-[10px] font-semibold text-text-3">
-                <span className="text-blue-600">WMI (1-3)</span>
-                <span className="text-amber-600">VDS (4-9)</span>
-                <span className="text-green-600">VIS (10-17)</span>
+                <span className="text-primary">WMI (1-3)</span>
+                <span className="text-accent-hover">VDS (4-9)</span>
+                <span className="text-green">VIS (10-17)</span>
               </div>
             </div>
           </div>
@@ -155,23 +154,16 @@ export default function Home() {
       </CardSection>
 
       {/* ═══ COMPETITOR COMPARISON ═══ */}
-      <section className="bg-muted py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center text-3xl font-extrabold text-primary sm:text-4xl">
-            {COMPETITOR_COMPARISON.heading}
-          </h2>
-          <div className="mt-12">
-            <DataTable
-              columns={[
-                { key: "us", label: "VHR.eu", highlight: true },
-                { key: "carfax", label: "Carfax" },
-                { key: "autodna", label: "AutoDNA" },
-              ]}
-              rows={COMPETITOR_COMPARISON.features}
-            />
-          </div>
-        </div>
-      </section>
+      <SectionWrapper bg="muted" heading={COMPETITOR_COMPARISON.heading}>
+        <DataTable
+          columns={[
+            { key: "us", label: "VHR.eu", highlight: true },
+            { key: "carfax", label: "Carfax" },
+            { key: "autodna", label: "AutoDNA" },
+          ]}
+          rows={COMPETITOR_COMPARISON.features}
+        />
+      </SectionWrapper>
 
       {/* ═══ WHY CHOOSE US ═══ */}
       <CardSection
@@ -191,50 +183,42 @@ export default function Home() {
       </CardSection>
 
       {/* ═══ COUNTRIES ═══ */}
-      <section className="bg-muted py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center text-3xl font-extrabold text-primary sm:text-4xl">
-            Get EU VIN Check Report by Country
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-slate-600">
-            No matter where you are in Europe, our VIN check tool has you covered. We provide reports for vehicles across the following European countries:
-          </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-2">
-            {COUNTRIES_LIST.map((country) => (
-              <Link
-                key={country}
-                href="#"
-                className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-all hover:border-primary hover:bg-primary hover:text-white"
-              >
-                {country}
-              </Link>
-            ))}
-          </div>
+      <SectionWrapper
+        bg="muted"
+        heading="Get EU VIN Check Report by Country"
+        subtitle="No matter where you are in Europe, our VIN check tool has you covered. We provide reports for vehicles across the following European countries:"
+      >
+        <div className="flex flex-wrap justify-center gap-2">
+          {COUNTRIES_LIST.map((country) => (
+            <Link
+              key={country}
+              href="#"
+              className="rounded-xl border border-border bg-white px-4 py-2 text-[14px] font-medium text-text-2 transition-all hover:border-primary hover:bg-primary hover:text-white"
+            >
+              {country}
+            </Link>
+          ))}
         </div>
-      </section>
+      </SectionWrapper>
 
       {/* ═══ CAR MAKES ═══ */}
-      <section className="bg-white py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center text-3xl font-extrabold text-primary sm:text-4xl">
-            Run VIN Check Europe by Makes
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-slate-600">
-            Get detailed vehicle history reports for popular brands. Just choose your car brand and start your VIN check right away!
-          </p>
-          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
-            {CAR_MAKES.map((make) => (
-              <Link
-                key={make}
-                href="#"
-                className="flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-5 text-sm font-semibold text-primary shadow-sm transition-all hover:border-primary/30 hover:shadow-md"
-              >
-                {make}
-              </Link>
-            ))}
-          </div>
+      <SectionWrapper
+        bg="white"
+        heading="Run VIN Check Europe by Makes"
+        subtitle="Get detailed vehicle history reports for popular brands. Just choose your car brand and start your VIN check right away!"
+      >
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
+          {CAR_MAKES.map((make) => (
+            <Link
+              key={make}
+              href="#"
+              className="flex items-center justify-center rounded-xl border border-border bg-white px-4 py-5 text-[14px] font-semibold text-primary shadow-sm transition-all hover:border-primary/30 hover:shadow-md"
+            >
+              {make}
+            </Link>
+          ))}
         </div>
-      </section>
+      </SectionWrapper>
 
       {/* ═══ BLOG ═══ */}
       <SectionWrapper bg="muted" heading="Blog">
@@ -255,16 +239,9 @@ export default function Home() {
       </SectionWrapper>
 
       {/* ═══ FAQ ═══ */}
-      <section className="bg-white py-16 sm:py-24">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center text-3xl font-extrabold text-primary sm:text-4xl">
-            Frequently Asked Questions
-          </h2>
-          <div className="mt-12">
-            <FaqAccordion items={FAQS} />
-          </div>
-        </div>
-      </section>
+      <SectionWrapper bg="white" heading="Frequently Asked Questions" narrow>
+        <FaqAccordion items={FAQS} />
+      </SectionWrapper>
     </>
   );
 }

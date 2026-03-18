@@ -36,22 +36,16 @@ const ALIGN_CLASS = {
   right: "text-right",
 } as const;
 
-/* ── Icons ── */
+/* ── Icons (lucide-react) ── */
+
+import { Check, X } from "lucide-react";
 
 function CheckIcon() {
-  return (
-    <svg className="mx-auto h-5 w-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-    </svg>
-  );
+  return <Check className="mx-auto h-5 w-5 text-green" strokeWidth={2.2} />;
 }
 
 function XIcon() {
-  return (
-    <svg className="mx-auto h-5 w-5 text-red-400/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-    </svg>
-  );
+  return <X className="mx-auto h-5 w-5 text-danger/70" strokeWidth={2.2} />;
 }
 
 /* ── Cell renderer ── */
