@@ -455,7 +455,7 @@ function HeroTitle({
         <>
           <br />
           {dark ? (
-            /* Dark bg: yellow gradient text — #FFCC00 pops on navy */
+            /* Dark bg: gold gradient text — high contrast on navy */
             <span
               className="font-extrabold"
               style={{
@@ -469,11 +469,11 @@ function HeroTitle({
               {highlight}
             </span>
           ) : (
-            /* Light bg: same yellow gradient text */
+            /* Light bg: navy gradient text — gold fails contrast on white */
             <span
               className="font-extrabold"
               style={{
-                background: "linear-gradient(135deg, #FFCC00 0%, #FFE566 40%, #FFF0A0 55%, #FFCC00 100%)",
+                background: "linear-gradient(135deg, #0B1D33 0%, #1A365C 40%, #2C5A8C 60%, #1A365C 100%)",
                 backgroundSize: "200% 200%",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
