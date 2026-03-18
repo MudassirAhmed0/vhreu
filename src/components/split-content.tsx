@@ -86,7 +86,7 @@ export default function SplitContent({
               {secondaryCta && (
                 <SecondaryCTA href={secondaryCta.href} label={secondaryCta.label} dark={isDark} />
               )}
-              {cta && <PrimaryCTA href={cta.href} label={cta.label} />}
+              {cta && <PrimaryCTA href={cta.href} label={cta.label} dark={isDark} />}
             </div>
           )}
         </div>

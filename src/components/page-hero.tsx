@@ -469,11 +469,11 @@ function HeroTitle({
               {highlight}
             </span>
           ) : (
-            /* Light bg: navy gradient text — gold fails contrast on white */
+            /* Light bg: blue gradient text — gold fails contrast on white */
             <span
               className="font-extrabold"
               style={{
-                background: "linear-gradient(135deg, #0B1D33 0%, #1A365C 40%, #2C5A8C 60%, #1A365C 100%)",
+                background: "linear-gradient(135deg, #1A365C 0%, #2C5A8C 35%, #4A7FBF 55%, #2C5A8C 100%)",
                 backgroundSize: "200% 200%",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",

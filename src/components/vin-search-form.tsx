@@ -59,10 +59,10 @@ export default function VinSearchForm({
         />
         <button
           type="submit"
-          className={`w-full rounded-xl bg-accent py-4 text-[15px] font-bold transition-all hover:-translate-y-0.5 ${
+          className={`w-full rounded-xl py-4 text-[15px] font-bold transition-all hover:-translate-y-0.5 ${
             dark
-              ? "text-hero-dark shadow-[0_4px_20px_rgba(255,204,0,0.2)] hover:shadow-[0_6px_28px_rgba(255,204,0,0.3)]"
-              : "text-hero-dark shadow-sm hover:shadow-md"
+              ? "bg-accent text-hero-dark shadow-[0_4px_20px_rgba(255,204,0,0.2)] hover:shadow-[0_6px_28px_rgba(255,204,0,0.3)]"
+              : "bg-primary text-white shadow-[0_4px_20px_rgba(26,54,92,0.15)] hover:bg-primary-light hover:shadow-[0_6px_28px_rgba(26,54,92,0.2)]"
           }`}
         >
           {buttonText}
