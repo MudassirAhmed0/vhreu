@@ -15,7 +15,7 @@ const meta: Meta<typeof SectionWrapper> = {
     },
     scene: {
       control: "select",
-      options: ["default", "glow", "rings", "grid", "waves", "minimal"],
+      options: ["default", "glow", "rings", "grid", "waves", "split", "edge", "minimal"],
       table: { category: "Layout" },
     },
     heading: { control: "text", table: { category: "Content" } },
@@ -279,6 +279,30 @@ export const SceneWavesLight: Story = {
 export const SceneWavesDark: Story = {
   name: "Scene: Waves (Dark)",
   args: { bg: "dark", scene: "waves", heading: "Waves Scene" },
+  render: (args) => <SectionWrapper {...args}>{SCENE_CONTENT}</SectionWrapper>,
+};
+
+export const SceneSplitLight: Story = {
+  name: "Scene: Split (Light)",
+  args: { bg: "white", scene: "split", heading: "Split Scene" },
+  render: (args) => <SectionWrapper {...args}>{SCENE_CONTENT}</SectionWrapper>,
+};
+
+export const SceneSplitDark: Story = {
+  name: "Scene: Split (Dark)",
+  args: { bg: "dark", scene: "split", heading: "Split Scene" },
+  render: (args) => <SectionWrapper {...args}>{SCENE_CONTENT}</SectionWrapper>,
+};
+
+export const SceneEdgeLight: Story = {
+  name: "Scene: Edge (Light)",
+  args: { bg: "muted", scene: "edge", heading: "Edge Scene" },
+  render: (args) => <SectionWrapper {...args}>{SCENE_CONTENT}</SectionWrapper>,
+};
+
+export const SceneEdgeDark: Story = {
+  name: "Scene: Edge (Dark)",
+  args: { bg: "dark", scene: "edge", heading: "Edge Scene" },
   render: (args) => <SectionWrapper {...args}>{SCENE_CONTENT}</SectionWrapper>,
 };
 
