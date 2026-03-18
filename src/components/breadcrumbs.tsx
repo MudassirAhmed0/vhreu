@@ -42,7 +42,7 @@ export default function Breadcrumbs({ items, dark = false }: BreadcrumbsProps) {
       />
       <nav
         aria-label="Breadcrumb"
-        className={`text-[13px] ${dark ? "text-white/40" : "text-text-3"}`}
+        className={`text-[13px] ${dark ? "text-white/60" : "text-text-2"}`}
       >
         <ol className="flex items-center gap-1.5 overflow-hidden">
           {items.map((item, i) => {
