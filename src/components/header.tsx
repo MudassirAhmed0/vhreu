@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { NAV_LINKS, SITE_NAME } from "@/lib/constants";
@@ -11,14 +12,15 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-white/95 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 sm:px-8">
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-[11px] font-black tracking-tight text-white">
-            VH
-          </div>
-          <div className="hidden sm:block">
-            <span className="text-[15px] font-bold text-primary">Vehicle History</span>
-            <span className="ml-1 text-[11px] font-semibold text-text-3">EUROPE</span>
-          </div>
+        <Link href="/">
+          <Image
+            src="/logo.svg"
+            alt="Vehicle History Europe"
+            width={180}
+            height={57}
+            className="h-9 w-auto"
+            priority
+          />
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex">

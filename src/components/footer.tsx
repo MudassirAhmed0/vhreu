@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { SITE_NAME, NAV_LINKS, SAMPLE_REPORTS, FOOTER } from "@/lib/constants";
 
 export default function Footer() {
@@ -8,11 +9,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-5">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-[11px] font-black text-hero-dark">
-                VH
-              </div>
-              <span className="text-[15px] font-bold text-white">Vehicle History</span>
+            <Link href="/">
+              <Image
+                src="/logo-white.svg"
+                alt="Vehicle History Europe"
+                width={180}
+                height={57}
+                className="h-9 w-auto"
+              />
             </Link>
             <div className="mt-4 space-y-2 text-[13px] text-white/40">
               <p>{FOOTER.phone}</p>
