@@ -18,7 +18,7 @@ export default function Footer() {
                 className="h-9 w-auto"
               />
             </Link>
-            <div className="mt-4 space-y-2 text-[13px] text-white/40">
+            <div className="mt-4 space-y-2 text-[13px] text-white/60">
               <p>{FOOTER.phone}</p>
               <p>{FOOTER.email}</p>
             </div>
@@ -30,18 +30,18 @@ export default function Footer() {
             <ul className="mt-4 space-y-2.5">
               {NAV_LINKS.slice(1).map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-[13px] text-white/40 transition-colors hover:text-white">
+                  <Link href={link.href} className="text-[13px] text-white/60 transition-colors hover:text-white">
                     {link.label}
                   </Link>
                 </li>
               ))}
               <li>
-                <Link href="/blog" className="text-[13px] text-white/40 transition-colors hover:text-white">
+                <Link href="/blog" className="text-[13px] text-white/60 transition-colors hover:text-white">
                   Blog
                 </Link>
               </li>
               <li>
-                <Link href="/members/login" className="text-[13px] text-white/40 transition-colors hover:text-white">
+                <Link href="/members/login" className="text-[13px] text-white/60 transition-colors hover:text-white">
                   Login / Sign Up
                 </Link>
               </li>
@@ -54,7 +54,7 @@ export default function Footer() {
             <ul className="mt-4 space-y-2.5">
               {SAMPLE_REPORTS.map((report) => (
                 <li key={report}>
-                  <Link href="/sample-report" className="text-[13px] text-white/40 transition-colors hover:text-white">
+                  <Link href="/sample-report" className="text-[13px] text-white/60 transition-colors hover:text-white">
                     {report}
                   </Link>
                 </li>
@@ -68,7 +68,7 @@ export default function Footer() {
             <ul className="mt-4 space-y-2.5">
               {FOOTER.decoderByMake.map((make) => (
                 <li key={make}>
-                  <Link href="#" className="text-[13px] text-white/40 transition-colors hover:text-white">
+                  <Link href="#" className="text-[13px] text-white/60 transition-colors hover:text-white">
                     {make}
                   </Link>
                 </li>
@@ -82,7 +82,7 @@ export default function Footer() {
             <ul className="mt-4 space-y-2.5">
               {FOOTER.quickLinks.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-[13px] text-white/40 transition-colors hover:text-white">
+                  <Link href={link.href} className="text-[13px] text-white/60 transition-colors hover:text-white">
                     {link.label}
                   </Link>
                 </li>
@@ -92,7 +92,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 border-t border-white/[0.06] pt-8 text-center">
-          <p className="text-[13px] text-white/25">
+          <p className="text-[13px] text-white/45">
             &copy; {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
           </p>
         </div>
