@@ -92,7 +92,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 border-t border-white/[0.06] pt-8 text-center">
-          <p className="text-[13px] text-white/45">
+          <p className="text-[13px] text-white/50">
             &copy; {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
           </p>
         </div>
