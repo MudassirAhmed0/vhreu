@@ -209,7 +209,6 @@ export default function Home2() {
               key={post.slug}
               title={post.title}
               slug={post.slug}
-              image={post.image}
               author={post.author}
               date={post.date}
               excerpt={post.excerpt}

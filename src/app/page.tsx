@@ -230,7 +230,6 @@ export default function Home() {
               key={post.slug}
               title={post.title}
               slug={post.slug}
-              image={post.image}
               author={post.author}
               date={post.date}
               excerpt={post.excerpt}
