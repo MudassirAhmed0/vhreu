@@ -20,6 +20,32 @@ export const metadata: Metadata = {
   title: "VehicleHistory EU — European VIN Check & Vehicle Reports",
   description:
     "Get free VIN decoding and affordable European VIN check for reliable vehicle history - verify title and condition, accidents, auction records, actual mileage and more.",
+  metadataBase: new URL("https://vehiclehistory.eu"),
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/manifest.webmanifest",
+  openGraph: {
+    title: "VehicleHistory EU — European VIN Check & Vehicle Reports",
+    description:
+      "Get free VIN decoding and affordable European VIN check for reliable vehicle history - verify title and condition, accidents, auction records, actual mileage and more.",
+    url: "https://vehiclehistory.eu",
+    siteName: "VehicleHistory.EU",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "VehicleHistory EU — European VIN Check & Vehicle Reports",
+    description:
+      "Get free VIN decoding and affordable European VIN check for reliable vehicle history.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
