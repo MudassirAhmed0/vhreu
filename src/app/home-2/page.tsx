@@ -1,3 +1,4 @@
+import Image from "next/image";
 import DynamicIcon from "@/components/shared/dynamic-icon";
 import PageHero from "@/components/page-hero";
 import VinSearchForm from "@/components/vin-search-form";
@@ -26,8 +27,9 @@ export default function Home2() {
         highlight="EU VIN Lookup"
         subtitle={HERO.subheading}
         bullets={HERO.trustBadges}
-        heroImage="/report-preview.png"
+        heroImage="/report-preview.webp"
         heroImageAlt="Sample vehicle history report preview"
+        glow={false}
         cta={{ label: "View Sample Report", href: "/sample-report" }}
         secondaryCta={{ label: "Pan-European Coverage", href: "/countries" }}
       >
@@ -43,6 +45,11 @@ export default function Home2() {
         bg="white"
         secondaryCta={{ label: "View Sample", href: "/sample-report" }}
         cta={{ label: "Check Vehicle History!", href: "#hero" }}
+        media={
+          <div className="relative w-full" style={{ aspectRatio: "448/557" }}>
+            <Image src="/damaged-car.webp" alt="Damaged car with warning badges showing problems found, odometer discrepancy, recall issues, and damages" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-contain" />
+          </div>
+        }
       >
         <IconList items={SAVE_MONEY.warnings} icon="triangle-alert" variant="danger" />
       </SplitContent>
@@ -55,6 +62,11 @@ export default function Home2() {
         description={VIN_EXPLANATION.paragraphs}
         bg="muted"
         reverse
+        media={
+          <div className="relative w-full" style={{ aspectRatio: "704/423" }}>
+            <Image src="/vin-location-car.webp" alt="Car diagram showing VIN locations: dashboard, hood, frame, and driver door" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-contain" />
+          </div>
+        }
       />
 
       {/* ═══ WHY RUN VIN CHECK ═══ */}

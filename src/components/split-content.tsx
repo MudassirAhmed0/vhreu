@@ -144,7 +144,7 @@ export default function SplitContent({
 
         {/* ── Media column ── */}
         <div data-reveal className={`flex justify-center ${reverse ? "order-1 lg:order-1" : "order-2"}`}>
-          <div style={entranceAnimation(0.9, 0.2)}>
+          <div className="w-full" style={entranceAnimation(0.9, 0.2)}>
             {media || <MediaPlaceholder dark={isDark} />}
           </div>
         </div>

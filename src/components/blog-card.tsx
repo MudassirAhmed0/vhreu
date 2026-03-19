@@ -6,6 +6,7 @@
    NO card-level scale/lift/shadow-growth.
    ══════════════════════════════════════════════════════════ */
 
+import Image from "next/image";
 import Link from "next/link";
 
 interface BlogCardProps {
@@ -52,21 +53,13 @@ export default function BlogCard({
     >
       {/* Featured image — zooms on hover, overflow hidden */}
       <div className="aspect-[3/2] overflow-hidden">
-        {image ? (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            src={image}
-            alt={title}
-            className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-          />
-        ) : (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            src="/blog-fallback.svg"
-            alt={title}
-            className="h-full w-full object-cover"
-          />
-        )}
+        <Image
+          src={image || "/blog-fallback.svg"}
+          alt={title}
+          width={600}
+          height={400}
+          className={`h-full w-full object-cover ${image ? "transition-transform duration-500 ease-out group-hover:scale-[1.04]" : ""}`}
+        />
       </div>
 
       {/* Content */}
