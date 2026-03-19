@@ -1,21 +1,25 @@
+/* ══════════════════════════════════════════════════════════
+   DynamicIcon — lazy-loaded lucide icon by name
+   The heavy dynamicIconImports map lives in _dynamic-icon-impl
+   and is code-split into its own async chunk via next/dynamic.
+   ══════════════════════════════════════════════════════════ */
+
 "use client";
 
-import { lazy, Suspense } from "react";
-import dynamicIconImports from "lucide-react/dynamicIconImports";
-import type { LucideProps } from "lucide-react";
+import dynamic from "next/dynamic";
 
-export type IconName = keyof typeof dynamicIconImports;
+export type IconName = string;
 
-interface DynamicIconProps extends LucideProps {
-  name: IconName;
-}
+const DynamicIconLazy = dynamic(() => import("./_dynamic-icon-impl"), {
+  ssr: false,
+  loading: () => null,
+});
 
-export default function DynamicIcon({ name, ...props }: DynamicIconProps) {
-  const LucideIcon = lazy(dynamicIconImports[name]);
-
-  return (
-    <Suspense fallback={<span className={props.className} />}>
-      <LucideIcon {...props} />
-    </Suspense>
-  );
+export default function DynamicIcon(props: {
+  name: string;
+  className?: string;
+  strokeWidth?: number;
+  size?: number;
+}) {
+  return <DynamicIconLazy {...props} />;
 }

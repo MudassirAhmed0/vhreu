@@ -188,12 +188,13 @@ export default function Home() {
         heading="Get EU VIN Check Report by Country"
         subtitle="No matter where you are in Europe, our VIN check tool has you covered. We provide reports for vehicles across the following European countries:"
       >
-        <div className="flex flex-wrap justify-center gap-2">
-          {COUNTRIES_LIST.map((country) => (
+        <div data-stagger className="flex flex-wrap justify-center gap-2">
+          {COUNTRIES_LIST.map((country, i) => (
             <Link
               key={country}
               href="#"
-              className="rounded-xl border border-border bg-white px-4 py-2 text-[14px] font-medium text-text-2 transition-all hover:border-primary hover:bg-primary hover:text-white"
+              className="rounded-xl border border-border bg-white px-4 py-2 text-[14px] font-medium text-text-2 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary hover:bg-primary hover:text-white"
+              style={{ "--stagger-index": i } as React.CSSProperties}
             >
               {country}
             </Link>
@@ -207,12 +208,13 @@ export default function Home() {
         heading="Run VIN Check Europe by Makes"
         subtitle="Get detailed vehicle history reports for popular brands. Just choose your car brand and start your VIN check right away!"
       >
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
-          {CAR_MAKES.map((make) => (
+        <div data-stagger className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
+          {CAR_MAKES.map((make, i) => (
             <Link
               key={make}
               href="#"
-              className="flex items-center justify-center rounded-xl border border-border bg-white px-4 py-5 text-[14px] font-semibold text-primary shadow-sm transition-all hover:border-primary/30 hover:shadow-md"
+              className="flex items-center justify-center rounded-xl border border-border bg-white px-4 py-5 text-[14px] font-semibold text-primary shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md"
+              style={{ "--stagger-index": i } as React.CSSProperties}
             >
               {make}
             </Link>

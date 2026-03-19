@@ -12,7 +12,9 @@ import { entranceAnimation } from "./shared/constants";
 type GridCols = 2 | 3 | 4;
 
 interface CardSectionProps {
+  tag?: string;
   heading: string;
+  highlight?: string;
   subtitle?: string;
   children: ReactNode;
   bg?: BgVariant;
@@ -29,7 +31,9 @@ const GRID_COLS: Record<GridCols, string> = {
 };
 
 export default function CardSection({
+  tag,
   heading,
+  highlight,
   subtitle,
   children,
   bg = "white",
@@ -40,7 +44,7 @@ export default function CardSection({
   const isDark = bg === "dark";
 
   return (
-    <SectionWrapper bg={bg} heading={heading} subtitle={subtitle}>
+    <SectionWrapper bg={bg} tag={tag} heading={heading} highlight={highlight} subtitle={subtitle}>
       {/* Card grid */}
       <div className={`grid grid-cols-1 gap-6 ${GRID_COLS[columns]}`}>
         {children}

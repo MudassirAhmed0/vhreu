@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist_Mono } from "next/font/google";
 import { Figtree } from "next/font/google";
 import "./globals.css";
@@ -34,6 +35,26 @@ export default function RootLayout({
         <Header />
         <main>{children}</main>
         <Footer />
+        <Script id="scroll-reveal" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: `
+(function(){
+  if(window.matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+  var o=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting)return;
+      var t=e.target;
+      t.classList.remove("reveal-pending");
+      if(t.hasAttribute("data-stagger"))t.setAttribute("data-visible","");
+      o.unobserve(t);
+    });
+  },{rootMargin:"0px 0px -60px 0px"});
+  document.querySelectorAll("[data-reveal],[data-stagger]").forEach(function(el){
+    var r=el.getBoundingClientRect();
+    if(r.top<window.innerHeight){el.classList.remove("reveal-pending");if(el.hasAttribute("data-stagger"))el.setAttribute("data-visible","");return;}
+    el.classList.add("reveal-pending");
+    o.observe(el);
+  });
+})();
+`}} />
       </body>
     </html>
   );

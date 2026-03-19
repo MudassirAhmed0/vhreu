@@ -39,10 +39,10 @@ export default function BlogCard({
   return (
     <Link
       href={`/${slug}`}
-      className={`group block overflow-hidden rounded-2xl border transition-colors duration-200 ${
+      className={`group block overflow-hidden rounded-2xl border transition-all duration-200 ${
         dark
-          ? "border-white/[0.06] bg-white/[0.03] backdrop-blur-sm hover:border-white/[0.12]"
-          : "border-border bg-white hover:border-primary/20"
+          ? "border-white/[0.06] bg-white/[0.03] backdrop-blur-sm hover:border-white/[0.12] hover:-translate-y-1 hover:shadow-lg hover:shadow-black/10"
+          : "border-border bg-white hover:border-primary/20 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5"
       }`}
       style={{
         animation: delay
@@ -60,12 +60,11 @@ export default function BlogCard({
             className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
           />
         ) : (
-          <div
-            className={
-              dark
-                ? "h-full w-full bg-white/[0.02]"
-                : "h-full w-full bg-muted"
-            }
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src="/blog-fallback.svg"
+            alt={title}
+            className="h-full w-full object-cover"
           />
         )}
       </div>

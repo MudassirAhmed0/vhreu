@@ -39,7 +39,7 @@ export default function PillGrid({
         <Link
           key={item.label}
           href={item.href}
-          className={`rounded-xl border px-4 py-2.5 text-[13px] font-semibold transition-colors duration-200 ${
+          className={`rounded-xl border px-4 py-2.5 text-[13px] font-semibold transition-all duration-200 hover:-translate-y-0.5 ${
             dark
               ? "border-white/[0.06] bg-white/[0.03] text-white/60 backdrop-blur-sm hover:border-accent/30 hover:bg-white/[0.06] hover:text-white/90"
               : "border-border bg-white text-text-2 hover:border-primary hover:bg-primary hover:text-white"

@@ -32,6 +32,8 @@ const meta: Meta<HeroStoryProps> = {
       table: { category: "Media" },
     },
     heroImageAlt: { control: "text", table: { category: "Media" } },
+    cta: { control: "object", description: "Arrow link { label, href }", table: { category: "CTAs" } },
+    secondaryCta: { control: "object", description: "Pill badge link { label, href }", table: { category: "CTAs" } },
     backgroundImage: {
       control: "text",
       description: "Subtle watermark image (e.g. country flag SVG path)",
@@ -137,6 +139,8 @@ export const SplitHomepage: Story = {
     subtitle:
       "Check any European vehicle's history instantly. Access accident records, mileage verification, theft status, and more from 40+ countries.",
     bullets: ["40+ EU Countries", "Instant Results", "Official Records"],
+    cta: { label: "View Sample Report", href: "/sample-report" },
+    secondaryCta: { label: "Pan-European Coverage", href: "/countries" },
     showForm: true,
   },
 };
@@ -151,6 +155,8 @@ export const SplitWithImage: Story = {
     subtitle:
       "Check any European vehicle's history instantly. Access accident records, mileage verification, theft status, and more from 40+ countries.",
     bullets: ["40+ EU Countries", "Instant Results", "Official Records"],
+    cta: { label: "View Sample Report", href: "/sample-report" },
+    secondaryCta: { label: "Pan-European Coverage", href: "/countries" },
     heroImage: "https://placehold.co/580x660/0B2230/E85C3A?text=Report+Preview%0A580%C3%97660",
     heroImageAlt: "Sample vehicle history report showing specifications, auction records, and accident history",
   },

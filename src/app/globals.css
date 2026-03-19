@@ -66,6 +66,11 @@ html {
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+/* LCP-safe variant: transform only, no opacity delay */
+@keyframes hero-slide {
+  from { transform: translateY(18px); }
+  to   { transform: translateY(0); }
+}
 @keyframes hero-scale {
   from { opacity: 0; transform: scale(0.96); }
   to   { opacity: 1; transform: scale(1); }
@@ -101,10 +106,48 @@ html {
   50% { transform: translateY(-6px); }
 }
 
+/* ─── Details/summary toggle (FAQ) ─── */
+details[open] summary span:last-child > span:last-child {
+  transform: rotate(0deg) !important;
+}
+details summary { list-style: none; }
+
+/* ─── Scroll-triggered reveal ─── */
+.reveal-pending,
+.reveal-pending * {
+  animation-play-state: paused !important;
+}
+
+/* ─── CSS Parallax (scroll-driven, zero JS) ─── */
+@keyframes parallax-up   { from { transform: translateY(30px); }  to { transform: translateY(-30px); } }
+@keyframes parallax-down { from { transform: translateY(-20px); } to { transform: translateY(20px); } }
+
+@supports (animation-timeline: view()) {
+  .parallax-slow { animation: parallax-up linear; animation-timeline: view(); }
+  .parallax-med  { animation: parallax-up linear; animation-timeline: view(); animation-range: entry 0% exit 100%; }
+  .parallax-down { animation: parallax-down linear; animation-timeline: view(); }
+}
+
+/* ─── Stagger grid reveals ─── */
+[data-stagger][data-visible] > * {
+  animation: hero-up 0.5s cubic-bezier(0.16,1,0.3,1) both;
+  animation-delay: calc(var(--stagger-index, 0) * 0.04s);
+}
+[data-stagger]:not([data-visible]) > * {
+  opacity: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  .reveal-pending,
+  .reveal-pending * {
+    animation-play-state: running !important;
+  }
+  [data-stagger]:not([data-visible]) > * {
+    opacity: 1;
   }
 }

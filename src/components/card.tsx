@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
-import { TriangleAlert } from "lucide-react";
+import DynamicIcon from "./shared/dynamic-icon";
 import { CheckIcon } from "./shared/icons";
+import CountUp from "./shared/count-up";
 
 /* ══════════════════════════════════════════════════════════
    Card — versatile card for grids
@@ -350,10 +351,10 @@ function StatContent({
     <div className="flex flex-col">
       {/* Alert icon */}
       <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-danger/10">
-        <TriangleAlert size={20} className="text-danger" strokeWidth={1.6} />
+        <DynamicIcon name="triangle-alert" size={20} className="text-danger" strokeWidth={1.6} />
       </div>
       <p className="text-[28px] font-extrabold leading-none tracking-tight text-danger">
-        {stat}
+        <CountUp value={stat} />
       </p>
       <p
         className={`mt-2 text-[14px] font-bold ${
@@ -489,7 +490,7 @@ function CalloutContent({
             WebkitTextFillColor: "transparent",
           }}
         >
-          {stat}
+          <CountUp value={stat} />
         </span>
         <div>
           <p

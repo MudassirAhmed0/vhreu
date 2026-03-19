@@ -1,6 +1,12 @@
 import { ReactNode } from "react";
+import Link from "next/link";
 
 type Variant = "centered" | "split" | "stacked";
+
+interface HeroCta {
+  label: string;
+  href: string;
+}
 
 interface PageHeroProps {
   variant?: Variant;
@@ -19,6 +25,10 @@ interface PageHeroProps {
   glow?: boolean;
   /** Fill full viewport height. Default true. Set false for shorter heroes. */
   fullHeight?: boolean;
+  /** Primary CTA — arrow link below children/form */
+  cta?: HeroCta;
+  /** Secondary CTA — pill-style link beside primary */
+  secondaryCta?: HeroCta;
   /** Right-side content for split variant (e.g. ReportPreview component).
    *  When provided with children, children go below text on the left. */
   rightContent?: ReactNode;
@@ -40,6 +50,8 @@ export default function PageHero({
   dark = true,
   glow = true,
   fullHeight = true,
+  cta,
+  secondaryCta,
   rightContent,
   children,
 }: PageHeroProps) {
@@ -58,7 +70,7 @@ export default function PageHero({
         <div className={`relative mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:py-28 ${fullHeight ? "flex min-h-dvh flex-col justify-center" : ""}`}>
           <div
             className="mx-auto max-w-3xl text-center"
-            style={{ animation: "hero-up 0.7s cubic-bezier(0.16,1,0.3,1) both" }}
+            style={{ animation: "hero-slide 0.7s cubic-bezier(0.16,1,0.3,1) both" }}
           >
             <HeroTag dark={dark}>{tag}</HeroTag>
             <HeroTitle dark={dark} title={title} highlight={highlight} />
@@ -77,6 +89,7 @@ export default function PageHero({
             )}
 
             <HeroBullets items={bullets} dark={dark} centered delay={0.22} />
+            <HeroCtas cta={cta} secondaryCta={secondaryCta} dark={dark} delay={0.3} centered />
           </div>
         </div>
       )}
@@ -88,7 +101,7 @@ export default function PageHero({
         <div className={`relative mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:py-20 ${fullHeight ? "flex min-h-dvh flex-col justify-center" : ""}`}>
           <div className="grid items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-16">
             {/* Left — text + optional children below when image is on right */}
-            <div style={{ animation: "hero-up 0.7s cubic-bezier(0.16,1,0.3,1) both" }}>
+            <div style={{ animation: "hero-slide 0.7s cubic-bezier(0.16,1,0.3,1) both" }}>
               <HeroTag dark={dark}>{tag}</HeroTag>
               <HeroTitle dark={dark} title={title} highlight={highlight} compact />
               <HeroSubtitle dark={dark}>{subtitle}</HeroSubtitle>
@@ -102,6 +115,9 @@ export default function PageHero({
                   {children}
                 </div>
               )}
+
+              {/* Secondary CTAs — arrow link + pill badge */}
+              <HeroCtas cta={cta} secondaryCta={secondaryCta} dark={dark} delay={0.35} />
             </div>
 
             {/* Right — image or form (form only when no heroImage) */}
@@ -151,12 +167,13 @@ export default function PageHero({
           {/* Heading — centered vertical flow */}
           <div
             className="mx-auto max-w-3xl text-center"
-            style={{ animation: "hero-up 0.7s cubic-bezier(0.16,1,0.3,1) both" }}
+            style={{ animation: "hero-slide 0.7s cubic-bezier(0.16,1,0.3,1) both" }}
           >
             <HeroTag dark={dark}>{tag}</HeroTag>
             <HeroTitle dark={dark} title={title} highlight={highlight} compact />
             <HeroSubtitle dark={dark} centered>{subtitle}</HeroSubtitle>
             <HeroBullets items={bullets} dark={dark} centered delay={0.18} />
+            <HeroCtas cta={cta} secondaryCta={secondaryCta} dark={dark} delay={0.26} centered />
           </div>
 
           {/* Divider — VIN motif */}
@@ -236,29 +253,34 @@ function DarkBackground({ variant, backgroundImage }: { variant: Variant; backgr
       {variant === "centered" && (
         <>
           {/* Central navy glow — behind text */}
-          <div
-            className="absolute left-1/2 top-[38%] h-[450px] w-[650px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30 blur-[130px]"
-            style={{
-              background: "radial-gradient(ellipse, var(--primary) 0%, transparent 70%)",
-              animation: "orb-drift 16s ease-in-out infinite",
-            }}
-          />
-          {/* Coral whisper bottom center */}
-          <div
-            className="absolute bottom-[-5%] left-1/2 h-[200px] w-[400px] -translate-x-1/2 rounded-full opacity-[0.12] blur-[90px]"
-            style={{ background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)" }}
-          />
-          {/* Pulsing rings */}
-          {[260, 400, 560].map((size, i) => (
+          <div className="parallax-slow">
             <div
-              key={size}
-              className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.025]"
+              className="absolute left-1/2 top-[38%] h-[450px] w-[650px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30 blur-[130px]"
               style={{
-                width: size,
-                height: size,
-                animation: `ring-pulse 7s ease-in-out ${i * 2}s infinite`,
+                background: "radial-gradient(ellipse, var(--primary) 0%, transparent 70%)",
+                animation: "orb-drift 16s ease-in-out infinite",
               }}
             />
+          </div>
+          {/* Coral whisper bottom center */}
+          <div className="parallax-down">
+            <div
+              className="absolute bottom-[-5%] left-1/2 h-[200px] w-[400px] -translate-x-1/2 rounded-full opacity-[0.12] blur-[90px]"
+              style={{ background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)" }}
+            />
+          </div>
+          {/* Pulsing rings */}
+          {[260, 400, 560].map((size, i) => (
+            <div key={size} className={i === 0 ? "parallax-slow" : i === 2 ? "parallax-down" : ""}>
+              <div
+                className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.025]"
+                style={{
+                  width: size,
+                  height: size,
+                  animation: `ring-pulse 7s ease-in-out ${i * 2}s infinite`,
+                }}
+              />
+            </div>
           ))}
         </>
       )}
@@ -266,21 +288,25 @@ function DarkBackground({ variant, backgroundImage }: { variant: Variant; backgr
       {variant === "split" && (
         <>
           {/* Teal orb — text side */}
-          <div
-            className="absolute -left-[5%] top-[15%] h-[500px] w-[550px] rounded-full opacity-30 blur-[120px]"
-            style={{
-              background: "radial-gradient(circle, var(--primary) 0%, transparent 70%)",
-              animation: "orb-drift 13s ease-in-out infinite",
-            }}
-          />
+          <div className="parallax-slow">
+            <div
+              className="absolute -left-[5%] top-[15%] h-[500px] w-[550px] rounded-full opacity-30 blur-[120px]"
+              style={{
+                background: "radial-gradient(circle, var(--primary) 0%, transparent 70%)",
+                animation: "orb-drift 13s ease-in-out infinite",
+              }}
+            />
+          </div>
           {/* Coral orb — form side */}
-          <div
-            className="absolute -right-[3%] bottom-[5%] h-[380px] w-[420px] rounded-full opacity-[0.14] blur-[100px]"
-            style={{
-              background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)",
-              animation: "orb-drift 10s ease-in-out infinite reverse",
-            }}
-          />
+          <div className="parallax-down">
+            <div
+              className="absolute -right-[3%] bottom-[5%] h-[380px] w-[420px] rounded-full opacity-[0.14] blur-[100px]"
+              style={{
+                background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)",
+                animation: "orb-drift 10s ease-in-out infinite reverse",
+              }}
+            />
+          </div>
           {/* Diagonal energy line */}
           <div
             className="absolute left-[48%] top-0 hidden h-full w-px origin-top lg:block"
@@ -321,21 +347,25 @@ function DarkBackground({ variant, backgroundImage }: { variant: Variant; backgr
       {variant === "stacked" && (
         <>
           {/* Wide navy wash top */}
-          <div
-            className="absolute -left-[5%] -top-[15%] h-[350px] w-[110%] rounded-[50%] opacity-20 blur-[110px]"
-            style={{
-              background: "linear-gradient(90deg, transparent 5%, var(--primary) 35%, var(--primary-light) 65%, transparent 95%)",
-              animation: "orb-drift 18s ease-in-out infinite",
-            }}
-          />
+          <div className="parallax-slow">
+            <div
+              className="absolute -left-[5%] -top-[15%] h-[350px] w-[110%] rounded-[50%] opacity-20 blur-[110px]"
+              style={{
+                background: "linear-gradient(90deg, transparent 5%, var(--primary) 35%, var(--primary-light) 65%, transparent 95%)",
+                animation: "orb-drift 18s ease-in-out infinite",
+              }}
+            />
+          </div>
           {/* Coral hint right */}
-          <div
-            className="absolute -right-[5%] bottom-[15%] h-[300px] w-[300px] rounded-full opacity-[0.08] blur-[80px]"
-            style={{
-              background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)",
-              animation: "orb-drift 11s ease-in-out infinite reverse",
-            }}
-          />
+          <div className="parallax-down">
+            <div
+              className="absolute -right-[5%] bottom-[15%] h-[300px] w-[300px] rounded-full opacity-[0.08] blur-[80px]"
+              style={{
+                background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)",
+                animation: "orb-drift 11s ease-in-out infinite reverse",
+              }}
+            />
+          </div>
           {/* Left accent bar — technical edge */}
           <div
             className="absolute bottom-0 left-6 top-0 w-px sm:left-10 lg:left-[max(1.25rem,calc((100vw-80rem)/2+1.25rem))]"
@@ -375,22 +405,26 @@ function LightBackground({ variant }: { variant: Variant }) {
         }}
       />
       {/* Soft navy glow */}
-      <div
-        className={`absolute h-[400px] w-[500px] rounded-full opacity-[0.05] blur-[100px] ${
-          variant === "centered"
-            ? "left-1/2 top-[20%] -translate-x-1/2"
-            : "-left-[8%] top-[10%]"
-        }`}
-        style={{
-          background: "radial-gradient(ellipse, var(--primary) 0%, transparent 70%)",
-          animation: "orb-drift 15s ease-in-out infinite",
-        }}
-      />
+      <div className="parallax-slow">
+        <div
+          className={`absolute h-[400px] w-[500px] rounded-full opacity-[0.05] blur-[100px] ${
+            variant === "centered"
+              ? "left-1/2 top-[20%] -translate-x-1/2"
+              : "-left-[8%] top-[10%]"
+          }`}
+          style={{
+            background: "radial-gradient(ellipse, var(--primary) 0%, transparent 70%)",
+            animation: "orb-drift 15s ease-in-out infinite",
+          }}
+        />
+      </div>
       {/* Secondary glow */}
-      <div
-        className="absolute -bottom-[8%] -right-[8%] h-[300px] w-[350px] rounded-full opacity-[0.04] blur-[80px]"
-        style={{ background: "radial-gradient(circle, var(--primary-light) 0%, transparent 70%)" }}
-      />
+      <div className="parallax-down">
+        <div
+          className="absolute -bottom-[8%] -right-[8%] h-[300px] w-[350px] rounded-full opacity-[0.04] blur-[80px]"
+          style={{ background: "radial-gradient(circle, var(--primary-light) 0%, transparent 70%)" }}
+        />
+      </div>
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
     </>
   );
@@ -413,7 +447,7 @@ function HeroTag({ children, dark }: { children?: ReactNode; dark: boolean }) {
         style={{
           background: dark
             ? "linear-gradient(90deg, transparent, rgba(255,204,0,0.6))"
-            : "linear-gradient(90deg, transparent, rgba(255,204,0,0.5))",
+            : "linear-gradient(90deg, transparent, rgba(26,54,92,0.3))",
         }}
       />
       {children}
@@ -422,7 +456,7 @@ function HeroTag({ children, dark }: { children?: ReactNode; dark: boolean }) {
         style={{
           background: dark
             ? "linear-gradient(90deg, rgba(255,204,0,0.6), transparent)"
-            : "linear-gradient(90deg, rgba(255,204,0,0.5), transparent)",
+            : "linear-gradient(90deg, rgba(26,54,92,0.3), transparent)",
         }}
       />
     </div>
@@ -537,6 +571,62 @@ function HeroBullets({
           {b}
         </span>
       ))}
+    </div>
+  );
+}
+
+function HeroCtas({
+  cta,
+  secondaryCta,
+  dark,
+  delay = 0,
+  centered,
+}: {
+  cta?: HeroCta;
+  secondaryCta?: HeroCta;
+  dark: boolean;
+  delay?: number;
+  centered?: boolean;
+}) {
+  if (!cta && !secondaryCta) return null;
+  return (
+    <div
+      className={`mt-8 flex flex-wrap items-center gap-4 ${centered ? "justify-center" : ""}`}
+      style={{ animation: `hero-up 0.6s cubic-bezier(0.16,1,0.3,1) ${delay}s both` }}
+    >
+      {/* Arrow link */}
+      {cta && (
+        <Link
+          href={cta.href}
+          className={`group inline-flex items-center gap-2 text-[15px] font-semibold transition-colors duration-200 ${
+            dark
+              ? "text-white/70 hover:text-white"
+              : "text-text-2 hover:text-primary"
+          }`}
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 group-hover:translate-x-0.5">
+            <path d="M3 8h10M9 4l4 4-4 4" />
+          </svg>
+          {cta.label}
+        </Link>
+      )}
+
+      {/* Pill badge */}
+      {secondaryCta && (
+        <Link
+          href={secondaryCta.href}
+          className={`inline-flex items-center gap-2.5 rounded-full px-5 py-2.5 text-[13px] font-semibold transition-all duration-200 ${
+            dark
+              ? "border border-white/[0.08] bg-white/[0.05] text-white/60 backdrop-blur-sm hover:border-accent/20 hover:text-white/80"
+              : "border border-primary/12 bg-primary/[0.04] text-primary/70 hover:border-primary/25 hover:text-primary"
+          }`}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="opacity-60">
+            <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          {secondaryCta.label}
+        </Link>
+      )}
     </div>
   );
 }

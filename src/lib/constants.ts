@@ -284,7 +284,6 @@ export const BLOG_POSTS = [
     date: "Nov 30, 2024",
     excerpt: "You've decided it's time for an SUV, but the choices feel overwhelming...",
     slug: "what-is-the-best-used-suv-to-buy-in",
-    image: "/blog-suv.jpg",
   },
   {
     title: "7 Best Electric Cars to Buy Used in 2024",
@@ -292,7 +291,6 @@ export const BLOG_POSTS = [
     date: "Nov 27, 2024",
     excerpt: "Between 2022 and 2023, the market for used electric cars has been...",
     slug: "best-used-electric-cars",
-    image: "/blog-ev.jpg",
   },
   {
     title: "Best Family SUVs for 2024",
@@ -300,7 +298,6 @@ export const BLOG_POSTS = [
     date: "Nov 24, 2024",
     excerpt: "Finding the right SUV for your family is not always easy. With so many...",
     slug: "best-family-suv-2024",
-    image: "/blog-family-suv.jpg",
   },
 ];
 

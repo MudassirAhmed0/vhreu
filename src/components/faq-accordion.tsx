@@ -1,13 +1,8 @@
 /* ══════════════════════════════════════════════════════════
    FaqAccordion — collapsible Q&A list
-   Animated +/× toggle, smooth grid-rows expand/collapse.
-   Accepts any FAQ data via items prop — reusable across
-   homepage, country pages, brand pages, pricing, etc.
+   Pure HTML <details>/<summary> — zero JavaScript.
+   CSS handles the +/× toggle rotation and smooth expand.
    ══════════════════════════════════════════════════════════ */
-
-"use client";
-
-import { useState } from "react";
 
 interface FaqItem {
   question: string;
@@ -28,115 +23,77 @@ export default function FaqAccordion({
   defaultOpen = true,
   dark = false,
 }: FaqAccordionProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(
-    defaultOpen ? 0 : null,
-  );
-
   return (
     <div className="space-y-3">
-      {items.map((faq, i) => {
-        const isOpen = openIndex === i;
-
-        return (
-          <div
-            key={i}
-            className={`overflow-hidden rounded-xl border ${
-              dark
-                ? `border-white/[0.06] ${isOpen ? "bg-white/[0.03]" : "bg-white/[0.01]"}`
-                : `border-border ${isOpen ? "bg-white" : "bg-white"}`
-            }`}
-            style={{
-              animation: `hero-up 0.5s cubic-bezier(0.16,1,0.3,1) ${0.05 + i * 0.06}s both`,
-            }}
+      {items.map((faq, i) => (
+        <details
+          key={i}
+          className={`group overflow-hidden rounded-xl border ${
+            dark
+              ? "border-white/[0.06] bg-white/[0.01] open:bg-white/[0.03]"
+              : "border-border bg-white"
+          }`}
+          open={defaultOpen && i === 0 ? true : undefined}
+          name="faq"
+          style={{
+            animation: `hero-up 0.5s cubic-bezier(0.16,1,0.3,1) ${0.05 + i * 0.06}s both`,
+          }}
+        >
+          <summary
+            className="flex w-full cursor-pointer items-center justify-between px-5 py-4 text-left sm:px-6 sm:py-5 [&::-webkit-details-marker]:hidden"
           >
-            {/* Question button */}
-            <button
-              onClick={() => setOpenIndex(isOpen ? null : i)}
-              className="flex w-full items-center justify-between px-5 py-4 text-left sm:px-6 sm:py-5"
-              aria-expanded={isOpen}
+            <span
+              className={`pr-4 text-[15px] font-semibold leading-snug sm:text-base ${
+                dark ? "text-white/70 group-open:text-white/90" : "text-primary"
+              }`}
+            >
+              {faq.question}
+            </span>
+
+            {/* +/× toggle icon */}
+            <span
+              className={`relative flex h-6 w-6 shrink-0 items-center justify-center rounded-full transition-colors duration-200 ${
+                dark
+                  ? "bg-white/[0.06] group-open:bg-accent/20"
+                  : "bg-muted group-open:bg-primary/10"
+              }`}
             >
               <span
-                className={`pr-4 text-[15px] font-semibold leading-snug sm:text-base ${
+                className={`absolute h-[1.5px] w-2.5 rounded-full transition-colors duration-200 ${
                   dark
-                    ? isOpen
-                      ? "text-white/90"
-                      : "text-white/70"
-                    : "text-primary"
+                    ? "bg-white/40 group-open:bg-accent"
+                    : "bg-text-3 group-open:bg-primary"
                 }`}
-              >
-                {faq.question}
-              </span>
-
-              {/* +/× toggle icon */}
+              />
               <span
-                className={`relative flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${
+                className={`absolute h-[1.5px] w-2.5 rounded-full transition-all duration-300 ${
                   dark
-                    ? isOpen
-                      ? "bg-accent/20"
-                      : "bg-white/[0.06]"
-                    : isOpen
-                      ? "bg-primary/10"
-                      : "bg-muted"
+                    ? "bg-white/40 group-open:bg-accent"
+                    : "bg-text-3 group-open:bg-primary"
                 }`}
-              >
-                {/* Horizontal bar (always visible) */}
-                <span
-                  className={`absolute h-[1.5px] w-2.5 rounded-full transition-colors duration-200 ${
-                    dark
-                      ? isOpen
-                        ? "bg-accent"
-                        : "bg-white/40"
-                      : isOpen
-                        ? "bg-primary"
-                        : "bg-text-3"
-                  }`}
-                />
-                {/* Vertical bar (rotates to 0 when open → forms ×) */}
-                <span
-                  className={`absolute h-[1.5px] w-2.5 rounded-full transition-all duration-300 ${
-                    dark
-                      ? isOpen
-                        ? "bg-accent"
-                        : "bg-white/40"
-                      : isOpen
-                        ? "bg-primary"
-                        : "bg-text-3"
-                  }`}
-                  style={{
-                    transform: isOpen ? "rotate(0deg)" : "rotate(90deg)",
-                    transitionTimingFunction: "cubic-bezier(0.25,0.74,0.22,0.99)",
-                  }}
-                />
-              </span>
-            </button>
+                style={{
+                  transform: "rotate(90deg)",
+                  transitionTimingFunction: "cubic-bezier(0.25,0.74,0.22,0.99)",
+                }}
+              />
+            </span>
+          </summary>
 
-            {/* Answer (animated expand/collapse via grid-rows) */}
-            <div
-              className="grid transition-[grid-template-rows] duration-300"
-              style={{
-                gridTemplateRows: isOpen ? "1fr" : "0fr",
-                transitionTimingFunction: "cubic-bezier(0.16,1,0.3,1)",
-              }}
+          <div
+            className={`px-5 pb-5 pt-0 sm:px-6 sm:pb-6 ${
+              dark ? "border-white/[0.04]" : "border-border/50"
+            }`}
+          >
+            <p
+              className={`text-[14px] leading-relaxed sm:text-[15px] ${
+                dark ? "text-white/50" : "text-text-2"
+              }`}
             >
-              <div className="overflow-hidden">
-                <div
-                  className={`px-5 pb-5 pt-0 sm:px-6 sm:pb-6 ${
-                    dark ? "border-white/[0.04]" : "border-border/50"
-                  }`}
-                >
-                  <p
-                    className={`text-[14px] leading-relaxed sm:text-[15px] ${
-                      dark ? "text-white/50" : "text-text-2"
-                    }`}
-                  >
-                    {faq.answer}
-                  </p>
-                </div>
-              </div>
-            </div>
+              {faq.answer}
+            </p>
           </div>
-        );
-      })}
+        </details>
+      ))}
     </div>
   );
 }

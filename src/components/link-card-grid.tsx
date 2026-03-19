@@ -46,10 +46,10 @@ export default function LinkCardGrid({
         <Link
           key={item.label}
           href={item.href}
-          className={`flex items-center justify-center rounded-xl border px-4 py-5 text-[14px] font-semibold transition-colors duration-200 ${
+          className={`flex items-center justify-center rounded-xl border px-4 py-5 text-[14px] font-semibold transition-all duration-200 hover:-translate-y-0.5 ${
             dark
-              ? "border-white/[0.06] bg-white/[0.03] text-white/70 backdrop-blur-sm hover:border-accent/30 hover:bg-white/[0.06] hover:text-white"
-              : "border-border bg-white text-primary hover:border-primary/30 hover:bg-primary/[0.03]"
+              ? "border-white/[0.06] bg-white/[0.03] text-white/70 backdrop-blur-sm hover:border-accent/30 hover:bg-white/[0.06] hover:text-white hover:shadow-md hover:shadow-black/10"
+              : "border-border bg-white text-primary hover:border-primary/30 hover:bg-primary/[0.03] hover:shadow-md hover:shadow-black/5"
           }`}
           style={{
             animation: delay

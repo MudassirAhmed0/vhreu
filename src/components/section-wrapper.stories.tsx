@@ -18,6 +18,7 @@ const meta: Meta<typeof SectionWrapper> = {
       options: ["default", "glow", "rings", "grid", "waves", "split", "edge", "minimal"],
       table: { category: "Layout" },
     },
+    tag: { control: "text", table: { category: "Content" } },
     heading: { control: "text", table: { category: "Content" } },
     subtitle: { control: "text", table: { category: "Content" } },
     narrow: { control: "boolean", table: { category: "Layout" } },
@@ -36,6 +37,7 @@ type Story = StoryObj<typeof SectionWrapper>;
 export const White: Story = {
   args: {
     bg: "white",
+    tag: "Protect Your Investment",
     heading: "Why You Should Run a European VIN Number Check?",
     subtitle:
       "With over 52% of used vehicles in Europe having some form of hidden history, a VIN check is essential before any purchase.",
@@ -68,6 +70,7 @@ export const White: Story = {
 export const Muted: Story = {
   args: {
     bg: "muted",
+    tag: "Pan-European Coverage",
     heading: "Get EU VIN Check Report by Country",
     subtitle:
       "No matter where you are in Europe, our VIN check tool has you covered.",
@@ -96,6 +99,7 @@ export const Muted: Story = {
 export const Dark: Story = {
   args: {
     bg: "dark",
+    tag: "Social Proof",
     heading: "Trusted by Thousands Across Europe",
     subtitle:
       "Join over 50,000 buyers who have used our service to make informed vehicle purchases.",

@@ -115,25 +115,29 @@ function SceneGlow({ isDark }: { isDark: boolean }) {
   return (
     <>
       {/* Primary orb — left-center */}
-      <div
-        className="absolute -left-[5%] top-[20%] h-[450px] w-[500px] rounded-full blur-[120px]"
-        style={{
-          background: "radial-gradient(ellipse, var(--primary) 0%, transparent 70%)",
-          opacity: isDark ? 0.2 : 0.05,
-          animation: "orb-drift 14s ease-in-out infinite",
-        }}
-      />
+      <div className="parallax-slow">
+        <div
+          className="absolute -left-[5%] top-[20%] h-[450px] w-[500px] rounded-full blur-[120px]"
+          style={{
+            background: "radial-gradient(ellipse, var(--primary) 0%, transparent 70%)",
+            opacity: isDark ? 0.2 : 0.05,
+            animation: "orb-drift 14s ease-in-out infinite",
+          }}
+        />
+      </div>
       {/* Secondary orb — right-bottom */}
-      <div
-        className="absolute -right-[5%] bottom-[10%] h-[350px] w-[400px] rounded-full blur-[100px]"
-        style={{
-          background: isDark
-            ? "radial-gradient(circle, var(--accent) 0%, transparent 70%)"
-            : "radial-gradient(circle, var(--primary-light) 0%, transparent 70%)",
-          opacity: isDark ? 0.1 : 0.04,
-          animation: "orb-drift 11s ease-in-out infinite reverse",
-        }}
-      />
+      <div className="parallax-down">
+        <div
+          className="absolute -right-[5%] bottom-[10%] h-[350px] w-[400px] rounded-full blur-[100px]"
+          style={{
+            background: isDark
+              ? "radial-gradient(circle, var(--accent) 0%, transparent 70%)"
+              : "radial-gradient(circle, var(--primary-light) 0%, transparent 70%)",
+            opacity: isDark ? 0.1 : 0.04,
+            animation: "orb-drift 11s ease-in-out infinite reverse",
+          }}
+        />
+      </div>
     </>
   );
 }
@@ -143,25 +147,28 @@ function SceneRings({ isDark }: { isDark: boolean }) {
   return (
     <>
       {/* Central glow behind rings */}
-      <div
-        className="absolute left-1/2 top-1/2 h-[300px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[100px]"
-        style={{
-          background: "radial-gradient(ellipse, var(--primary) 0%, transparent 70%)",
-          opacity: isDark ? 0.12 : 0.03,
-        }}
-      />
-      {/* Pulsing rings */}
-      {[200, 340, 500].map((size, i) => (
+      <div className="parallax-slow">
         <div
-          key={size}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+          className="absolute left-1/2 top-1/2 h-[300px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[100px]"
           style={{
-            width: size,
-            height: size,
-            border: `1px solid ${isDark ? "rgba(255,255,255,0.03)" : "rgba(26,54,92,0.06)"}`,
-            animation: `ring-pulse 7s ease-in-out ${i * 2}s infinite`,
+            background: "radial-gradient(ellipse, var(--primary) 0%, transparent 70%)",
+            opacity: isDark ? 0.12 : 0.03,
           }}
         />
+      </div>
+      {/* Pulsing rings */}
+      {[200, 340, 500].map((size, i) => (
+        <div key={size} className={i === 0 ? "parallax-slow" : i === 1 ? "parallax-med" : "parallax-down"}>
+          <div
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+            style={{
+              width: size,
+              height: size,
+              border: `1px solid ${isDark ? "rgba(255,255,255,0.03)" : "rgba(26,54,92,0.06)"}`,
+              animation: `ring-pulse 7s ease-in-out ${i * 2}s infinite`,
+            }}
+          />
+        </div>
       ))}
     </>
   );
@@ -222,16 +229,18 @@ function SceneWaves({ isDark }: { isDark: boolean }) {
         }}
       />
       {/* Soft glow — bottom left */}
-      <div
-        className="absolute -bottom-[5%] -left-[5%] h-[350px] w-[450px] rounded-full blur-[110px]"
-        style={{
-          background: isDark
-            ? "radial-gradient(ellipse, var(--primary) 0%, transparent 70%)"
-            : "radial-gradient(ellipse, var(--primary-light) 0%, transparent 70%)",
-          opacity: isDark ? 0.15 : 0.04,
-          animation: "orb-drift 16s ease-in-out infinite",
-        }}
-      />
+      <div className="parallax-slow">
+        <div
+          className="absolute -bottom-[5%] -left-[5%] h-[350px] w-[450px] rounded-full blur-[110px]"
+          style={{
+            background: isDark
+              ? "radial-gradient(ellipse, var(--primary) 0%, transparent 70%)"
+              : "radial-gradient(ellipse, var(--primary-light) 0%, transparent 70%)",
+            opacity: isDark ? 0.15 : 0.04,
+            animation: "orb-drift 16s ease-in-out infinite",
+          }}
+        />
+      </div>
     </>
   );
 }
@@ -248,25 +257,29 @@ function SceneSplit({ isDark }: { isDark: boolean }) {
   return (
     <>
       {/* Primary orb — left */}
-      <div
-        className="absolute -left-[5%] top-[15%] h-[450px] w-[500px] rounded-full blur-[120px]"
-        style={{
-          background: "radial-gradient(circle, var(--primary) 0%, transparent 70%)",
-          opacity: isDark ? 0.25 : 0.05,
-          animation: "orb-drift 13s ease-in-out infinite",
-        }}
-      />
+      <div className="parallax-slow">
+        <div
+          className="absolute -left-[5%] top-[15%] h-[450px] w-[500px] rounded-full blur-[120px]"
+          style={{
+            background: "radial-gradient(circle, var(--primary) 0%, transparent 70%)",
+            opacity: isDark ? 0.25 : 0.05,
+            animation: "orb-drift 13s ease-in-out infinite",
+          }}
+        />
+      </div>
       {/* Secondary orb — right */}
-      <div
-        className="absolute -right-[3%] bottom-[5%] h-[350px] w-[400px] rounded-full blur-[100px]"
-        style={{
-          background: isDark
-            ? "radial-gradient(circle, var(--accent) 0%, transparent 70%)"
-            : "radial-gradient(circle, var(--primary-light) 0%, transparent 70%)",
-          opacity: isDark ? 0.12 : 0.04,
-          animation: "orb-drift 10s ease-in-out infinite reverse",
-        }}
-      />
+      <div className="parallax-down">
+        <div
+          className="absolute -right-[3%] bottom-[5%] h-[350px] w-[400px] rounded-full blur-[100px]"
+          style={{
+            background: isDark
+              ? "radial-gradient(circle, var(--accent) 0%, transparent 70%)"
+              : "radial-gradient(circle, var(--primary-light) 0%, transparent 70%)",
+            opacity: isDark ? 0.12 : 0.04,
+            animation: "orb-drift 10s ease-in-out infinite reverse",
+          }}
+        />
+      </div>
       {/* Diagonal energy line */}
       <div
         className="absolute left-[48%] top-0 hidden h-full w-px origin-top lg:block"
@@ -307,14 +320,16 @@ function SceneEdge({ isDark }: { isDark: boolean }) {
   return (
     <>
       {/* Wide wash — top */}
-      <div
-        className="absolute -left-[5%] -top-[15%] h-[350px] w-[110%] rounded-[50%] blur-[110px]"
-        style={{
-          background: "linear-gradient(90deg, transparent 5%, var(--primary) 35%, var(--primary-light) 65%, transparent 95%)",
-          opacity: isDark ? 0.2 : 0.04,
-          animation: "orb-drift 18s ease-in-out infinite",
-        }}
-      />
+      <div className="parallax-slow">
+        <div
+          className="absolute -left-[5%] -top-[15%] h-[350px] w-[110%] rounded-[50%] blur-[110px]"
+          style={{
+            background: "linear-gradient(90deg, transparent 5%, var(--primary) 35%, var(--primary-light) 65%, transparent 95%)",
+            opacity: isDark ? 0.2 : 0.04,
+            animation: "orb-drift 18s ease-in-out infinite",
+          }}
+        />
+      </div>
       {/* Left accent bar */}
       <div
         className="absolute bottom-0 left-6 top-0 w-px sm:left-10 lg:left-[max(1.25rem,calc((100vw-80rem)/2+1.25rem))]"

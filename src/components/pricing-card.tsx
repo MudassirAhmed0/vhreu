@@ -40,14 +40,14 @@ export default function PricingCard({
 
   return (
     <div
-      className={`relative flex flex-col overflow-hidden rounded-2xl border transition-colors duration-200 ${
+      className={`relative flex flex-col overflow-hidden rounded-2xl border transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${
         featured
           ? dark
-            ? "border-accent/30 bg-white/[0.05] backdrop-blur-sm"
-            : "border-accent/40 bg-white"
+            ? "border-accent/30 bg-white/[0.05] backdrop-blur-sm hover:shadow-accent/10"
+            : "border-accent/40 bg-white hover:shadow-black/5"
           : dark
-            ? "border-white/[0.06] bg-white/[0.03] backdrop-blur-sm"
-            : "border-border bg-white"
+            ? "border-white/[0.06] bg-white/[0.03] backdrop-blur-sm hover:shadow-black/10"
+            : "border-border bg-white hover:shadow-black/5"
       }`}
       style={{
         animation: delay
@@ -171,15 +171,11 @@ export default function PricingCard({
   );
 }
 
-/* ── Check icon (lucide-react) ── */
-import { Check } from "lucide-react";
-
+/* ── Check icon (inline SVG) ── */
 function CheckIcon({ dark }: { dark: boolean }) {
   return (
-    <Check
-      size={14}
-      strokeWidth={2}
-      className={`shrink-0 ${dark ? "text-accent/50" : "text-accent"}`}
-    />
+    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className={`shrink-0 ${dark ? "text-accent/50" : "text-accent"}`}>
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
   );
 }

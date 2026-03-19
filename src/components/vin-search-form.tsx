@@ -1,14 +1,7 @@
 /* ══════════════════════════════════════════════════════════
    VinSearchForm — VIN input + search CTA
-   Simple form: VIN input field + submit button.
-   No tabs, no email, no phone — EU site is VIN-only.
-   Follows design system: rounded-xl, border-white/[0.06],
-   hero-up entrance animation, accent CTA with glow.
+   Server component — native HTML form, zero JavaScript.
    ══════════════════════════════════════════════════════════ */
-
-"use client";
-
-import { useState } from "react";
 
 interface VinSearchFormProps {
   buttonText?: string;
@@ -24,15 +17,10 @@ export default function VinSearchForm({
   dark = true,
   delay = 0,
 }: VinSearchFormProps) {
-  const [vin, setVin] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-  };
-
   return (
     <form
-      onSubmit={handleSubmit}
+      action="/check"
+      method="GET"
       className="w-full"
       style={{
         animation: delay
@@ -47,8 +35,7 @@ export default function VinSearchForm({
         <input
           id="vin-input"
           type="text"
-          value={vin}
-          onChange={(e) => setVin(e.target.value.toUpperCase())}
+          name="vin"
           placeholder="Enter VIN"
           className={`w-full rounded-xl border px-5 py-4 font-mono text-[15px] tracking-wider transition-colors focus:outline-none focus:ring-2 ${
             dark
@@ -56,6 +43,8 @@ export default function VinSearchForm({
               : "border-border bg-white text-foreground placeholder-text-3 shadow-sm focus:border-accent/30 focus:ring-accent/20"
           }`}
           maxLength={17}
+          autoComplete="off"
+          style={{ textTransform: "uppercase" }}
         />
         <button
           type="submit"
